@@ -104,4 +104,3 @@ OPENAI_API_KEY=你的OpenAI金鑰
   "id": "resp_xxx",
   "model": "gpt-4.1-mini"
 }
-```update
