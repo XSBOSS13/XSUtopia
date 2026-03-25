@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XS UTOPIA — Navigator</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="loading-screen" id="loadingScreen"><div class="loading-inner"><div class="loading-brand">XS UTOPIA</div><div class="loading-sub" data-i18n="loadingSub">心靈 × 茶 × 藝術 × AI</div><div class="loading-line"></div></div></div>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand"><div class="brand-mark">XS</div><div class="brand-name" data-i18n="brandName">XS UTOPIA</div></a>
+      <nav class="nav-links">
+        <a href="philosophy.html" data-i18n="navPhilosophy">哲學</a>
+        <a class="active" href="navigator.html" data-i18n="navNavigator">導航者</a>
+        <a href="products.html" data-i18n="navProducts">產品</a>
+        <a href="about.html" data-i18n="navAbout">關於</a>
+      </nav>
+      <div class="nav-actions"><div class="lang-toggle"><button class="lang-btn" data-lang="zh">中</button><button class="lang-btn" data-lang="en">EN</button></div><a class="nav-cta" href="navigator.html" data-i18n="navEnter">進入 XS Navigator</a></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container reveal">
+        <div class="section-kicker">AI Interface</div>
+        <h1>XS Navigator<br><span>as a private chamber</span></h1>
+        <p>
+          This page is ready for your AI endpoint. The interface is designed to feel quiet, expensive, and intentional.
+          It supports Chinese and English display, while passing structured messages to your API route.
+        </p>
+      </div>
+    </section>
+
+    <section style="padding-top:20px;">
+      <div class="container">
+        <div class="navigator-wrap">
+          <aside class="navigator-side reveal">
+            <div class="side-block"><h4>Purpose</h4><p>Guide users toward clarity, not noise. Reframe emotion, confusion, and hesitation into deeper awareness.</p></div>
+            <div class="side-block"><h4>Suggested use</h4><p>Ask about direction, anxiety, stillness, creative blocks, purpose, emotional state, or tea ritual recommendations.</p></div>
+            <div class="side-block"><h4>Modes</h4><div class="tag-row"><span class="tag">Reflection</span><span class="tag">Tea Guidance</span><span class="tag">Stillness</span><span class="tag">Philosophy</span><span class="tag">Emotional Inquiry</span></div></div>
+            <div class="side-block"><h4>API</h4><p>Set <code>window.XS_API_ENDPOINT</code> before app.js, or edit the endpoint inside <code>assets/app.js</code>.</p></div>
+          </aside>
+
+          <div class="navigator-panel reveal">
+            <div class="chat-top">
+              <div class="chat-title"><div class="chat-title-badge">XS</div><div><strong>XS Navigator</strong><span>Consciousness Interface</span></div></div>
+              <div class="status-dot">Live</div>
+            </div>
+            <div class="chat-body" id="chatBody"></div>
+            <div class="quick-prompts">
+              <button type="button" data-prompt-key="quick1">我最近有點迷失。</button>
+              <button type="button" data-prompt-key="quick2">現在的我適合喝什麼茶？</button>
+              <button type="button" data-prompt-key="quick3">我要怎麼讓自己更平靜？</button>
+              <button type="button" data-prompt-key="quick4">為什麼我總是焦慮？</button>
+            </div>
+            <form class="chat-form" id="chatForm">
+              <textarea id="chatInput" class="chat-input" data-i18n-placeholder="chatPlaceholder" placeholder="向 XS Navigator 提問..." rows="1"></textarea>
+              <button class="chat-submit" id="chatSubmit" type="submit" data-i18n="chatSend">送出</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer-grid"><div><strong style="color: var(--text); display:block; margin-bottom:8px;" data-i18n="brandName">XS UTOPIA</strong><span data-i18n="footerTagline">將心靈、茶、藝術與 AI 組成一個高級線上生態系統。</span></div><div class="footer-links"><a href="philosophy.html" data-i18n="navPhilosophy">哲學</a><a href="navigator.html" data-i18n="navNavigator">導航者</a><a href="products.html" data-i18n="navProducts">產品</a><a href="mailto:tyascg@gmail.com" data-i18n="footerEmail">Email</a></div></div></footer>
+  <script>window.XS_API_ENDPOINT = "/api/xs-navigator";</script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
