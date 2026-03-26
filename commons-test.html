@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commons Test — XS UTOPIA</title>
+  <style>
+    body{
+      margin:0;
+      background:#070707;
+      color:#f5f1e8;
+      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;
+    }
+
+    #opening{
+      position:fixed;
+      inset:0;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      animation:fadeOut 2.4s ease forwards;
+    }
+
+    #opening span{
+      color:#fff;
+      font-size:28px;
+      letter-spacing:.35em;
+      opacity:0;
+      animation:fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    @keyframes fadeOut{
+      0%{opacity:1;visibility:visible}
+      70%{opacity:1;visibility:visible}
+      100%{opacity:0;visibility:hidden;pointer-events:none}
+    }
+
+    .wrap{
+      max-width:900px;
+      margin:0 auto;
+      padding:120px 20px 80px;
+    }
+
+    h1{
+      font-size:clamp(42px,8vw,84px);
+      line-height:1;
+      margin:0 0 18px;
+      font-weight:500;
+    }
+
+    p{
+      color:rgba(245,241,232,.72);
+      font-size:18px;
+      line-height:1.9;
+      margin:0 0 18px;
+    }
+
+    .box{
+      margin-top:40px;
+      padding:24px;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:20px;
+      background:rgba(255,255,255,.03);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="opening"><span>XS UTOPIA</span></div>
+
+  <main class="wrap">
+    <h1>Commons Test</h1>
+    <p>如果你現在可以看到這一頁，代表黑屏問題不是網站架構，也不是 Vercel，而是舊的 commons.html 快取或舊腳本還在執行。</p>
+    <div class="box">
+      <p>下一步就可以確認是：</p>
+      <p>1. 舊 commons.html 沒被覆蓋</p>
+      <p>2. GitHub 沒 push 成功</p>
+      <p>3. Vercel 還沒部署到最新版本</p>
+      <p>4. 手機 Safari 快取還在吃舊檔案</p>
+    </div>
+  </main>
+
+</body>
+</html>
