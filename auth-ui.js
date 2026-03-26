@@ -2,10 +2,40 @@ window.SUPABASE_URL = "https://ghqbtbkzosqhmvsnejoj.supabase.co";
 window.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tO6-VKSzsALVV4eKA0RSjg_34Tfl8Ld";
 window.ADMIN_EMAIL = "tyascg@gmail.com";
 
+const XS_I18N = {
+  zh: {
+    nav_home: "首頁",
+    nav_commons: "公共社群",
+    nav_explore: "探索中心",
+    nav_partners: "合作社區",
+    nav_store: "商圈文化",
+    nav_join: "加入平台",
+    login: "登入",
+    register: "註冊",
+    logout: "登出",
+    member: "Member",
+    admin: "Admin"
+  },
+  en: {
+    nav_home: "Home",
+    nav_commons: "Commons",
+    nav_explore: "Explore",
+    nav_partners: "Community Partners",
+    nav_store: "Culture District",
+    nav_join: "Join",
+    login: "Sign In",
+    register: "Register",
+    logout: "Sign Out",
+    member: "Member",
+    admin: "Admin"
+  }
+};
+
 const AuthUI = (() => {
   let supabaseClient = null;
   let currentUser = null;
   let currentProfile = null;
+  let currentLang = localStorage.getItem("xs_lang") || "zh";
 
   async function waitForSupabase(maxTries = 40, interval = 250) {
     return new Promise((resolve, reject) => {
@@ -124,6 +154,41 @@ const AuthUI = (() => {
     };
   }
 
+  function applyLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("xs_lang", lang);
+    document.documentElement.lang = lang === "en" ? "en" : "zh-Hant";
+
+    document.querySelectorAll("[data-i18n-key]").forEach((el) => {
+      const key = el.dataset.i18nKey;
+      if (XS_I18N[lang] && XS_I18N[lang][key]) {
+        el.textContent = XS_I18N[lang][key];
+      }
+    });
+
+    document.querySelectorAll("[data-lang-zh][data-lang-en]").forEach((el) => {
+      el.innerHTML = lang === "en" ? el.dataset.langEn : el.dataset.langZh;
+    });
+
+    const langToggle = document.getElementById("langToggle");
+    if (langToggle) langToggle.textContent = lang === "en" ? "中文" : "EN";
+  }
+
+  function initLanguageToggle() {
+    const langToggle = document.getElementById("langToggle");
+    if (!langToggle) return;
+
+    applyLanguage(currentLang);
+
+    langToggle.addEventListener("click", () => {
+      const next = currentLang === "en" ? "zh" : "en";
+      applyLanguage(next);
+      if (typeof window.onXSLocaleChange === "function") {
+        window.onXSLocaleChange(next);
+      }
+    });
+  }
+
   function renderHeaderAuth(session) {
     const guestEl = document.getElementById("authGuest");
     const memberEl = document.getElementById("authMember");
@@ -146,13 +211,14 @@ const AuthUI = (() => {
       (session.user.email ? session.user.email.split("@")[0] : "member");
 
     if (nameEl) nameEl.textContent = displayName;
-    if (roleEl) roleEl.textContent = session.role === "admin" ? "Admin" : "Member";
+    if (roleEl) roleEl.textContent = session.role === "admin" ? XS_I18N[currentLang].admin : XS_I18N[currentLang].member;
   }
 
   async function initHeaderAuth() {
     const client = await getClient();
     const session = await refreshSession();
     renderHeaderAuth(session);
+    initLanguageToggle();
 
     const signOutBtn = document.getElementById("authSignOutBtn");
     if (signOutBtn) {
@@ -206,6 +272,7 @@ const AuthUI = (() => {
 
   async function initAuthPage() {
     await getClient();
+    initLanguageToggle();
 
     const modeTabs = document.querySelectorAll("[data-auth-mode]");
     const signUpFields = document.getElementById("signUpFields");
@@ -220,6 +287,22 @@ const AuthUI = (() => {
 
     let mode = "signin";
 
+    function renderText() {
+      if (mode === "signin") {
+        titleEl.textContent = currentLang === "en" ? "Enter the platform" : "進入 XS UTOPIA";
+        descEl.textContent = currentLang === "en"
+          ? "Continue into the public commons, participate in dialogue, and access your account."
+          : "進入平台、參與公共社群，並管理你的會員身份。";
+        submitEl.textContent = currentLang === "en" ? "Sign In" : "登入";
+      } else {
+        titleEl.textContent = currentLang === "en" ? "Create your account" : "建立你的帳號";
+        descEl.textContent = currentLang === "en"
+          ? "Become a member to post, comment, and participate in the ecosystem."
+          : "成為會員後，你可以發文、留言，並參與整個生態系。";
+        submitEl.textContent = currentLang === "en" ? "Create Account" : "建立帳號";
+      }
+    }
+
     function applyMode(nextMode) {
       mode = nextMode;
 
@@ -227,18 +310,8 @@ const AuthUI = (() => {
         tab.classList.toggle("active", tab.dataset.authMode === mode);
       });
 
-      if (mode === "signin") {
-        signUpFields.style.display = "none";
-        titleEl.textContent = "登入來開始你的旅程";
-        descEl.textContent = "進入 XS UTOPIA，開始你的連結、參與與探索。";
-        submitEl.textContent = "開始旅程";
-      } else {
-        signUpFields.style.display = "block";
-        titleEl.textContent = "建立你的存在";
-        descEl.textContent = "成為會員後，你可以留言、刪除自己的留言，並參與合作與生態內容發表。";
-        submitEl.textContent = "建立存在";
-      }
-
+      signUpFields.style.display = mode === "signup" ? "block" : "none";
+      renderText();
       statusEl.textContent = "";
     }
 
@@ -249,29 +322,30 @@ const AuthUI = (() => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       submitEl.disabled = true;
-      statusEl.textContent = mode === "signin" ? "登入中..." : "建立帳號中...";
+      statusEl.textContent = currentLang === "en"
+        ? (mode === "signin" ? "Signing in..." : "Creating account...")
+        : (mode === "signin" ? "登入中..." : "建立帳號中...");
 
       try {
         if (mode === "signin") {
           await signIn(emailEl.value.trim(), passwordEl.value);
           window.location.href = "index.html";
         } else {
-          await signUp(
-            emailEl.value.trim(),
-            passwordEl.value,
-            displayNameEl.value.trim()
-          );
-          statusEl.textContent = "帳號已建立。如果你有開啟 Email 驗證，請先去信箱確認。";
+          await signUp(emailEl.value.trim(), passwordEl.value, displayNameEl.value.trim());
+          statusEl.textContent = currentLang === "en"
+            ? "Account created. Check your email if confirmation is enabled."
+            : "帳號已建立。如果你有開啟 Email 驗證，請先去信箱確認。";
           applyMode("signin");
         }
       } catch (err) {
         console.error(err);
-        statusEl.textContent = err.message || "登入或註冊失敗。";
+        statusEl.textContent = err.message || (currentLang === "en" ? "Authentication failed." : "登入或註冊失敗。");
       } finally {
         submitEl.disabled = false;
       }
     });
 
+    window.onXSLocaleChange = () => renderText();
     applyMode("signin");
   }
 
@@ -294,6 +368,8 @@ const AuthUI = (() => {
   return {
     initHeaderAuth,
     initAuthPage,
-    initReveal
+    initReveal,
+    getLocale: () => currentLang,
+    getClient
   };
 })();
