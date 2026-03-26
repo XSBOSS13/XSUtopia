@@ -4,178 +4,67 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Auth — XS UTOPIA</title>
-  <style>
-    :root{
-      --bg:#060606;
-      --panel:rgba(255,255,255,.04);
-      --line:rgba(255,255,255,.10);
-      --text:#f5f1e8;
-      --muted:rgba(245,241,232,.72);
-      --accent:#d7c19a;
-      --shadow:0 24px 80px rgba(0,0,0,.34);
-    }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(215,193,154,.12), transparent 24%),
-        linear-gradient(180deg,#050505 0%, #090909 42%, #070707 100%);
-      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;
-      display:grid;
-      place-items:center;
-      padding:24px;
-    }
-
-    .auth-shell{
-      width:min(100%, 1120px);
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-    }
-
-    .auth-panel{
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow:var(--shadow);
-      padding:34px;
-    }
-
-    .hero h1{
-      font-size:clamp(42px,5vw,78px);
-      line-height:.98;
-      margin:0 0 18px;
-    }
-
-    .hero p{
-      color:var(--muted);
-      line-height:1.95;
-      font-size:16px;
-      margin:0 0 18px;
-    }
-
-    .tabs{
-      display:flex;
-      gap:10px;
-      margin-bottom:22px;
-    }
-
-    .tab{
-      min-height:42px;
-      padding:0 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      cursor:pointer;
-    }
-
-    .tab.active{
-      background:var(--text);
-      color:#0a0a0a;
-    }
-
-    .label{
-      display:block;
-      margin-bottom:10px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .input{
-      width:100%;
-      border:none;
-      outline:none;
-      color:var(--text);
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:16px 18px;
-      font:inherit;
-      margin-bottom:16px;
-    }
-
-    .btn{
-      min-height:48px;
-      padding:0 18px;
-      border-radius:999px;
-      border:1px solid transparent;
-      background:var(--text);
-      color:#0a0a0a;
-      cursor:pointer;
-      font-size:14px;
-    }
-
-    .status{
-      margin-top:14px;
-      color:var(--muted);
-      min-height:20px;
-      font-size:13px;
-    }
-
-    .link-row{
-      margin-top:18px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    @media (max-width:900px){
-      .auth-shell{grid-template-columns:1fr}
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="auth-shell">
-    <div class="auth-panel hero">
-      <h1>Enter XS UTOPIA</h1>
-      <p>登入來開始你的旅程。</p>
-      <p>這裡不是一個單純的網站，而是一個逐步展開的世界。當你登入，你不只是使用者，而是參與者。</p>
-      <p>訪客只能觀看。會員可以參與、發聲、建立連結。管理員則擁有更深層的場域管理能力。</p>
-      <div class="link-row">
-        <a href="index.html">返回首頁</a>
-        <a href="commons.html">前往 Commons</a>
-      </div>
-    </div>
+  <div id="opening"><span>XS UTOPIA</span></div>
 
-    <div class="auth-panel">
-      <div class="tabs">
-        <button class="tab active" data-auth-mode="signin">登入</button>
-        <button class="tab" data-auth-mode="signup">註冊</button>
-      </div>
+  <main class="container" style="min-height:100vh; display:grid; place-items:center; padding:28px 0;">
+    <div class="auth-shell">
+      <section class="auth-panel reveal">
+        <div class="kicker">Member Access</div>
+        <h1 style="font-size:clamp(42px,5vw,78px); line-height:.98; margin:0 0 18px;">Enter XS UTOPIA</h1>
+        <p style="color:var(--muted); line-height:1.95; font-size:16px; margin:0 0 18px;">
+          登入來開始你的旅程。
+        </p>
+        <p style="color:var(--muted); line-height:1.95; font-size:16px; margin:0 0 18px;">
+          這裡不是一個單純的網站，而是一個逐步展開的世界。當你登入，你不只是使用者，而是參與者。
+        </p>
+        <p style="color:var(--muted); line-height:1.95; font-size:16px; margin:0;">
+          訪客可瀏覽、觀看公共社群；會員可進一步留言、參與與建立連結。
+        </p>
+      </section>
 
-      <h2 id="authPageTitle">登入來開始你的旅程</h2>
-      <p id="authPageDesc" style="color:rgba(245,241,232,.72); line-height:1.9; margin-bottom:20px;">
-        進入 Commons，留下你的思考，並參與整個生態的流動。
-      </p>
-
-      <form id="authForm">
-        <div id="signUpFields" style="display:none;">
-          <label class="label" for="authDisplayName">顯示名稱</label>
-          <input id="authDisplayName" class="input" type="text" maxlength="24" placeholder="你的名稱" />
+      <section class="auth-panel reveal">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-auth-mode="signin">登入</button>
+          <button class="auth-tab" data-auth-mode="signup">註冊</button>
         </div>
 
-        <label class="label" for="authEmail">Email</label>
-        <input id="authEmail" class="input" type="email" placeholder="you@example.com" required />
+        <h2 id="authPageTitle" style="margin:0 0 14px;">登入來開始你的旅程</h2>
+        <p id="authPageDesc" style="color:var(--muted); line-height:1.9; margin:0 0 20px;">
+          進入 XS UTOPIA，開始你的連結、參與與探索。
+        </p>
 
-        <label class="label" for="authPassword">密碼</label>
-        <input id="authPassword" class="input" type="password" placeholder="••••••••" required />
+        <form id="authForm">
+          <div id="signUpFields" style="display:none;">
+            <label class="label" for="authDisplayName">顯示名稱</label>
+            <input id="authDisplayName" class="input" type="text" maxlength="24" placeholder="你的名稱" />
+          </div>
 
-        <button id="authSubmit" type="submit" class="btn">開始旅程</button>
-        <div id="authPageStatus" class="status"></div>
-      </form>
+          <label class="label" for="authEmail">Email</label>
+          <input id="authEmail" class="input" type="email" placeholder="you@example.com" required />
+
+          <label class="label" for="authPassword">密碼</label>
+          <input id="authPassword" class="input" type="password" placeholder="••••••••" required />
+
+          <button id="authSubmit" type="submit" class="btn btn-primary" style="width:100%;">開始旅程</button>
+          <div id="authPageStatus" class="status"></div>
+        </form>
+
+        <div style="margin-top:18px; display:flex; gap:14px; flex-wrap:wrap; color:var(--muted); font-size:14px;">
+          <a href="index.html">返回首頁</a>
+          <a href="commons.html">前往公共社群</a>
+        </div>
+      </section>
     </div>
-  </div>
+  </main>
 
   <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth-ui.js"></script>
   <script>
     AuthUI.initAuthPage();
+    AuthUI.initReveal();
   </script>
 </body>
 </html>
