@@ -1,65 +1,279 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>留言管理 — XS UTOPIA</title>
-<link rel="stylesheet" href="style.css">
-
-<style>
-body { background:#050505; }
-.panel { border:1px solid rgba(255,255,255,0.06); }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
 
-<header class="nav">
-<div class="container nav-inner">
-<a href="index.html">XS UTOPIA</a>
-</div>
-</header>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
 
-<main>
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
 
-<section class="container" style="padding-top:120px;">
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
 
-<h1>留言管理</h1>
-<p style="color:#888;">管理員可刪除或精選留言</p>
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<div id="commentList"></div>
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker">Admin Panel</div>
+        <h1
+          data-lang-zh="這裡管理整個平台的內容節奏。"
+          data-lang-en="This is where the content rhythm of the entire platform is managed.">
+          這裡管理整個平台的內容節奏。
+        </h1>
+        <p
+          data-lang-zh="管理員可以審核待審內容、切換精選狀態、刪除文章。這個頁面對訪客與一般會員不可用。"
+          data-lang-en="Admins can review pending content, toggle featured status, and delete posts. This page is not available to guests or regular members.">
+          管理員可以審核待審內容、切換精選狀態、刪除文章。這個頁面對訪客與一般會員不可用。
+        </p>
+      </div>
+    </section>
 
-</section>
+    <section>
+      <div class="container reveal">
+        <div id="adminGate" class="panel" style="padding:28px; display:none;">
+          <p class="note">你沒有權限查看這個頁面。</p>
+        </div>
 
-</main>
+        <div id="adminApp" style="display:none;">
+          <div class="panel" style="padding:28px; margin-bottom:22px;">
+            <div class="kicker" data-lang-zh="Review Queue" data-lang-en="Review Queue">Review Queue</div>
+            <h2 style="margin:0 0 12px;"
+                data-lang-zh="文章審核與管理"
+                data-lang-en="Post Review and Management">
+              文章審核與管理
+            </h2>
+            <p class="note"
+               data-lang-zh="你可以在這裡審核待審文章、切換精選、發佈、封存或刪除內容。"
+               data-lang-en="Here you can review pending posts, toggle featured status, publish, archive, or delete content.">
+              你可以在這裡審核待審文章、切換精選、發佈、封存或刪除內容。
+            </p>
+          </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+          <div id="adminPostList" class="post-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<script>
-const client = supabase.createClient(
-"https://ghqbtbkzosqhmvsnejoj.supabase.co",
-"你的key"
-);
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>
+        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
+        <span
+          data-lang-zh="管理後台控制平台內容節奏與展示邏輯。"
+          data-lang-en="The admin backend controls the platform’s content rhythm and display logic.">
+          管理後台控制平台內容節奏與展示邏輯。
+        </span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </div>
+    </div>
+  </footer>
 
-async function loadComments(){
-const {data} = await client.from("post_comments").select("*");
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let session = { user: null, role: "guest" };
+    let locale = "zh";
 
-document.getElementById("commentList").innerHTML =
-data.map(c=>`
-<div class="panel" style="padding:20px;margin-bottom:10px;">
-<p>${c.content}</p>
-<button onclick="del('${c.id}')">刪除</button>
-</div>
-`).join("");
-}
+    const TEXT = {
+      zh: {
+        unauthorized: "你沒有權限查看這個頁面。",
+        loadFailed: "文章載入失敗。",
+        publish: "發佈",
+        archive: "封存",
+        feature: "設為精選",
+        unfeature: "取消精選",
+        delete: "刪除",
+        pending: "待審",
+        published: "已發佈",
+        archived: "已封存",
+        deleteConfirm: "要刪除這篇文章嗎？"
+      },
+      en: {
+        unauthorized: "You do not have permission to view this page.",
+        loadFailed: "Failed to load posts.",
+        publish: "Publish",
+        archive: "Archive",
+        feature: "Feature",
+        unfeature: "Unfeature",
+        delete: "Delete",
+        pending: "Pending",
+        published: "Published",
+        archived: "Archived",
+        deleteConfirm: "Delete this post?"
+      }
+    };
 
-async function del(id){
-await client.from("post_comments").delete().eq("id",id);
-loadComments();
-}
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
 
-loadComments();
-</script>
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    }
 
+    async function updatePost(id, payload) {
+      const { error } = await client
+        .from("posts")
+        .update({ ...payload, updated_at: new Date().toISOString() })
+        .eq("id", id);
+
+      if (error) console.error(error);
+      await fetchAdminPosts();
+    }
+
+    async function deletePost(id) {
+      const ok = confirm(TEXT[locale].deleteConfirm);
+      if (!ok) return;
+
+      const { error } = await client
+        .from("posts")
+        .delete()
+        .eq("id", id);
+
+      if (error) console.error(error);
+      await fetchAdminPosts();
+    }
+
+    function bindAdminActions() {
+      document.querySelectorAll("[data-publish]").forEach((btn) => {
+        btn.addEventListener("click", () => updatePost(btn.dataset.publish, { status: "published" }));
+      });
+
+      document.querySelectorAll("[data-archive]").forEach((btn) => {
+        btn.addEventListener("click", () => updatePost(btn.dataset.archive, { status: "archived" }));
+      });
+
+      document.querySelectorAll("[data-feature]").forEach((btn) => {
+        btn.addEventListener("click", () => updatePost(btn.dataset.feature, { is_featured: btn.dataset.current === "1" ? false : true }));
+      });
+
+      document.querySelectorAll("[data-delete]").forEach((btn) => {
+        btn.addEventListener("click", () => deletePost(btn.dataset.delete));
+      });
+    }
+
+    async function fetchAdminPosts() {
+      const list = document.getElementById("adminPostList");
+
+      const { data, error } = await client
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        list.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].loadFailed}</div>`;
+        return;
+      }
+
+      list.innerHTML = (data || []).map(post => `
+        <article class="post-card">
+          <div class="post-meta">
+            <div>
+              <div class="post-author">${formatDate(post.created_at)}</div>
+            </div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(post.post_type)}</span>
+              <span class="tag">${escapeHtml(post.status)}</span>
+              ${post.is_featured ? `<span class="tag featured">Featured</span>` : ""}
+            </div>
+          </div>
+
+          <h3>${escapeHtml(post.title)}</h3>
+          <p>${escapeHtml(post.content).replace(/\n/g, "<br>")}</p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;">
+            ${post.status !== "published" ? `<button class="btn" data-publish="${post.id}">${TEXT[locale].publish}</button>` : ""}
+            ${post.status !== "archived" ? `<button class="btn" data-archive="${post.id}">${TEXT[locale].archive}</button>` : ""}
+            <button class="btn" data-feature="${post.id}" data-current="${post.is_featured ? "1" : "0"}">
+              ${post.is_featured ? TEXT[locale].unfeature : TEXT[locale].feature}
+            </button>
+            <button class="btn btn-danger" data-delete="${post.id}">${TEXT[locale].delete}</button>
+          </div>
+        </article>
+      `).join("");
+
+      bindAdminActions();
+    }
+
+    async function initAdmin() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      session = auth.getSession();
+      locale = AuthUI.getLocale();
+
+      const gate = document.getElementById("adminGate");
+      const app = document.getElementById("adminApp");
+
+      if (session.role !== "admin") {
+        gate.style.display = "block";
+        gate.querySelector(".note").textContent = TEXT[locale].unauthorized;
+        app.style.display = "none";
+        return;
+      }
+
+      gate.style.display = "none";
+      app.style.display = "block";
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await fetchAdminPosts();
+      };
+
+      await fetchAdminPosts();
+    }
+
+    initAdmin();
+  </script>
 </body>
 </html>
