@@ -7,25 +7,31 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Opening -->
   <div id="opening"><span>XS UTOPIA</span></div>
+
+  <!-- Language -->
   <button id="langToggle" class="lang-toggle">EN</button>
 
+  <!-- NAV -->
   <header class="nav">
     <div class="container nav-inner">
+
       <a class="brand" href="index.html">
         <div class="brand-mark">XS</div>
         <div class="brand-name">XS UTOPIA</div>
       </a>
 
       <nav class="nav-links">
-        <a href="index.html" class="active" data-i18n-key="nav_home">首頁</a>
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
         <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
         <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
         <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
         <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </nav>
 
+      <!-- Auth -->
       <div class="auth-right">
         <div id="authGuest" class="auth-guest">
           <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
@@ -40,110 +46,163 @@
           <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
         </div>
       </div>
+
     </div>
   </header>
 
+  <!-- HERO -->
   <main>
     <section class="hero">
       <div class="container reveal">
-        <div class="kicker" data-lang-zh="XS UTOPIA" data-lang-en="XS UTOPIA">XS UTOPIA</div>
+        <div class="kicker"
+          data-lang-zh="XS UTOPIA"
+          data-lang-en="XS UTOPIA">
+          XS UTOPIA
+        </div>
+
         <h1
-          data-lang-zh="一個關於思想、社群與文化流動的完整生態系。"
-          data-lang-en="A complete ecosystem for thought, community, and cultural circulation.">
-          一個關於思想、社群與文化流動的完整生態系。
+          data-lang-zh="這裡不是一個網站，而是一個逐漸成形的文化生態系。"
+          data-lang-en="This is not a website, but a cultural ecosystem in formation.">
+          這裡不是一個網站，而是一個逐漸成形的文化生態系。
         </h1>
+
         <p
-          data-lang-zh="這裡不是只為了瀏覽而存在。它是為了累積感知、循環交流，維持一種更有深度意識的生活而存在。"
-          data-lang-en="This is not a place made merely for browsing. It exists to accumulate perception, circulate exchange, and sustain a more conscious way of living.">
-          這裡不是只為了瀏覽而存在。它是為了累積感知、循環交流，維持一種更有深度意識的生活而存在。
+          data-lang-zh="它從思想開始，透過社群、內容與交換，逐步形成一個能夠自我循環的世界。"
+          data-lang-en="It begins with thought, and through community, content, and exchange, gradually forms a self-sustaining world.">
+          它從思想開始，透過社群、內容與交換，逐步形成一個能夠自我循環的世界。
         </p>
+
+        <div class="cta-row">
+          <a href="commons.html" class="btn btn-primary"
+             data-lang-zh="進入公共社群"
+             data-lang-en="Enter Commons">
+            進入公共社群
+          </a>
+
+          <a href="feed.html" class="btn"
+             data-lang-zh="查看內容流"
+             data-lang-en="View Feed">
+            查看內容流
+          </a>
+        </div>
       </div>
     </section>
 
+    <!-- CORE STRUCTURE -->
     <section>
       <div class="container reveal">
-        <div class="grid-3">
+
+        <div class="kicker"
+          data-lang-zh="Structure"
+          data-lang-en="Structure">
+          Structure
+        </div>
+
+        <h2
+          data-lang-zh="平台的核心結構"
+          data-lang-en="Core Structure of the Platform">
+          平台的核心結構
+        </h2>
+
+        <!-- 改為雙欄 -->
+        <div class="grid-3" style="grid-template-columns:repeat(2,1fr);">
+
+          <!-- Commons -->
           <article class="card">
             <div class="card-index">01</div>
             <h3 data-lang-zh="公共社群" data-lang-en="Commons">公共社群</h3>
             <p
-              data-lang-zh="訪客與會員都可以進入閱讀。會員可發文，訪客與會員都可以在文章底下評論。"
-              data-lang-en="Both guests and members can enter to read. Members can publish posts, and both guests and members can comment beneath articles.">
-              訪客與會員都可以進入閱讀。會員可發文，訪客與會員都可以在文章底下評論。
+              data-lang-zh="思想在這裡被書寫、被回應、被延續。留言與討論構成平台最初的流動。"
+              data-lang-en="Thought is written, responded to, and extended here. Comments and dialogue form the initial flow of the platform.">
+              思想在這裡被書寫、被回應、被延續。留言與討論構成平台最初的流動。
             </p>
           </article>
 
+          <!-- Ecosystem -->
           <article class="card">
             <div class="card-index">02</div>
-            <h3 data-lang-zh="探索中心" data-lang-en="Explore Center">探索中心</h3>
+            <h3 data-lang-zh="合作社區 × 商圈文化" data-lang-en="Community × Culture District">
+              合作社區 × 商圈文化
+            </h3>
             <p
-              data-lang-zh="原本的世界觀頁升級為探索中心，成為整個平台思想、概念與方向的入口。"
-              data-lang-en="The former worldview page evolves into an exploration center—an entry point for the platform’s concepts, directions, and philosophy.">
-              原本的世界觀頁升級為探索中心，成為整個平台思想、概念與方向的入口。
+              data-lang-zh="當內容與現實世界連結，文化開始具體運作。合作與交換讓整體生態形成循環。"
+              data-lang-en="When content connects with the real world, culture begins to operate. Collaboration and exchange create a living ecosystem.">
+              當內容與現實世界連結，文化開始具體運作。合作與交換讓整體生態形成循環。
             </p>
           </article>
 
-          <article class="card">
-            <div class="card-index">03</div>
-            <h3 data-lang-zh="合作社區 / 商圈文化" data-lang-en="Community Partners / Culture District">合作社區 / 商圈文化</h3>
-            <p
-              data-lang-zh="合作節點與文化流通將從展示層進入實際互動，形成可持續運作的結構。"
-              data-lang-en="Partner nodes and cultural circulation move beyond display into actual interaction, forming a sustainable structure.">
-              合作節點與文化流通將從展示層進入實際互動，形成可持續運作的結構。
-            </p>
-          </article>
         </div>
       </div>
     </section>
 
+    <!-- CTA -->
     <section>
       <div class="container reveal">
-        <div class="cta">
-          <div class="cta-text">
-            <div class="kicker" data-lang-zh="Next Step" data-lang-en="Next Step">Next Step</div>
-            <h2
-              data-lang-zh="當平台有了身份系統，它才真正開始形成路徑。"
-              data-lang-en="Once a platform has identity, it begins to form real pathways.">
-              當平台有了身份系統，它才真正開始形成路徑。
-            </h2>
-            <p
-              data-lang-zh="現在你已經擁有全站登入與身份切換。接下來，公共社群將正式進入文章、評論與權限並行的完整版本。"
-              data-lang-en="You now have site-wide authentication and identity switching. Next, the commons will move into its full version with posts, comments, and layered permissions.">
-              現在你已經擁有全站登入與身份切換。接下來，公共社群將正式進入文章、評論與權限並行的完整版本。
-            </p>
+        <div class="panel" style="padding:40px; text-align:center;">
+
+          <h2
+            data-lang-zh="從這裡開始建立你的存在"
+            data-lang-en="Begin building your presence here">
+            從這裡開始建立你的存在
+          </h2>
+
+          <p
+            data-lang-zh="登入後，你可以留言、發表內容、參與合作，逐步在這個系統中形成你的路徑。"
+            data-lang-en="After signing in, you can comment, publish content, and participate in collaborations—gradually forming your own path within this system.">
+            登入後，你可以留言、發表內容、參與合作，逐步在這個系統中形成你的路徑。
+          </p>
+
+          <div class="cta-row" style="justify-content:center;">
+            <a href="auth.html" class="btn btn-primary"
+               data-lang-zh="開始你的旅程"
+               data-lang-en="Start your journey">
+              開始你的旅程
+            </a>
           </div>
 
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn btn-primary" href="commons.html" data-lang-zh="進入公共社群" data-lang-en="Enter Commons">進入公共社群</a>
-            <a class="btn" href="auth.html" data-lang-zh="建立帳號" data-lang-en="Create Account">建立帳號</a>
-          </div>
         </div>
       </div>
     </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-row">
+
       <div>
-        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span data-lang-zh="一個關於思想、社群與文化生態的自由平台。" data-lang-en="A свобод platform for thought, community, and cultural ecology.">一個關於思想、社群與文化生態的自由平台。</span>
+        <strong style="display:block; margin-bottom:8px; color:var(--text)">
+          XS UTOPIA
+        </strong>
+        <span
+          data-lang-zh="一個從思想、社群到文化交換逐步成形的系統。"
+          data-lang-en="A system evolving from thought, community, to cultural exchange.">
+          一個從思想、社群到文化交換逐步成形的系統。
+        </span>
       </div>
+
       <div class="footer-links">
         <a href="index.html" data-i18n-key="nav_home">首頁</a>
         <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
         <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
         <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
         <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </div>
+
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth-ui.js"></script>
+
   <script>
-    AuthUI.initHeaderAuth();
-    AuthUI.initReveal();
+    async function init() {
+      await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+    }
+    init();
   </script>
+
 </body>
 </html>
