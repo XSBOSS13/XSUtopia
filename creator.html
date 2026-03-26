@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creator — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Creator Page" data-lang-en="Creator Page">Creator Page</div>
+        <h1
+          data-lang-zh="讓你的內容開始形成自己的輪廓。"
+          data-lang-en="Let your content begin to form its own outline.">
+          讓你的內容開始形成自己的輪廓。
+        </h1>
+        <p
+          data-lang-zh="這裡聚合你已發佈的文章、待審內容、草稿，以及你收藏過的內容。"
+          data-lang-en="This page gathers your published posts, pending content, drafts, and the content you have saved.">
+          這裡聚合你已發佈的文章、待審內容、草稿，以及你收藏過的內容。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div class="grid-3" style="grid-template-columns:repeat(3,1fr);">
+          <div class="card"><div class="card-index">01</div><h3 id="publishedCount">0</h3><p data-lang-zh="已發佈文章" data-lang-en="Published Posts">已發佈文章</p></div>
+          <div class="card"><div class="card-index">02</div><h3 id="pendingCount">0</h3><p data-lang-zh="待審 / 草稿" data-lang-en="Pending / Drafts">待審 / 草稿</p></div>
+          <div class="card"><div class="card-index">03</div><h3 id="savedCount">0</h3><p data-lang-zh="收藏內容" data-lang-en="Saved Posts">收藏內容</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div class="feed-layout">
+          <aside class="panel sidebar-panel">
+            <div class="kicker" data-lang-zh="Sections" data-lang-en="Sections">Sections</div>
+            <h2 style="margin:0 0 16px;" data-lang-zh="內容區塊" data-lang-en="Content Sections">內容區塊</h2>
+            <select id="creatorFilter" class="select">
+              <option value="published">Published</option>
+              <option value="pending">Pending</option>
+              <option value="draft">Draft</option>
+              <option value="saved">Saved</option>
+            </select>
+            <div style="margin-top:14px;">
+              <a href="submit.html" class="btn btn-primary" style="width:100%; justify-content:center;"
+                 data-lang-zh="前往發表"
+                 data-lang-en="Go to Submit">前往發表</a>
+            </div>
+          </aside>
+
+          <section>
+            <div id="creatorList" class="post-list"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let session = { user: null, role: "guest" };
+    let filter = "published";
+    let locale = "zh";
+
+    const TEXT = {
+      zh: {
+        empty: "目前這個區塊還沒有內容。",
+        needLogin: "請先登入後查看個人內容頁。"
+      },
+      en: {
+        empty: "There is no content in this section yet.",
+        needLogin: "Please sign in to view your creator page."
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    async function loadCounts() {
+      const [{ count: published }, { count: pending }, { data: saved }] = await Promise.all([
+        client.from("posts").select("*", { count: "exact", head: true }).eq("user_id", session.user.id).eq("status", "published"),
+        client.from("posts").select("*", { count: "exact", head: true }).eq("user_id", session.user.id).in("status", ["pending", "draft"]),
+        client.from("saved_posts").select("*").eq("user_id", session.user.id)
+      ]);
+
+      document.getElementById("publishedCount").textContent = published ?? 0;
+      document.getElementById("pendingCount").textContent = pending ?? 0;
+      document.getElementById("savedCount").textContent = (saved || []).length;
+    }
+
+    async function loadCreatorList() {
+      const list = document.getElementById("creatorList");
+      let data = [];
+
+      if (filter === "saved") {
+        const { data: saved } = await client
+          .from("saved_posts")
+          .select("post_id")
+          .eq("user_id", session.user.id);
+
+        const ids = (saved || []).map(item => item.post_id);
+
+        if (!ids.length) {
+          list.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].empty}</div>`;
+          return;
+        }
+
+        const result = await client
+          .from("posts")
+          .select("*")
+          .in("id", ids)
+          .order("created_at", { ascending: false });
+
+        data = result.data || [];
+      } else if (filter === "published") {
+        const result = await client
+          .from("posts")
+          .select("*")
+          .eq("user_id", session.user.id)
+          .eq("status", "published")
+          .order("created_at", { ascending: false });
+        data = result.data || [];
+      } else {
+        const result = await client
+          .from("posts")
+          .select("*")
+          .eq("user_id", session.user.id)
+          .eq("status", filter)
+          .order("created_at", { ascending: false });
+        data = result.data || [];
+      }
+
+      if (!data.length) {
+        list.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].empty}</div>`;
+        return;
+      }
+
+      list.innerHTML = data.map(post => `
+        <article class="post-card">
+          <div class="post-meta">
+            <div class="post-author">${formatDate(post.created_at)}</div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(post.post_type)}</span>
+              <span class="tag">${escapeHtml(post.status)}</span>
+              ${post.is_featured ? `<span class="tag featured">${locale === "en" ? "Featured" : "精選"}</span>` : ""}
+            </div>
+          </div>
+          <h3>${escapeHtml(post.title)}</h3>
+          <p>${escapeHtml(post.content).replace(/\n/g, "<br>")}</p>
+        </article>
+      `).join("");
+    }
+
+    async function initCreator() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      session = auth.getSession();
+      locale = AuthUI.getLocale();
+
+      if (!session.user) {
+        document.querySelector("main").innerHTML = `<section style="padding:140px 0;"><div class="container"><div class="panel" style="padding:28px;">${TEXT[locale].needLogin}</div></div></section>`;
+        return;
+      }
+
+      document.getElementById("creatorFilter").addEventListener("change", async (e) => {
+        filter = e.target.value;
+        await loadCreatorList();
+      });
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await loadCounts();
+        await loadCreatorList();
+      };
+
+      await loadCounts();
+      await loadCreatorList();
+    }
+
+    initCreator();
+  </script>
+</body>
+</html>
