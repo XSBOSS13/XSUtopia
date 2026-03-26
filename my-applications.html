@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Applications — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .app-tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .app-tab{
+      min-height:40px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      cursor:pointer;
+      font-size:13px;
+    }
+    .app-tab.active{
+      background:var(--text);
+      color:#0a0a0a;
+      border-color:transparent;
+    }
+    .app-section{
+      display:none;
+    }
+    .app-section.active{
+      display:block;
+    }
+    .app-card{
+      padding:22px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      box-shadow:var(--shadow);
+    }
+    .app-card + .app-card{
+      margin-top:14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="My Applications" data-lang-en="My Applications">My Applications</div>
+        <h1
+          data-lang-zh="集中查看你送出的合作申請與生態提案。"
+          data-lang-en="View your partner applications and ecosystem submissions in one place.">
+          集中查看你送出的合作申請與生態提案。
+        </h1>
+        <p
+          data-lang-zh="這裡會顯示目前狀態，讓你的平台參與路徑更清楚。"
+          data-lang-en="This page shows their current status so your participation path inside the platform is clearer.">
+          這裡會顯示目前狀態，讓你的平台參與路徑更清楚。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div id="appGate" class="panel" style="padding:28px; display:none;">
+          <p class="note">請先登入後查看你的申請。</p>
+        </div>
+
+        <div id="appCenter" style="display:none;">
+          <div class="panel" style="padding:28px; margin-bottom:22px;">
+            <div class="app-tabs">
+              <button class="app-tab active" data-app-tab="partners">合作申請</button>
+              <button class="app-tab" data-app-tab="submissions">生態提案</button>
+            </div>
+          </div>
+
+          <section id="apps-partners" class="app-section active">
+            <div id="myPartnerList"></div>
+          </section>
+
+          <section id="apps-submissions" class="app-section">
+            <div id="mySubmissionList"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let session = { user: null, role: "guest" };
+    let locale = "zh";
+
+    const TEXT = {
+      zh: {
+        needLogin: "請先登入後查看你的申請。",
+        noPartners: "你目前沒有合作申請。",
+        noSubs: "你目前沒有生態提案。"
+      },
+      en: {
+        needLogin: "Please sign in to view your applications.",
+        noPartners: "You have no partner applications yet.",
+        noSubs: "You have no ecosystem submissions yet."
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    function initTabs() {
+      const tabs = document.querySelectorAll("[data-app-tab]");
+      const sections = {
+        partners: document.getElementById("apps-partners"),
+        submissions: document.getElementById("apps-submissions")
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          Object.values(sections).forEach((s) => s.classList.remove("active"));
+          sections[tab.dataset.appTab].classList.add("active");
+        });
+      });
+    }
+
+    async function renderPartnerApps() {
+      const el = document.getElementById("myPartnerList");
+      const { data } = await client
+        .from("partner_applications")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .order("created_at", { ascending: false });
+
+      if (!data || !data.length) {
+        el.innerHTML = `<div class="app-card">${TEXT[locale].noPartners}</div>`;
+        return;
+      }
+
+      el.innerHTML = data.map(item => `
+        <div class="app-card">
+          <div class="post-meta">
+            <div class="post-author">${formatDate(item.created_at)}</div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(item.status)}</span>
+              ${item.city ? `<span class="tag">${escapeHtml(item.city)}</span>` : ""}
+            </div>
+          </div>
+          <h3 style="margin:0 0 12px;">${escapeHtml(item.brand_name)}</h3>
+          <p style="margin:0 0 8px; color:var(--muted);">${escapeHtml(item.contact_name)} · ${escapeHtml(item.email)}</p>
+          <p style="margin:0; color:var(--muted); line-height:1.9;">${escapeHtml(item.description)}</p>
+        </div>
+      `).join("");
+    }
+
+    async function renderSubmissions() {
+      const el = document.getElementById("mySubmissionList");
+      const { data } = await client
+        .from("ecosystem_submissions")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .order("created_at", { ascending: false });
+
+      if (!data || !data.length) {
+        el.innerHTML = `<div class="app-card">${TEXT[locale].noSubs}</div>`;
+        return;
+      }
+
+      el.innerHTML = data.map(item => `
+        <div class="app-card">
+          <div class="post-meta">
+            <div class="post-author">${formatDate(item.created_at)}</div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(item.category)}</span>
+              <span class="tag">${escapeHtml(item.status)}</span>
+            </div>
+          </div>
+          <h3 style="margin:0 0 12px;">${escapeHtml(item.title)}</h3>
+          <p style="margin:0; color:var(--muted); line-height:1.9;">${escapeHtml(item.description)}</p>
+        </div>
+      `).join("");
+    }
+
+    async function initMyApplications() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      session = auth.getSession();
+      locale = AuthUI.getLocale();
+
+      const gate = document.getElementById("appGate");
+      const center = document.getElementById("appCenter");
+
+      if (!session.user) {
+        gate.style.display = "block";
+        gate.querySelector(".note").textContent = TEXT[locale].needLogin;
+        return;
+      }
+
+      center.style.display = "block";
+      initTabs();
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await renderPartnerApps();
+        await renderSubmissions();
+      };
+
+      await renderPartnerApps();
+      await renderSubmissions();
+    }
+
+    initMyApplications();
+  </script>
+</body>
+</html>
