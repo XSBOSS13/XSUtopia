@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>Admin Notifications</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container" style="padding:120px 0; max-width:720px;">
+  <h1>發送通知</h1>
+
+  <label>User ID</label>
+  <input id="userId" class="input"/>
+
+  <label>標題</label>
+  <input id="title" class="input"/>
+
+  <label>內容</label>
+  <textarea id="message" class="textarea"></textarea>
+
+  <button id="sendBtn" class="btn btn-primary">送出通知</button>
+
+  <div id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth-ui.js"></script>
+<script>
+let client, session;
+
+async function send(){
+  const user_id = document.getElementById("userId").value;
+  const title = document.getElementById("title").value;
+  const message = document.getElementById("message").value;
+
+  await client.from("notifications").insert([{
+    user_id,
+    title,
+    message
+  }]);
+
+  document.getElementById("status").innerText = "已發送";
+}
+
+async function init(){
+  const auth = await AuthUI.initHeaderAuth();
+  client = await AuthUI.getClient();
+  session = auth.getSession();
+
+  if(session.role !== "admin"){
+    document.body.innerHTML = "無權限";
+    return;
+  }
+
+  document.getElementById("sendBtn").onclick = send;
+}
+
+init();
+</script>
+</body>
+</html>
