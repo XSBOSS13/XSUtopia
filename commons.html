@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commons — XS UTOPIA</title>
+  <meta name="description" content="A public field for presence, dialogue, and shared sensibility." />
+
+  <style>
+    :root{
+      --bg:#070707;
+      --panel:rgba(255,255,255,.035);
+      --line:rgba(255,255,255,.10);
+      --text:#f5f1e8;
+      --muted:rgba(245,241,232,.70);
+      --soft:rgba(245,241,232,.42);
+      --accent:#d7c19a;
+      --shadow:0 24px 80px rgba(0,0,0,.34);
+      --max:1240px;
+
+      --font-en-display:"Cormorant Garamond","Iowan Old Style","Georgia",serif;
+      --font-en-body:"Inter","Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      --font-zh-display:"Noto Serif TC","Songti TC","PMingLiU","Times New Roman",serif;
+      --font-zh-body:"PingFang TC","Noto Sans TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(215,193,154,.11), transparent 24%),
+        radial-gradient(circle at 82% 16%, rgba(255,255,255,.04), transparent 16%),
+        linear-gradient(180deg,#050505 0%, #0a0a0a 46%, #080808 100%);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+    }
+
+    html[lang="en"] body{
+      font-family:var(--font-en-body);
+      letter-spacing:.002em;
+    }
+    html[lang="zh-Hant"] body{
+      font-family:var(--font-zh-body);
+      letter-spacing:.01em;
+    }
+
+    html[lang="en"] h1,
+    html[lang="en"] h2,
+    html[lang="en"] h3{
+      font-family:var(--font-en-display);
+      font-weight:500;
+      letter-spacing:-.03em;
+    }
+
+    html[lang="zh-Hant"] h1,
+    html[lang="zh-Hant"] h2,
+    html[lang="zh-Hant"] h3{
+      font-family:var(--font-zh-display);
+      font-weight:600;
+      letter-spacing:-.02em;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .container{
+      width:min(calc(100% - 32px), var(--max));
+      margin:0 auto;
+    }
+
+    /* Opening: 純 CSS，自動消失，不依賴 JS */
+    #opening{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#000;
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+      animation:openingExit 2.5s ease forwards;
+    }
+
+    #opening span{
+      color:#fff;
+      font-family:var(--font-en-display);
+      font-size:30px;
+      letter-spacing:.34em;
+      opacity:0;
+      animation:openingFade 1.1s ease forwards;
+    }
+
+    @keyframes openingFade{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    @keyframes openingExit{
+      0%{
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+      }
+      72%{
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+      }
+      100%{
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+      }
+    }
+
+    .lang-toggle{
+      position:fixed;
+      right:18px;
+      top:18px;
+      z-index:120;
+      min-height:40px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.42);
+      color:var(--text);
+      cursor:pointer;
+      backdrop-filter:blur(14px);
+      font-size:12px;
+      transition:.28s ease;
+    }
+
+    .lang-toggle:hover{
+      border-color:rgba(215,193,154,.28);
+      background:rgba(215,193,154,.08);
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:80;
+      border-bottom:1px solid rgba(255,255,255,.05);
+      background:rgba(10,10,10,.56);
+      backdrop-filter:blur(18px);
+    }
+
+    .nav-inner{
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-mark{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.03);
+      color:var(--accent);
+      font-size:12px;
+      letter-spacing:.08em;
+    }
+
+    .brand-name{
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      color:var(--muted);
+      font-size:14px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      transition:.24s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{
+      color:var(--text);
+    }
+
+    .page-hero{
+      padding:130px 0 54px;
+    }
+
+    .page-kicker{
+      color:var(--accent);
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    .page-hero h1{
+      margin:0 0 16px;
+      font-size:clamp(42px,6vw,82px);
+      line-height:.98;
+    }
+
+    .page-hero p{
+      max-width:780px;
+      margin:0;
+      color:var(--muted);
+      line-height:1.9;
+      font-size:17px;
+    }
+
+    section{
+      padding:72px 0;
+    }
+
+    .section-head{
+      margin-bottom:28px;
+    }
+
+    .kicker{
+      color:var(--accent);
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    h2{
+      margin:0;
+      font-size:clamp(32px,4vw,58px);
+      line-height:1;
+    }
+
+    .desc{
+      max-width:780px;
+      margin-top:14px;
+      color:var(--muted);
+      line-height:1.9;
+      font-size:16px;
+    }
+
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+    }
+
+    .block{
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:var(--panel);
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+
+    .block p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.95;
+      font-size:16px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+
+    .card{
+      min-height:230px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      padding:24px;
+      transition:.32s ease;
+      box-shadow:var(--shadow);
+    }
+
+    .card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(215,193,154,.24);
+      background:rgba(255,255,255,.055);
+    }
+
+    .card-index{
+      color:var(--soft);
+      font-size:12px;
+      margin-bottom:10px;
+    }
+
+    .card h3{
+      margin:0 0 12px;
+      font-size:28px;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.85;
+      font-size:14px;
+    }
+
+    .commons-layout{
+      display:grid;
+      grid-template-columns:0.92fr 1.08fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    .reply-panel,
+    .thread-panel{
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .reply-panel-head{
+      min-height:68px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:0 22px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      color:var(--text);
+      font-size:14px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .comment-form{
+      padding:22px;
+    }
+
+    .field-label{
+      display:block;
+      margin-bottom:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .input,
+    .textarea{
+      width:100%;
+      border:none;
+      outline:none;
+      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:16px 18px;
+      font:inherit;
+      margin-bottom:16px;
+      transition:.24s ease;
+    }
+
+    .input:focus,
+    .textarea:focus{
+      border-color:rgba(215,193,154,.28);
+      background:rgba(255,255,255,.055);
+    }
+
+    .textarea{
+      resize:vertical;
+      min-height:180px;
+      line-height:1.8;
+    }
+
+    .form-meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      color:var(--soft);
+      font-size:13px;
+    }
+
+    .thread-count{
+      min-width:28px;
+      height:28px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--text);
+      font-size:12px;
+    }
+
+    .empty-state{
+      padding:24px 22px 0;
+    }
+
+    .empty-state p{
+      margin:0;
+      color:var(--soft);
+      line-height:1.8;
+    }
+
+    .comment-list{
+      padding:16px 22px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .comment-item{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      background:rgba(255,255,255,.03);
+      padding:18px;
+    }
+
+    .comment-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .comment-name{
+      font-size:15px;
+      color:var(--text);
+      font-weight:600;
+    }
+
+    .comment-time{
+      margin-top:4px;
+      font-size:12px;
+      color:var(--soft);
+    }
+
+    .comment-body{
+      color:var(--muted);
+      line-height:1.9;
+      font-size:15px;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .featured-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      margin-left:8px;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      color:var(--accent);
+      border:1px solid rgba(215,193,154,.24);
+      background:rgba(215,193,154,.08);
+      vertical-align:middle;
+    }
+
+    .submit-status{
+      margin-top:10px;
+      color:var(--soft);
+      font-size:13px;
+      min-height:20px;
+    }
+
+    .cta{
+      border-radius:34px;
+      padding:34px;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at top left, rgba(215,193,154,.10), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+    }
+
+    .cta-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:20px;
+      align-items:center;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+
+    .btn{
+      min-height:48px;
+      padding:0 18px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid transparent;
+      font-size:14px;
+      transition:.3s ease;
+      cursor:pointer;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+
+    .btn-primary{
+      background:var(--text);
+      color:#0a0a0a;
+    }
+
+    .btn-secondary{
+      border-color:rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+    }
+
+    .btn[disabled]{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .footer{
+      padding:54px 0 36px;
+      border-top:1px solid rgba(255,255,255,.06);
+      color:var(--muted);
+    }
+
+    .footer-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:20px;
+      align-items:center;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width:1080px){
+      .two-col,.cta-row,.commons-layout{grid-template-columns:1fr}
+      .cards{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media (max-width:760px){
+      .nav-links{display:none}
+      .cards{grid-template-columns:1fr}
+      .footer-row{grid-template-columns:1fr}
+      .page-hero{padding-top:110px}
+      .form-meta{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .reply-panel-head{
+        padding:0 18px;
+      }
+      .comment-form,
+      .comment-list{
+        padding-left:18px;
+        padding-right:18px;
+      }
+      section{padding:64px 0}
+    }
+  </style>
+</head>
+<body data-page="commons">
+
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button class="lang-toggle" id="langToggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="world.html" data-i18n-key="nav_world">世界觀</a>
+        <a href="commons.html" class="active">公共社群</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作商店</a>
+        <a href="store.html" data-i18n-key="nav_store">生態商店</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-kicker"
+          data-lang-en="Commons / Chapter 01"
+          data-lang-zh="公共社群 / 第一章">公共社群 / 第一章</div>
+
+        <h1
+          data-lang-en="Deep learning is not fast.<br>It has a rhythm."
+          data-lang-zh="深度學習不是速度。<br>它有自己的節奏。">
+          深度學習不是速度。<br>它有自己的節奏。
+        </h1>
+
+        <p
+          data-lang-en="Most people think learning means taking in more. But real learning happens when something slowly enters you. If the rhythm is wrong, even good content will not stay."
+          data-lang-zh="大部分人以為學習是吸收更多。但真正的學習，是讓一件事慢慢進入你。節奏錯了，再多內容都留不下來。">
+          大部分人以為學習是吸收更多。但真正的學習，是讓一件事慢慢進入你。節奏錯了，再多內容都留不下來。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="two-col">
+          <div class="block">
+            <p
+              data-lang-en="This week’s prompt is simple: what is your learning rhythm? When do you really begin to understand something — quickly, slowly, repeatedly, or only after a pause?"
+              data-lang-zh="這一週的問題很簡單：你的學習節奏是什麼？你通常在什麼時候才真的開始理解一件事？是很快、很慢、重複很多次，還是總要停一下之後才進得去？">
+              這一週的問題很簡單：你的學習節奏是什麼？你通常在什麼時候才真的開始理解一件事？是很快、很慢、重複很多次，還是總要停一下之後才進得去？
+            </p>
+          </div>
+
+          <div class="block">
+            <p
+              data-lang-en="You can respond with a recent subject you’re learning, a moment you suddenly understood something, or what “slow” means to you now."
+              data-lang-zh="你可以分享：最近你在學什麼、你在哪個時刻突然理解了某件事，或者現在的你，如何理解「慢」這件事。">
+              你可以分享：最近你在學什麼、你在哪個時刻突然理解了某件事，或者現在的你，如何理解「慢」這件事。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker"
+            data-lang-en="Weekly Prompt"
+            data-lang-zh="本週主題">本週主題</div>
+          <h2
+            data-lang-en="What is your learning rhythm?"
+            data-lang-zh="你的學習節奏是什麼？">
+            你的學習節奏是什麼？
+          </h2>
+          <div class="desc"
+            data-lang-en="Leave a short note. Not a perfect answer — just a real one."
+            data-lang-zh="留下一段短短的回應就好。不需要完美，只要真實。">
+            留下一段短短的回應就好。不需要完美，只要真實。
+          </div>
+        </div>
+
+        <div class="commons-layout">
+          <div class="reply-panel">
+            <div class="reply-panel-head">
+              <span
+                data-lang-en="Write a response"
+                data-lang-zh="寫下你的回應">寫下你的回應</span>
+            </div>
+
+            <form id="commentForm" class="comment-form">
+              <label class="field-label" for="commentName"
+                data-lang-en="Name"
+                data-lang-zh="名稱">名稱</label>
+              <input
+                id="commentName"
+                class="input"
+                type="text"
+                maxlength="24"
+                placeholder="你的名稱"
+              />
+
+              <label class="field-label" for="commentText"
+                data-lang-en="Response"
+                data-lang-zh="回應內容">回應內容</label>
+              <textarea
+                id="commentText"
+                class="textarea"
+                rows="7"
+                maxlength="600"
+                placeholder="分享你如何理解自己的學習節奏..."
+              ></textarea>
+
+              <div class="form-meta">
+                <span id="charCount">0 / 600</span>
+                <button id="submitBtn" type="submit" class="btn btn-primary">送出回應</button>
+              </div>
+
+              <div id="submitStatus" class="submit-status"></div>
+            </form>
+          </div>
+
+          <div class="thread-panel">
+            <div class="reply-panel-head">
+              <span
+                data-lang-en="Community responses"
+                data-lang-zh="社群回應">社群回應</span>
+              <span id="commentTotal" class="thread-count">0</span>
+            </div>
+
+            <div id="emptyState" class="empty-state">
+              <p
+                data-lang-en="No responses yet. Be the first presence in this week’s commons."
+                data-lang-zh="目前還沒有回應。成為這一週第一個進入公共場域的人。">
+                目前還沒有回應。成為這一週第一個進入公共場域的人。
+              </p>
+            </div>
+
+            <div id="commentList" class="comment-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cards">
+          <div class="card">
+            <div class="card-index">01</div>
+            <h3
+              data-lang-en="Prompt"
+              data-lang-zh="提示">提示</h3>
+            <p
+              data-lang-en="You don’t need to explain everything. One clear sentence is enough."
+              data-lang-zh="你不需要把一切都說完整。一句清楚的話就夠了。">
+              你不需要把一切都說完整。一句清楚的話就夠了。
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-index">02</div>
+            <h3
+              data-lang-en="Rhythm"
+              data-lang-zh="節奏">節奏</h3>
+            <p
+              data-lang-en="Sometimes learning is not blocked by difficulty, but by timing."
+              data-lang-zh="有時候阻礙學習的不是難度，而是節奏。">
+              有時候阻礙學習的不是難度，而是節奏。
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-index">03</div>
+            <h3
+              data-lang-en="Depth"
+              data-lang-zh="深度">深度</h3>
+            <p
+              data-lang-en="Depth often arrives later than effort."
+              data-lang-zh="深度，往往比努力更晚出現。">
+              深度，往往比努力更晚出現。
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-index">04</div>
+            <h3
+              data-lang-en="Commons"
+              data-lang-zh="公共場域">公共場域</h3>
+            <p
+              data-lang-en="What matters here is not volume, but presence."
+              data-lang-zh="在這裡重要的不是聲量，而是在場。">
+              在這裡重要的不是聲量，而是在場。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta">
+          <div class="cta-row">
+            <div>
+              <div class="kicker"
+                data-lang-en="Next Movement"
+                data-lang-zh="下一步">下一步</div>
+              <h2
+                data-lang-en="From prompt to rhythm, from rhythm to presence."
+                data-lang-zh="從提問，到節奏；從節奏，到在場。">
+                從提問，到節奏；從節奏，到在場。
+              </h2>
+              <div class="desc"
+                data-lang-en="This is where XS UTOPIA stops being a concept and begins to move through people."
+                data-lang-zh="這是 XS UTOPIA 不再停留於概念，而開始在人與人之間流動的地方。">
+                這是 XS UTOPIA 不再停留於概念，而開始在人與人之間流動的地方。
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="store.html"
+                data-lang-en="See the Tea Chapter"
+                data-lang-zh="查看茶商品頁">查看茶商品頁</a>
+              <a class="btn btn-secondary" href="join.html"
+                data-lang-en="Join the Platform"
+                data-lang-zh="加入平台">加入平台</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>
+        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
+        <span id="footerText">一個關於思想、社群與文化生態的自由平台。</span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="world.html" data-i18n-key="nav_world">世界觀</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作商店</a>
+        <a href="store.html" data-i18n-key="nav_store">生態商店</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </div>
+    </div>
+  </footer>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    window.SUPABASE_URL = "https://ghqbtbkzosqhmvsnejoj.supabase.co";
+    window.SUPABASE_ANON_KEY = "sb_publishable_tO6-VKSzsALVV4eKA0RSjg_34Tfl8Ld";
+  </script>
+
+  <script>
+    const I18N = {
+      en: {
+        nav_home: "Home",
+        nav_world: "World",
+        nav_partners: "Partners",
+        nav_store: "Store",
+        nav_join: "Join",
+        footerText: "A free aesthetic platform for thought, community, and cultural ecology.",
+        submitIdle: "Write something real.",
+        submitPosting: "Posting...",
+        submitSuccess: "Posted successfully.",
+        submitError: "Failed to post. Please try again.",
+        submitDefault: "Post Response",
+        placeholderName: "Your name",
+        placeholderText: "Share what ‘rhythm’ means in your learning...",
+        loadError: "Failed to load comments."
+      },
+      zh: {
+        nav_home: "首頁",
+        nav_world: "世界觀",
+        nav_partners: "合作商店",
+        nav_store: "生態商店",
+        nav_join: "加入平台",
+        footerText: "一個關於思想、社群與文化生態的自由平台。",
+        submitIdle: "留下一段真實的回應。",
+        submitPosting: "送出中...",
+        submitSuccess: "已成功送出。",
+        submitError: "送出失敗，請稍後再試。",
+        submitDefault: "送出回應",
+        placeholderName: "你的名稱",
+        placeholderText: "分享你如何理解自己的學習節奏...",
+        loadError: "留言讀取失敗，請稍後再試。"
+      }
+    };
+
+    let currentLang = localStorage.getItem("xs_lang") || "zh";
+    let supabaseClient = null;
+    let supabaseReady = false;
+
+    const CHAPTER_KEY = "chapter-01-deep-learning-rhythm";
+
+    const form = document.getElementById("commentForm");
+    const nameInput = document.getElementById("commentName");
+    const textInput = document.getElementById("commentText");
+    const commentList = document.getElementById("commentList");
+    const emptyState = document.getElementById("emptyState");
+    const commentTotal = document.getElementById("commentTotal");
+    const charCount = document.getElementById("charCount");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitStatus = document.getElementById("submitStatus");
+    const langToggle = document.getElementById("langToggle");
+    const footerText = document.getElementById("footerText");
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+    }
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem("xs_lang", lang);
+      document.documentElement.lang = lang === "en" ? "en" : "zh-Hant";
+
+      document.querySelectorAll("[data-lang-en][data-lang-zh]").forEach((el) => {
+        el.innerHTML = lang === "en" ? el.dataset.langEn : el.dataset.langZh;
+      });
+
+      document.querySelectorAll("[data-i18n-key]").forEach((el) => {
+        const key = el.dataset.i18nKey;
+        if (I18N[lang][key]) el.textContent = I18N[lang][key];
+      });
+
+      footerText.textContent = I18N[lang].footerText;
+      langToggle.textContent = lang === "en" ? "中文" : "EN";
+      submitBtn.textContent = I18N[lang].submitDefault;
+      submitStatus.textContent = I18N[lang].submitIdle;
+      nameInput.placeholder = I18N[lang].placeholderName;
+      textInput.placeholder = I18N[lang].placeholderText;
+    }
+
+    function updateCharCount() {
+      charCount.textContent = `${textInput.value.length} / 600`;
+    }
+
+    function renderComments(comments) {
+      commentList.innerHTML = "";
+      commentTotal.textContent = comments.length;
+
+      if (!comments.length) {
+        emptyState.style.display = "block";
+        return;
+      }
+
+      emptyState.style.display = "none";
+
+      comments.forEach((comment) => {
+        const item = document.createElement("article");
+        item.className = "comment-item";
+
+        item.innerHTML = `
+          <div class="comment-top">
+            <div>
+              <div class="comment-name">
+                ${escapeHtml(comment.name || "Anonymous")}
+                ${comment.is_featured ? '<span class="featured-badge">Featured</span>' : ""}
+              </div>
+              <div class="comment-time">${formatDate(comment.created_at)}</div>
+            </div>
+          </div>
+          <div class="comment-body">${escapeHtml(comment.content || "")}</div>
+        `;
+
+        commentList.appendChild(item);
+      });
+    }
+
+    async function fetchComments() {
+      if (!supabaseReady || !supabaseClient) return;
+
+      const { data, error } = await supabaseClient
+        .from("commons_comments")
+        .select("id, name, content, is_featured, created_at")
+        .eq("chapter_key", CHAPTER_KEY)
+        .order("is_featured", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Fetch error:", error);
+        emptyState.style.display = "none";
+        commentList.innerHTML = `
+          <article class="comment-item">
+            <div class="comment-body">${I18N[currentLang].loadError}</div>
+          </article>
+        `;
+        commentTotal.textContent = "0";
+        return;
+      }
+
+      renderComments(data || []);
+    }
+
+    function waitForSupabase(maxTries = 40, interval = 250) {
+      return new Promise((resolve, reject) => {
+        let tries = 0;
+        const timer = setInterval(() => {
+          tries += 1;
+          if (window.supabase && typeof window.supabase.createClient === "function") {
+            clearInterval(timer);
+            resolve();
+          } else if (tries >= maxTries) {
+            clearInterval(timer);
+            reject(new Error("Supabase script load timeout"));
+          }
+        }, interval);
+      });
+    }
+
+    async function initSupabase() {
+      try {
+        await waitForSupabase();
+        supabaseClient = window.supabase.createClient(
+          window.SUPABASE_URL,
+          window.SUPABASE_ANON_KEY
+        );
+        supabaseReady = true;
+        fetchComments();
+      } catch (err) {
+        console.error("Supabase init error:", err);
+        emptyState.style.display = "none";
+        commentList.innerHTML = `
+          <article class="comment-item">
+            <div class="comment-body">${I18N[currentLang].loadError}</div>
+          </article>
+        `;
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!supabaseReady || !supabaseClient) {
+        submitStatus.textContent = I18N[currentLang].submitError;
+        return;
+      }
+
+      const name = (nameInput.value || "").trim() || "Anonymous";
+      const content = (textInput.value || "").trim();
+
+      if (!content) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = I18N[currentLang].submitPosting;
+      submitStatus.textContent = I18N[currentLang].submitPosting;
+
+      const { error } = await supabaseClient
+        .from("commons_comments")
+        .insert([{
+          chapter_key: CHAPTER_KEY,
+          name,
+          content
+        }]);
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = I18N[currentLang].submitDefault;
+
+      if (error) {
+        console.error("Insert error:", error);
+        submitStatus.textContent = I18N[currentLang].submitError;
+        return;
+      }
+
+      form.reset();
+      updateCharCount();
+      submitStatus.textContent = I18N[currentLang].submitSuccess;
+      fetchComments();
+    });
+
+    textInput.addEventListener("input", updateCharCount);
+
+    langToggle.addEventListener("click", () => {
+      applyLang(currentLang === "en" ? "zh" : "en");
+    });
+
+    applyLang(currentLang);
+    updateCharCount();
+    initSupabase();
+  </script>
+</body>
+</html>
