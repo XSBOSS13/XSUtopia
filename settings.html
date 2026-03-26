@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>Settings — XS UTOPIA</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container" style="padding:120px 0; max-width:720px;">
+  <h1>個人設定</h1>
+
+  <label>名稱</label>
+  <input id="name" class="input"/>
+
+  <label>Bio</label>
+  <textarea id="bio" class="textarea"></textarea>
+
+  <button id="saveBtn" class="btn btn-primary">儲存</button>
+
+  <div id="status"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth-ui.js"></script>
+<script>
+let client, session;
+
+async function load(){
+  const { data } = await client
+    .from("user_profiles")
+    .select("*")
+    .eq("id", session.user.id)
+    .single();
+
+  document.getElementById("name").value = data.display_name || "";
+  document.getElementById("bio").value = data.bio || "";
+}
+
+async function save(){
+  const name = document.getElementById("name").value;
+  const bio = document.getElementById("bio").value;
+
+  await client
+    .from("user_profiles")
+    .update({
+      display_name:name,
+      bio:bio
+    })
+    .eq("id", session.user.id);
+
+  document.getElementById("status").innerText = "已更新";
+}
+
+async function init(){
+  const auth = await AuthUI.initHeaderAuth();
+  client = await AuthUI.getClient();
+  session = auth.getSession();
+
+  await load();
+  document.getElementById("saveBtn").onclick = save;
+}
+
+init();
+</script>
+</body>
+</html>
