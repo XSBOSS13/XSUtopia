@@ -991,6 +991,240 @@
     applyLang(currentLang);
     updateCharCount();
     fetchComments();
-  </script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* =========================
+   Supabase 設定
+========================= */
+window.SUPABASE_URL = "https://ghqbtbkzosqhmvsnejoj.supabase.co";
+window.SUPABASE_ANON_KEY = "sb_publishable_tO6-VKSzsALVV4eKA0RSjg_34Tfl8Ld";
+
+/* =========================
+   Opening 修正版（不會卡）
+========================= */
+function hideOpening() {
+  const opening = document.getElementById("opening");
+  if (!opening || opening.dataset.hidden === "true") return;
+
+  opening.dataset.hidden = "true";
+  opening.style.opacity = "0";
+
+  setTimeout(() => {
+    if (opening && opening.parentNode) opening.remove();
+  }, 900);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(hideOpening, 1200);
+});
+
+window.addEventListener("load", () => {
+  setTimeout(hideOpening, 200);
+});
+
+setTimeout(hideOpening, 2500);
+
+
+/* =========================
+   語言系統
+========================= */
+const i18n = {
+  en: {
+    nav_home: "Home",
+    nav_world: "World",
+    nav_partners: "Partners",
+    nav_store: "Store",
+    nav_join: "Join",
+    footerText: "A free aesthetic platform for thought, community, and cultural ecology.",
+    submitIdle: "Write something real.",
+    submitPosting: "Posting...",
+    submitSuccess: "Posted.",
+    submitError: "Failed. Try again."
+  },
+  zh: {
+    nav_home: "首頁",
+    nav_world: "世界觀",
+    nav_partners: "合作商店",
+    nav_store: "生態商店",
+    nav_join: "加入平台",
+    footerText: "一個關於思想、社群與文化生態的自由平台。",
+    submitIdle: "留下一段真實的回應。",
+    submitPosting: "送出中...",
+    submitSuccess: "已送出。",
+    submitError: "送出失敗"
+  }
+};
+
+let currentLang = localStorage.getItem("xs_lang") || "zh";
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("xs_lang", lang);
+  document.documentElement.lang = lang === "en" ? "en" : "zh-Hant";
+
+  document.querySelectorAll("[data-lang-en][data-lang-zh]").forEach(el => {
+    el.innerHTML = lang === "en" ? el.dataset.langEn : el.dataset.langZh;
+  });
+
+  document.querySelectorAll("[data-i18n-key]").forEach(el => {
+    const key = el.dataset.i18nKey;
+    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+
+  const footer = document.getElementById("footerText");
+  if (footer) footer.textContent = i18n[lang].footerText;
+
+  const toggle = document.getElementById("langToggle");
+  if (toggle) toggle.textContent = lang === "en" ? "中文" : "EN";
+
+  const status = document.getElementById("submitStatus");
+  if (status) status.textContent = i18n[lang].submitIdle;
+}
+
+document.getElementById("langToggle")?.addEventListener("click", () => {
+  applyLang(currentLang === "en" ? "zh" : "en");
+});
+
+
+/* =========================
+   Supabase 留言系統
+========================= */
+let supabase;
+let ready = false;
+
+async function initSupabase() {
+  if (!window.supabase) {
+    console.error("Supabase not loaded");
+    return;
+  }
+
+  supabase = window.supabase.createClient(
+    window.SUPABASE_URL,
+    window.SUPABASE_ANON_KEY
+  );
+
+  ready = true;
+  fetchComments();
+}
+
+const CHAPTER_KEY = "chapter-01-deep-learning-rhythm";
+
+const form = document.getElementById("commentForm");
+const nameInput = document.getElementById("commentName");
+const textInput = document.getElementById("commentText");
+const commentList = document.getElementById("commentList");
+const emptyState = document.getElementById("emptyState");
+const commentTotal = document.getElementById("commentTotal");
+const charCount = document.getElementById("charCount");
+const submitBtn = document.getElementById("submitBtn");
+const submitStatus = document.getElementById("submitStatus");
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+function formatDate(ts) {
+  const d = new Date(ts);
+  return `${d.getFullYear()}.${d.getMonth()+1}.${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
+}
+
+function updateCharCount() {
+  if (charCount && textInput)
+    charCount.textContent = `${textInput.value.length} / 600`;
+}
+
+function renderComments(comments) {
+  commentList.innerHTML = "";
+  commentTotal.textContent = comments.length;
+
+  if (!comments.length) {
+    emptyState.style.display = "block";
+    return;
+  }
+
+  emptyState.style.display = "none";
+
+  comments.forEach(c => {
+    const el = document.createElement("div");
+    el.className = "comment-item";
+
+    el.innerHTML = `
+      <div class="comment-name">${escapeHtml(c.name)}</div>
+      <div class="comment-time">${formatDate(c.created_at)}</div>
+      <div class="comment-body">${escapeHtml(c.content)}</div>
+    `;
+
+    commentList.appendChild(el);
+  });
+}
+
+async function fetchComments() {
+  if (!ready) return;
+
+  const { data, error } = await supabase
+    .from("commons_comments")
+    .select("*")
+    .eq("chapter_key", CHAPTER_KEY)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  renderComments(data || []);
+}
+
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!ready) return;
+
+  const name = nameInput.value || "Anonymous";
+  const content = textInput.value.trim();
+
+  if (!content) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = i18n[currentLang].submitPosting;
+
+  const { error } = await supabase
+    .from("commons_comments")
+    .insert([{ chapter_key: CHAPTER_KEY, name, content }]);
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = currentLang === "en" ? "Post Response" : "送出回應";
+
+  if (error) {
+    console.error(error);
+    submitStatus.textContent = i18n[currentLang].submitError;
+    return;
+  }
+
+  form.reset();
+  updateCharCount();
+  submitStatus.textContent = i18n[currentLang].submitSuccess;
+
+  fetchComments();
+});
+
+
+/* =========================
+   初始化
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  applyLang(currentLang);
+  updateCharCount();
+
+  setTimeout(() => {
+    initSupabase();
+  }, 300);
+});
+
+textInput?.addEventListener("input", updateCharCount);
+</script>
 </body>
 </html>
