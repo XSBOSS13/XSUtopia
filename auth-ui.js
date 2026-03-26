@@ -1,15 +1,11 @@
 window.SUPABASE_URL = "https://ghqbtbkzosqhmvsnejoj.supabase.co";
 window.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tO6-VKSzsALVV4eKA0RSjg_34Tfl8Ld";
-window.ADMIN_EMAIL = "admin@example.com"; // 改成你的管理員信箱
+window.ADMIN_EMAIL = "tyascg@gmail.com";
 
 const AuthUI = (() => {
   let supabaseClient = null;
   let currentUser = null;
   let currentProfile = null;
-
-  function getRoleFromEmail(email = "") {
-    return email === window.ADMIN_EMAIL ? "admin" : "member";
-  }
 
   async function waitForSupabase(maxTries = 40, interval = 250) {
     return new Promise((resolve, reject) => {
@@ -29,12 +25,17 @@ const AuthUI = (() => {
 
   async function getClient() {
     if (supabaseClient) return supabaseClient;
+
     await waitForSupabase();
     supabaseClient = window.supabase.createClient(
       window.SUPABASE_URL,
       window.SUPABASE_PUBLISHABLE_KEY
     );
     return supabaseClient;
+  }
+
+  function getRoleFromEmail(email = "") {
+    return email === window.ADMIN_EMAIL ? "admin" : "member";
   }
 
   async function ensureProfile(user) {
@@ -62,14 +63,14 @@ const AuthUI = (() => {
       if (existing.role !== role) updates.role = role;
 
       if (Object.keys(updates).length > 0) {
-        const { data: updated, error: updateError } = await client
+        const { data: updated } = await client
           .from("user_profiles")
           .update({ ...updates, updated_at: new Date().toISOString() })
           .eq("id", user.id)
           .select()
           .single();
 
-        if (!updateError && updated) return updated;
+        return updated || existing;
       }
 
       return existing;
@@ -123,14 +124,6 @@ const AuthUI = (() => {
     };
   }
 
-  function getSession() {
-    return {
-      user: currentUser,
-      profile: currentProfile,
-      role: currentProfile?.role || (currentUser ? getRoleFromEmail(currentUser.email || "") : "guest")
-    };
-  }
-
   function renderHeaderAuth(session) {
     const guestEl = document.getElementById("authGuest");
     const memberEl = document.getElementById("authMember");
@@ -174,7 +167,14 @@ const AuthUI = (() => {
       renderHeaderAuth(updated);
     });
 
-    return { supabase: client, session: getSession };
+    return {
+      supabase: client,
+      getSession: () => ({
+        user: currentUser,
+        profile: currentProfile,
+        role: currentProfile?.role || (currentUser ? getRoleFromEmail(currentUser.email || "") : "guest")
+      })
+    };
   }
 
   async function signUp(email, password, displayName = "") {
@@ -204,37 +204,6 @@ const AuthUI = (() => {
     return refreshSession();
   }
 
-  async function signOut() {
-    const client = await getClient();
-    const { error } = await client.auth.signOut();
-    if (error) throw error;
-    currentUser = null;
-    currentProfile = null;
-    return { user: null, profile: null, role: "guest" };
-  }
-
-  async function updateProfile(payload) {
-    const client = await getClient();
-    const session = await refreshSession();
-    if (!session.user) throw new Error("Not signed in");
-
-    const updates = {
-      ...payload,
-      updated_at: new Date().toISOString()
-    };
-
-    const { data, error } = await client
-      .from("user_profiles")
-      .update(updates)
-      .eq("id", session.user.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    currentProfile = data;
-    return data;
-  }
-
   async function initAuthPage() {
     await getClient();
 
@@ -253,6 +222,7 @@ const AuthUI = (() => {
 
     function applyMode(nextMode) {
       mode = nextMode;
+
       modeTabs.forEach((tab) => {
         tab.classList.toggle("active", tab.dataset.authMode === mode);
       });
@@ -260,7 +230,7 @@ const AuthUI = (() => {
       if (mode === "signin") {
         signUpFields.style.display = "none";
         titleEl.textContent = "登入來開始你的旅程";
-        descEl.textContent = "進入 Commons，留下你的思考，並參與整個生態的流動。";
+        descEl.textContent = "進入 XS UTOPIA，開始你的連結、參與與探索。";
         submitEl.textContent = "開始旅程";
       } else {
         signUpFields.style.display = "block";
@@ -284,7 +254,7 @@ const AuthUI = (() => {
       try {
         if (mode === "signin") {
           await signIn(emailEl.value.trim(), passwordEl.value);
-          window.location.href = "commons.html";
+          window.location.href = "index.html";
         } else {
           await signUp(
             emailEl.value.trim(),
@@ -305,91 +275,25 @@ const AuthUI = (() => {
     applyMode("signin");
   }
 
-  async function initProfilePage() {
-    const client = await getClient();
-    const session = await refreshSession();
+  function initReveal() {
+    const targets = document.querySelectorAll(".reveal");
+    if (!targets.length) return;
 
-    if (!session.user) {
-      window.location.href = "auth.html";
-      return;
-    }
-
-    const nameEl = document.getElementById("profileName");
-    const roleEl = document.getElementById("profileRole");
-    const emailEl = document.getElementById("profileEmail");
-    const bioEl = document.getElementById("profileBio");
-    const avatarPreview = document.getElementById("profileAvatarPreview");
-
-    const displayName =
-      session.profile?.display_name ||
-      (session.user.email ? session.user.email.split("@")[0] : "member");
-
-    if (nameEl) nameEl.textContent = displayName;
-    if (roleEl) roleEl.textContent = session.role === "admin" ? "Admin" : "Member";
-    if (emailEl) emailEl.textContent = session.user.email || "";
-    if (bioEl) bioEl.value = session.profile?.bio || "";
-    if (avatarPreview) {
-      avatarPreview.textContent = displayName.slice(0, 1).toUpperCase();
-      if (session.profile?.avatar_url) {
-        avatarPreview.style.backgroundImage = `url(${session.profile.avatar_url})`;
-        avatarPreview.style.backgroundSize = "cover";
-        avatarPreview.style.backgroundPosition = "center";
-        avatarPreview.textContent = "";
-      }
-    }
-
-    const nameInput = document.getElementById("profileDisplayName");
-    if (nameInput) nameInput.value = displayName;
-
-    const saveBtn = document.getElementById("profileSaveBtn");
-    const statusEl = document.getElementById("profileStatus");
-
-    if (saveBtn) {
-      saveBtn.addEventListener("click", async () => {
-        saveBtn.disabled = true;
-        statusEl.textContent = "儲存中...";
-        try {
-          const updated = await updateProfile({
-            display_name: (document.getElementById("profileDisplayName").value || "").trim().slice(0, 24),
-            bio: (document.getElementById("profileBio").value || "").trim()
-          });
-
-          if (nameEl) nameEl.textContent = updated.display_name || displayName;
-          statusEl.textContent = "已更新個人資料。";
-        } catch (err) {
-          console.error(err);
-          statusEl.textContent = err.message || "更新失敗。";
-        } finally {
-          saveBtn.disabled = false;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          io.unobserve(entry.target);
         }
       });
-    }
+    }, { threshold: 0.14 });
 
-    const counts = {
-      comments: document.getElementById("profileCommentCount"),
-      posts: document.getElementById("profilePostCount"),
-      applications: document.getElementById("profileApplicationCount")
-    };
-
-    try {
-      const [{ count: commentCount }, { count: postCount }, { count: partnerCount }] = await Promise.all([
-        client.from("commons_comments").select("*", { count: "exact", head: true }).eq("user_id", session.user.id),
-        client.from("posts").select("*", { count: "exact", head: true }).eq("user_id", session.user.id),
-        client.from("partner_applications").select("*", { count: "exact", head: true }).eq("user_id", session.user.id)
-      ]);
-
-      if (counts.comments) counts.comments.textContent = commentCount ?? 0;
-      if (counts.posts) counts.posts.textContent = postCount ?? 0;
-      if (counts.applications) counts.applications.textContent = partnerCount ?? 0;
-    } catch (err) {
-      console.error("Profile counts error:", err);
-    }
+    targets.forEach((el) => io.observe(el));
   }
 
   return {
     initHeaderAuth,
     initAuthPage,
-    initProfilePage,
-    getSession
+    initReveal
   };
 })();
