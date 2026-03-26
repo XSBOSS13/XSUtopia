@@ -1,153 +1,79 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>商圈文化 — XS UTOPIA</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商圈文化 — XS UTOPIA</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body { background:#000; }
+.card { 
+background:linear-gradient(145deg,#111,#0a0a0a);
+border:1px solid rgba(255,255,255,0.12);
+}
+</style>
 </head>
+
 <body>
-  <div id="opening"><span>XS UTOPIA</span></div>
-  <button id="langToggle" class="lang-toggle">EN</button>
 
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <div class="brand-mark">XS</div>
-        <div class="brand-name">XS UTOPIA</div>
-      </a>
+<div id="opening"><span>XS UTOPIA</span></div>
 
-      <nav class="nav-links">
-        <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
-        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
-        <a href="store.html" class="active" data-i18n-key="nav_store">商圈文化</a>
-        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
-      </nav>
+<header class="nav">
+<div class="container nav-inner">
+<a class="brand" href="index.html">XS UTOPIA</a>
 
-      <div class="auth-right">
-        <div id="authGuest" class="auth-guest">
-          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
-          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
-        </div>
+<nav class="nav-links">
+<a href="index.html">首頁</a>
+<a href="commons.html">公共社群</a>
+<a href="partners.html">合作社區</a>
+<a href="store.html" class="active">商圈文化</a>
+<a href="join.html">加入平台</a>
+</nav>
+</div>
+</header>
 
-        <div id="authMember" class="auth-member" style="display:none;">
-          <a href="profile.html" class="auth-member-meta">
-            <strong id="authMemberName">Member</strong>
-            <span id="authMemberRole">Member</span>
-          </a>
-          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
-        </div>
-      </div>
-    </div>
-  </header>
+<main>
 
-  <main>
-    <section class="hero">
-      <div class="container reveal">
-        <div class="kicker" data-lang-zh="Culture District" data-lang-en="Culture District">Culture District</div>
-        <h1
-          data-lang-zh="當商業帶著意識運作，它可以支撐一個世界。"
-          data-lang-en="When commerce operates with consciousness, it can sustain a world.">
-          當商業帶著意識運作，它可以支撐一個世界。
-        </h1>
-        <p
-          data-lang-zh="商圈文化不是單純的銷售頁，而是把平台中的內容、節點與價值轉化成可持續流動的交換系統。"
-          data-lang-en="Culture District is not a simple store page, but a system that transforms the platform’s content, nodes, and values into a sustainable circulation of exchange.">
-          商圈文化不是單純的銷售頁，而是把平台中的內容、節點與價值轉化成可持續流動的交換系統。
-        </p>
-      </div>
-    </section>
+<section class="hero">
+<div class="container reveal">
+<h1>文化，開始具有交換價值。</h1>
+<p>這裡不是單純商品，而是文化的流通。</p>
+</div>
+</section>
 
-    <section>
-      <div class="container reveal">
-        <div class="grid-3">
-          <article class="card">
-            <div class="card-index">01</div>
-            <h3 data-lang-zh="內容延伸" data-lang-en="Content Extension">內容延伸</h3>
-            <p
-              data-lang-zh="商品不是獨立存在，而是平台內容、風格與感知的延伸。"
-              data-lang-en="Products do not stand alone; they extend the platform’s content, style, and perception.">
-              商品不是獨立存在，而是平台內容、風格與感知的延伸。
-            </p>
-          </article>
+<section>
+<div class="container reveal">
 
-          <article class="card">
-            <div class="card-index">02</div>
-            <h3 data-lang-zh="節點交換" data-lang-en="Node Exchange">節點交換</h3>
-            <p
-              data-lang-zh="商圈文化讓商品、空間、合作節點與內容之間形成一種交換關係，而不是單向購買。"
-              data-lang-en="Culture District creates exchange among products, spaces, partner nodes, and content, rather than one-way purchasing.">
-              商圈文化讓商品、空間、合作節點與內容之間形成一種交換關係，而不是單向購買。
-            </p>
-          </article>
+<div class="grid-3">
 
-          <article class="card">
-            <div class="card-index">03</div>
-            <h3 data-lang-zh="文化支持" data-lang-en="Cultural Support">文化支持</h3>
-            <p
-              data-lang-zh="當商業與文化互相支撐，平台才有可能形成真正長期運作的生態。"
-              data-lang-en="When commerce and culture support each other, the platform gains the possibility of long-term ecological continuity.">
-              當商業與文化互相支撐，平台才有可能形成真正長期運作的生態。
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
+<div class="card">
+<h3>高山烏龍</h3>
+<p>來自 1600m 山域的時間風味。</p>
+</div>
 
-    <section>
-      <div class="container reveal">
-        <div class="cta">
-          <div class="cta-text">
-            <div class="kicker" data-lang-zh="Commerce" data-lang-en="Commerce">Commerce</div>
-            <h2
-              data-lang-zh="商圈文化的意義，不只是賣東西，而是維持整個平台的循環。"
-              data-lang-en="The meaning of Culture District is not only to sell, but to sustain the circulation of the whole platform.">
-              商圈文化的意義，不只是賣東西，而是維持整個平台的循環。
-            </h2>
-            <p
-              data-lang-zh="未來這裡會成為茶、藝術、合作節點與文化物件的真正轉換入口。"
-              data-lang-en="This will later become the real conversion point for tea, art, partner nodes, and cultural objects.">
-              未來這裡會成為茶、藝術、合作節點與文化物件的真正轉換入口。
-            </p>
-          </div>
+<div class="card">
+<h3>藝術物件</h3>
+<p>讓作品進入日常生活。</p>
+</div>
 
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn btn-primary" href="join.html" data-lang-zh="加入生態" data-lang-en="Join the Ecosystem">加入生態</a>
-            <a class="btn" href="partners.html" data-lang-zh="查看合作社區" data-lang-en="View Community Partners">查看合作社區</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+<div class="card">
+<h3>聯名企劃</h3>
+<p>文化 × 品牌 × 空間的交會。</p>
+</div>
 
-  <footer class="footer">
-    <div class="container footer-row">
-      <div>
-        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span
-          data-lang-zh="商圈文化讓平台中的價值被延續，也讓文化具備現實中的交換能力。"
-          data-lang-en="Culture District allows values in the platform to continue and grants culture the power of real-world exchange.">
-          商圈文化讓平台中的價值被延續，也讓文化具備現實中的交換能力。
-        </span>
-      </div>
-      <div class="footer-links">
-        <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
-        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
-        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
-        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
-      </div>
-    </div>
-  </footer>
+</div>
 
-  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="auth-ui.js"></script>
-  <script>
-    AuthUI.initHeaderAuth();
-    AuthUI.initReveal();
-  </script>
+</div>
+</section>
+
+</main>
+
+<script src="auth-ui.js"></script>
+<script>
+AuthUI.initHeaderAuth();
+AuthUI.initReveal();
+</script>
+
 </body>
 </html>
