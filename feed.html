@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feed — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Content Flow" data-lang-en="Content Flow">Content Flow</div>
+        <h1
+          data-lang-zh="內容開始形成流，平台才真正開始有生命。"
+          data-lang-en="Only when content begins to flow does a platform begin to live.">
+          內容開始形成流，平台才真正開始有生命。
+        </h1>
+        <p
+          data-lang-zh="這裡聚合平台中的思想、茶、藝術、生態與合作節點內容。精選內容會被優先展示，最新內容持續往下延伸。"
+          data-lang-en="This is where thought, tea, art, ecosystem, and partner-node content gather. Featured content rises first, while newer posts continue extending below.">
+          這裡聚合平台中的思想、茶、藝術、生態與合作節點內容。精選內容會被優先展示，最新內容持續往下延伸。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container feed-layout reveal">
+        <aside class="panel sidebar-panel">
+          <div class="kicker" data-lang-zh="Filter" data-lang-en="Filter">Filter</div>
+          <h2 style="margin:0 0 16px;" data-lang-zh="內容類型" data-lang-en="Post Types">內容類型</h2>
+
+          <select id="feedTypeFilter" class="select">
+            <option value="all">All</option>
+            <option value="thought">Thought</option>
+            <option value="tea">Tea</option>
+            <option value="art">Art</option>
+            <option value="ecosystem">Ecosystem</option>
+            <option value="partner">Partner</option>
+          </select>
+
+          <div style="margin-top:14px;">
+            <a href="submit.html" class="btn btn-primary" style="width:100%; justify-content:center;"
+               data-lang-zh="前往發表"
+               data-lang-en="Go to Submit">
+              前往發表
+            </a>
+          </div>
+
+          <p class="note" style="margin-top:16px;"
+             data-lang-zh="內容流只顯示已發佈內容。會員可在發表頁建立草稿或送審，管理員可於後台審核與精選。"
+             data-lang-en="The feed displays published content only. Members can create drafts or submit for review, while admins can approve and feature content in the backend.">
+            內容流只顯示已發佈內容。會員可在發表頁建立草稿或送審，管理員可於後台審核與精選。
+          </p>
+        </aside>
+
+        <section>
+          <div id="feedList" class="post-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>
+        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
+        <span
+          data-lang-zh="內容流讓平台中的思想與行動開始連續發生。"
+          data-lang-en="The content flow allows thought and action inside the platform to begin occurring continuously.">
+          內容流讓平台中的思想與行動開始連續發生。
+        </span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </div>
+    </div>
+  </footer>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let locale = "zh";
+    let typeFilter = "all";
+
+    const FEED_TEXT = {
+      zh: {
+        empty: "目前還沒有已發佈內容。",
+        failed: "內容讀取失敗。"
+      },
+      en: {
+        empty: "No published content yet.",
+        failed: "Failed to load feed."
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    async function fetchFeed() {
+      const feedList = document.getElementById("feedList");
+
+      let query = client
+        .from("posts")
+        .select("*")
+        .eq("status", "published")
+        .order("is_featured", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      if (typeFilter !== "all") {
+        query = query.eq("post_type", typeFilter);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error(error);
+        feedList.innerHTML = `<div class="panel" style="padding:24px;">${FEED_TEXT[locale].failed}</div>`;
+        return;
+      }
+
+      if (!data || !data.length) {
+        feedList.innerHTML = `<div class="panel" style="padding:24px;">${FEED_TEXT[locale].empty}</div>`;
+        return;
+      }
+
+      feedList.innerHTML = data.map(post => `
+        <article class="post-card">
+          <div class="post-meta">
+            <div>
+              <div class="post-author">${formatDate(post.created_at)}</div>
+            </div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(post.post_type)}</span>
+              ${post.is_featured ? `<span class="tag featured">${locale === "en" ? "Featured" : "精選"}</span>` : ""}
+            </div>
+          </div>
+          <h3>${escapeHtml(post.title)}</h3>
+          <p>${escapeHtml(post.content).replace(/\n/g, "<br>")}</p>
+        </article>
+      `).join("");
+    }
+
+    async function initFeed() {
+      await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      locale = AuthUI.getLocale();
+
+      document.getElementById("feedTypeFilter").addEventListener("change", async (e) => {
+        typeFilter = e.target.value;
+        await fetchFeed();
+      });
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await fetchFeed();
+      };
+
+      await fetchFeed();
+    }
+
+    initFeed();
+  </script>
+</body>
+</html>
