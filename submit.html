@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Submit Content" data-lang-en="Submit Content">Submit Content</div>
+        <h1
+          data-lang-zh="當內容開始被主動發表，平台才真正進入生長。"
+          data-lang-en="Only when content begins to be intentionally published does a platform truly enter growth.">
+          當內容開始被主動發表，平台才真正進入生長。
+        </h1>
+        <p
+          data-lang-zh="會員可以建立草稿或送出待審內容；管理員可直接發佈或後續審核。"
+          data-lang-en="Members can save drafts or submit content for review; admins can publish directly or review later.">
+          會員可以建立草稿或送出待審內容；管理員可直接發佈或後續審核。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div class="panel" style="padding:28px; max-width:920px; margin:0 auto;">
+          <div id="submitGate" class="note" style="margin-bottom:20px; display:none;">
+            請先登入後再發表內容。
+          </div>
+
+          <label class="label" for="submitType" data-lang-zh="內容類型" data-lang-en="Content Type">內容類型</label>
+          <select id="submitType" class="select">
+            <option value="thought">Thought</option>
+            <option value="tea">Tea</option>
+            <option value="art">Art</option>
+            <option value="ecosystem">Ecosystem</option>
+            <option value="partner">Partner</option>
+          </select>
+
+          <label class="label" for="submitTitle" data-lang-zh="標題" data-lang-en="Title">標題</label>
+          <input id="submitTitle" class="input" type="text" maxlength="120" />
+
+          <label class="label" for="submitContent" data-lang-zh="內容" data-lang-en="Content">內容</label>
+          <textarea id="submitContent" class="textarea" maxlength="5000"></textarea>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="saveDraftBtn" class="btn" data-lang-zh="儲存草稿" data-lang-en="Save Draft">儲存草稿</button>
+            <button id="submitPendingBtn" class="btn btn-primary" data-lang-zh="送出待審" data-lang-en="Submit for Review">送出待審</button>
+            <button id="publishNowBtn" class="btn" style="display:none;" data-lang-zh="直接發佈" data-lang-en="Publish Now">直接發佈</button>
+          </div>
+
+          <div id="submitStatus" class="status"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>
+        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
+        <span
+          data-lang-zh="發表頁讓平台從閱讀結構進入內容生長結構。"
+          data-lang-en="The submit page moves the platform from a reading structure into a content-growth structure.">
+          發表頁讓平台從閱讀結構進入內容生長結構。
+        </span>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </div>
+    </div>
+  </footer>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let session = { user: null, role: "guest" };
+    let locale = "zh";
+
+    const TEXT = {
+      zh: {
+        needLogin: "請先登入後再發表內容。",
+        saving: "儲存中...",
+        saved: "草稿已儲存。",
+        pending: "送審中...",
+        submitted: "內容已送出待審。",
+        publishing: "發佈中...",
+        published: "內容已發佈。",
+        failed: "操作失敗，請稍後再試。"
+      },
+      en: {
+        needLogin: "Please sign in before submitting content.",
+        saving: "Saving...",
+        saved: "Draft saved.",
+        pending: "Submitting...",
+        submitted: "Content submitted for review.",
+        publishing: "Publishing...",
+        published: "Content published.",
+        failed: "Action failed. Please try again."
+      }
+    };
+
+    async function savePost(status) {
+      const submitStatus = document.getElementById("submitStatus");
+
+      if (!session.user) {
+        submitStatus.textContent = TEXT[locale].needLogin;
+        return;
+      }
+
+      const title = (document.getElementById("submitTitle").value || "").trim();
+      const content = (document.getElementById("submitContent").value || "").trim();
+      const postType = document.getElementById("submitType").value;
+
+      if (!title || !content) return;
+
+      const nextStatus =
+        status === "draft" ? "draft" :
+        status === "pending" ? "pending" :
+        "published";
+
+      submitStatus.textContent =
+        nextStatus === "draft" ? TEXT[locale].saving :
+        nextStatus === "pending" ? TEXT[locale].pending :
+        TEXT[locale].publishing;
+
+      const { error } = await client
+        .from("posts")
+        .insert([{
+          user_id: session.user.id,
+          title,
+          content,
+          post_type: postType,
+          status: nextStatus
+        }]);
+
+      if (error) {
+        console.error(error);
+        submitStatus.textContent = TEXT[locale].failed;
+        return;
+      }
+
+      submitStatus.textContent =
+        nextStatus === "draft" ? TEXT[locale].saved :
+        nextStatus === "pending" ? TEXT[locale].submitted :
+        TEXT[locale].published;
+
+      document.getElementById("submitTitle").value = "";
+      document.getElementById("submitContent").value = "";
+    }
+
+    async function initSubmit() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      session = auth.getSession();
+      locale = AuthUI.getLocale();
+
+      if (!session.user) {
+        document.getElementById("submitGate").style.display = "block";
+      }
+
+      if (session.role === "admin") {
+        document.getElementById("publishNowBtn").style.display = "inline-flex";
+      }
+
+      document.getElementById("saveDraftBtn").addEventListener("click", () => savePost("draft"));
+      document.getElementById("submitPendingBtn").addEventListener("click", () => savePost("pending"));
+      document.getElementById("publishNowBtn").addEventListener("click", () => savePost("published"));
+
+      window.onXSLocaleChange = (nextLocale) => {
+        locale = nextLocale;
+        if (!session.user) {
+          document.getElementById("submitGate").textContent = TEXT[locale].needLogin;
+        }
+      };
+
+      if (!session.user) {
+        document.getElementById("submitGate").textContent = TEXT[locale].needLogin;
+      }
+    }
+
+    initSubmit();
+  </script>
+</body>
+</html>
