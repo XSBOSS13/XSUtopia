@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>留言管理 — XS UTOPIA</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body { background:#050505; }
+.panel { border:1px solid rgba(255,255,255,0.06); }
+</style>
+</head>
+
+<body>
+
+<header class="nav">
+<div class="container nav-inner">
+<a href="index.html">XS UTOPIA</a>
+</div>
+</header>
+
+<main>
+
+<section class="container" style="padding-top:120px;">
+
+<h1>留言管理</h1>
+<p style="color:#888;">管理員可刪除或精選留言</p>
+
+<div id="commentList"></div>
+
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const client = supabase.createClient(
+"https://ghqbtbkzosqhmvsnejoj.supabase.co",
+"你的key"
+);
+
+async function loadComments(){
+const {data} = await client.from("post_comments").select("*");
+
+document.getElementById("commentList").innerHTML =
+data.map(c=>`
+<div class="panel" style="padding:20px;margin-bottom:10px;">
+<p>${c.content}</p>
+<button onclick="del('${c.id}')">刪除</button>
+</div>
+`).join("");
+}
+
+async function del(id){
+await client.from("post_comments").delete().eq("id",id);
+loadComments();
+}
+
+loadComments();
+</script>
+
+</body>
+</html>
