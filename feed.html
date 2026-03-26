@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Feed — XS UTOPIA</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .feed-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    .feed-stat{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      min-height:34px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+      cursor:pointer;
+    }
+    .feed-stat.active{
+      border-color:rgba(215,193,154,.24);
+      color:var(--accent);
+      background:rgba(215,193,154,.08);
+    }
+  </style>
 </head>
 <body>
   <div id="opening"><span>XS UTOPIA</span></div>
@@ -20,7 +46,6 @@
       <nav class="nav-links">
         <a href="index.html" data-i18n-key="nav_home">首頁</a>
         <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
         <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
         <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
         <a href="join.html" data-i18n-key="nav_join">加入平台</a>
@@ -48,14 +73,14 @@
       <div class="container reveal">
         <div class="kicker" data-lang-zh="Content Flow" data-lang-en="Content Flow">Content Flow</div>
         <h1
-          data-lang-zh="內容開始形成流，平台才真正開始有生命。"
-          data-lang-en="Only when content begins to flow does a platform begin to live.">
-          內容開始形成流，平台才真正開始有生命。
+          data-lang-zh="內容開始互相影響，平台才真正形成流。"
+          data-lang-en="A platform becomes a flow only when content begins to affect other content.">
+          內容開始互相影響，平台才真正形成流。
         </h1>
         <p
-          data-lang-zh="這裡聚合平台中的思想、茶、藝術、生態與合作節點內容。精選內容會被優先展示，最新內容持續往下延伸。"
-          data-lang-en="This is where thought, tea, art, ecosystem, and partner-node content gather. Featured content rises first, while newer posts continue extending below.">
-          這裡聚合平台中的思想、茶、藝術、生態與合作節點內容。精選內容會被優先展示，最新內容持續往下延伸。
+          data-lang-zh="這裡聚合平台中的思想、茶、藝術、生態與合作節點內容。你可以閱讀、按讚、收藏，並開始形成個人的內容路徑。"
+          data-lang-en="This brings together thought, tea, art, ecosystem, and partner-node content. You can read, like, save, and begin forming your own path through the platform.">
+          這裡聚合平台中的思想、茶、藝術、生態與合作節點內容。你可以閱讀、按讚、收藏，並開始形成個人的內容路徑。
         </p>
       </div>
     </section>
@@ -75,18 +100,19 @@
             <option value="partner">Partner</option>
           </select>
 
-          <div style="margin-top:14px;">
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:12px;">
             <a href="submit.html" class="btn btn-primary" style="width:100%; justify-content:center;"
                data-lang-zh="前往發表"
-               data-lang-en="Go to Submit">
-              前往發表
-            </a>
+               data-lang-en="Go to Submit">前往發表</a>
+            <a href="creator.html" class="btn" style="width:100%; justify-content:center;"
+               data-lang-zh="查看個人內容頁"
+               data-lang-en="View Creator Page">查看個人內容頁</a>
           </div>
 
           <p class="note" style="margin-top:16px;"
-             data-lang-zh="內容流只顯示已發佈內容。會員可在發表頁建立草稿或送審，管理員可於後台審核與精選。"
-             data-lang-en="The feed displays published content only. Members can create drafts or submit for review, while admins can approve and feature content in the backend.">
-            內容流只顯示已發佈內容。會員可在發表頁建立草稿或送審，管理員可於後台審核與精選。
+             data-lang-zh="這裡會即時反映新發佈內容。按讚與收藏可作為後續推薦、策展與平台路徑的基礎。"
+             data-lang-en="New published content appears here in real time. Likes and saves can later power recommendation, curation, and platform pathways.">
+            這裡會即時反映新發佈內容。按讚與收藏可作為後續推薦、策展與平台路徑的基礎。
           </p>
         </aside>
 
@@ -97,42 +123,28 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container footer-row">
-      <div>
-        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span
-          data-lang-zh="內容流讓平台中的思想與行動開始連續發生。"
-          data-lang-en="The content flow allows thought and action inside the platform to begin occurring continuously.">
-          內容流讓平台中的思想與行動開始連續發生。
-        </span>
-      </div>
-      <div class="footer-links">
-        <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
-        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
-        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
-        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
-      </div>
-    </div>
-  </footer>
-
   <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth-ui.js"></script>
   <script>
     let client = null;
     let locale = "zh";
     let typeFilter = "all";
+    let session = { user: null, role: "guest" };
 
     const FEED_TEXT = {
       zh: {
         empty: "目前還沒有已發佈內容。",
-        failed: "內容讀取失敗。"
+        failed: "內容讀取失敗。",
+        like: "讚",
+        save: "收藏",
+        saved: "已收藏"
       },
       en: {
         empty: "No published content yet.",
-        failed: "Failed to load feed."
+        failed: "Failed to load feed.",
+        like: "Like",
+        save: "Save",
+        saved: "Saved"
       }
     };
 
@@ -154,7 +166,7 @@
     async function fetchFeed() {
       const feedList = document.getElementById("feedList");
 
-      let query = client
+      let postQuery = client
         .from("posts")
         .select("*")
         .eq("status", "published")
@@ -162,23 +174,35 @@
         .order("created_at", { ascending: false });
 
       if (typeFilter !== "all") {
-        query = query.eq("post_type", typeFilter);
+        postQuery = postQuery.eq("post_type", typeFilter);
       }
 
-      const { data, error } = await query;
+      const [{ data: posts, error: postError }, { data: likes }, { data: saves }] = await Promise.all([
+        postQuery,
+        client.from("post_likes").select("*"),
+        session.user ? client.from("saved_posts").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] })
+      ]);
 
-      if (error) {
-        console.error(error);
+      if (postError) {
+        console.error(postError);
         feedList.innerHTML = `<div class="panel" style="padding:24px;">${FEED_TEXT[locale].failed}</div>`;
         return;
       }
 
-      if (!data || !data.length) {
+      if (!posts || !posts.length) {
         feedList.innerHTML = `<div class="panel" style="padding:24px;">${FEED_TEXT[locale].empty}</div>`;
         return;
       }
 
-      feedList.innerHTML = data.map(post => `
+      const likeMap = {};
+      (likes || []).forEach((item) => {
+        if (!likeMap[item.post_id]) likeMap[item.post_id] = 0;
+        likeMap[item.post_id] += 1;
+      });
+
+      const savedSet = new Set((saves || []).map(item => item.post_id));
+
+      feedList.innerHTML = posts.map(post => `
         <article class="post-card">
           <div class="post-meta">
             <div>
@@ -189,17 +213,84 @@
               ${post.is_featured ? `<span class="tag featured">${locale === "en" ? "Featured" : "精選"}</span>` : ""}
             </div>
           </div>
+
           <h3>${escapeHtml(post.title)}</h3>
           <p>${escapeHtml(post.content).replace(/\n/g, "<br>")}</p>
+
+          <div class="feed-actions">
+            <button class="feed-stat" data-like-post="${post.id}">
+              ${FEED_TEXT[locale].like} · ${likeMap[post.id] || 0}
+            </button>
+            <button class="feed-stat ${savedSet.has(post.id) ? 'active' : ''}" data-save-post="${post.id}">
+              ${savedSet.has(post.id) ? FEED_TEXT[locale].saved : FEED_TEXT[locale].save}
+            </button>
+          </div>
         </article>
       `).join("");
+
+      bindFeedActions();
+    }
+
+    async function toggleLike(postId) {
+      if (!session.user) {
+        window.location.href = "auth.html";
+        return;
+      }
+
+      const { data: existing } = await client
+        .from("post_likes")
+        .select("id")
+        .eq("post_id", postId)
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+
+      if (existing?.id) {
+        await client.from("post_likes").delete().eq("id", existing.id);
+      } else {
+        await client.from("post_likes").insert([{ post_id: postId, user_id: session.user.id }]);
+      }
+
+      await fetchFeed();
+    }
+
+    async function toggleSave(postId) {
+      if (!session.user) {
+        window.location.href = "auth.html";
+        return;
+      }
+
+      const { data: existing } = await client
+        .from("saved_posts")
+        .select("id")
+        .eq("post_id", postId)
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+
+      if (existing?.id) {
+        await client.from("saved_posts").delete().eq("id", existing.id);
+      } else {
+        await client.from("saved_posts").insert([{ post_id: postId, user_id: session.user.id }]);
+      }
+
+      await fetchFeed();
+    }
+
+    function bindFeedActions() {
+      document.querySelectorAll("[data-like-post]").forEach((btn) => {
+        btn.addEventListener("click", () => toggleLike(btn.dataset.likePost));
+      });
+
+      document.querySelectorAll("[data-save-post]").forEach((btn) => {
+        btn.addEventListener("click", () => toggleSave(btn.dataset.savePost));
+      });
     }
 
     async function initFeed() {
-      await AuthUI.initHeaderAuth();
+      const auth = await AuthUI.initHeaderAuth();
       AuthUI.initReveal();
 
       client = await AuthUI.getClient();
+      session = auth.getSession();
       locale = AuthUI.getLocale();
 
       document.getElementById("feedTypeFilter").addEventListener("change", async (e) => {
@@ -213,6 +304,19 @@
       };
 
       await fetchFeed();
+
+      client
+        .channel("xs-feed-realtime")
+        .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, async () => {
+          await fetchFeed();
+        })
+        .on("postgres_changes", { event: "*", schema: "public", table: "post_likes" }, async () => {
+          await fetchFeed();
+        })
+        .on("postgres_changes", { event: "*", schema: "public", table: "saved_posts" }, async () => {
+          await fetchFeed();
+        })
+        .subscribe();
     }
 
     initFeed();
