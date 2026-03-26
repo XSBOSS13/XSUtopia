@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partner Map — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="partners.html" class="active" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Partner Nodes" data-lang-en="Partner Nodes">Partner Nodes</div>
+        <h1
+          data-lang-zh="合作節點開始在現實中形成分布。"
+          data-lang-en="Partner nodes begin to form distribution in the real world.">
+          合作節點開始在現實中形成分布。
+        </h1>
+        <p
+          data-lang-zh="這裡聚合平台未來的合作空間、茶節點、藝術空間與文化節點。"
+          data-lang-en="This brings together future partner spaces, tea nodes, art venues, and cultural points across the platform.">
+          這裡聚合平台未來的合作空間、茶節點、藝術空間與文化節點。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div class="feed-layout">
+          <aside class="panel sidebar-panel">
+            <div class="kicker" data-lang-zh="Nodes" data-lang-en="Nodes">Nodes</div>
+            <h2 style="margin:0 0 16px;" data-lang-zh="節點類型" data-lang-en="Node Types">節點類型</h2>
+            <select id="nodeFilter" class="select">
+              <option value="all">All</option>
+              <option value="space">Space</option>
+              <option value="tea">Tea</option>
+              <option value="art">Art</option>
+              <option value="partner">Partner</option>
+              <option value="community">Community</option>
+            </select>
+          </aside>
+
+          <section>
+            <div id="nodeList" class="post-list"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let locale = "zh";
+    let nodeFilter = "all";
+
+    const NODE_TEXT = {
+      zh: {
+        empty: "目前還沒有節點資料。"
+      },
+      en: {
+        empty: "There are no partner nodes yet."
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
+
+    async function fetchNodes() {
+      const nodeList = document.getElementById("nodeList");
+
+      let query = client
+        .from("partner_nodes")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (nodeFilter !== "all") {
+        query = query.eq("category", nodeFilter);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (!data || !data.length) {
+        nodeList.innerHTML = `<div class="panel" style="padding:24px;">${NODE_TEXT[locale].empty}</div>`;
+        return;
+      }
+
+      nodeList.innerHTML = data.map(node => `
+        <article class="post-card">
+          <div class="post-meta">
+            <div class="post-author">${escapeHtml(node.city || "")}</div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(node.category)}</span>
+            </div>
+          </div>
+          <h3>${escapeHtml(node.title)}</h3>
+          <p>${escapeHtml(node.description || "")}</p>
+          <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+            ${node.address ? `<span class="tag">${escapeHtml(node.address)}</span>` : ""}
+            ${node.map_url ? `<a href="${escapeHtml(node.map_url)}" class="btn" target="_blank" rel="noopener">${locale === "en" ? "Open Map" : "開啟地圖"}</a>` : ""}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function initPartnerMap() {
+      await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      locale = AuthUI.getLocale();
+
+      document.getElementById("nodeFilter").addEventListener("change", async (e) => {
+        nodeFilter = e.target.value;
+        await fetchNodes();
+      });
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await fetchNodes();
+      };
+
+      await fetchNodes();
+    }
+
+    initPartnerMap();
+  </script>
+</body>
+</html>
