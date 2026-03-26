@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommendations — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .rec-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+    .metric-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+    .metric-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:32px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+    }
+    @media (max-width:900px){
+      .rec-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Recommendations" data-lang-en="Recommendations">Recommendations</div>
+        <h1
+          data-lang-zh="平台開始依內容熱度與互動軌跡形成推薦。"
+          data-lang-en="The platform begins recommending content through engagement and momentum.">
+          平台開始依內容熱度與互動軌跡形成推薦。
+        </h1>
+        <p
+          data-lang-zh="這裡顯示目前平台中值得優先被看見的內容，依照互動、收藏、留言與精選狀態綜合排序。"
+          data-lang-en="This page surfaces content most worth seeing first, ranked by engagement, saves, comments, and featured status.">
+          這裡顯示目前平台中值得優先被看見的內容，依照互動、收藏、留言與精選狀態綜合排序。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div id="recList" class="rec-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let locale = "zh";
+
+    const TEXT = {
+      zh: {
+        empty: "目前還沒有可推薦內容。",
+        failed: "推薦內容讀取失敗。",
+        hot: "熱度",
+        likes: "讚",
+        comments: "留言",
+        saves: "收藏",
+        featured: "精選"
+      },
+      en: {
+        empty: "There is no recommended content yet.",
+        failed: "Failed to load recommendations.",
+        hot: "Hot",
+        likes: "Likes",
+        comments: "Comments",
+        saves: "Saves",
+        featured: "Featured"
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    async function renderRecommendations() {
+      const el = document.getElementById("recList");
+
+      const { data, error } = await client
+        .from("post_metrics")
+        .select("*")
+        .eq("status", "published")
+        .order("hot_score", { ascending: false })
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      if (error) {
+        console.error(error);
+        el.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].failed}</div>`;
+        return;
+      }
+
+      if (!data || !data.length) {
+        el.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].empty}</div>`;
+        return;
+      }
+
+      el.innerHTML = data.map(post => `
+        <article class="post-card">
+          <div class="post-meta">
+            <div class="post-author">${formatDate(post.created_at)}</div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(post.post_type)}</span>
+              ${post.is_featured ? `<span class="tag featured">${TEXT[locale].featured}</span>` : ""}
+            </div>
+          </div>
+
+          <h3>${escapeHtml(post.title)}</h3>
+          <p>${escapeHtml(post.content).replace(/\n/g, "<br>")}</p>
+
+          <div class="metric-row">
+            <span class="metric-chip">${TEXT[locale].hot} · ${post.hot_score}</span>
+            <span class="metric-chip">${TEXT[locale].likes} · ${post.like_count}</span>
+            <span class="metric-chip">${TEXT[locale].comments} · ${post.comment_count}</span>
+            <span class="metric-chip">${TEXT[locale].saves} · ${post.save_count}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    async function initRecommendations() {
+      await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      locale = AuthUI.getLocale();
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await renderRecommendations();
+      };
+
+      await renderRecommendations();
+    }
+
+    initRecommendations();
+  </script>
+</body>
+</html>
