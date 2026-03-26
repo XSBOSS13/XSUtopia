@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partner Apply — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="partners.html" class="active" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Partner Application" data-lang-en="Partner Application">Partner Application</div>
+        <h1
+          data-lang-zh="如果你是空間、品牌或節點，現在可以進入平台。"
+          data-lang-en="If you are a space, brand, or node, you can now enter the platform.">
+          如果你是空間、品牌或節點，現在可以進入平台。
+        </h1>
+        <p
+          data-lang-zh="合作社區不是名單，而是一種持續流動的關係。你可以從這裡送出合作申請。"
+          data-lang-en="Community partnership is not a list, but a continuing relationship in motion. You can submit your application here.">
+          合作社區不是名單，而是一種持續流動的關係。你可以從這裡送出合作申請。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div class="panel" style="padding:28px; max-width:920px; margin:0 auto;">
+          <div id="applyGate" class="note" style="display:none; margin-bottom:20px;">請先登入後再送出合作申請。</div>
+
+          <label class="label" for="brandName">品牌 / 空間名稱</label>
+          <input id="brandName" class="input" type="text" maxlength="100" />
+
+          <label class="label" for="contactName">聯絡人名稱</label>
+          <input id="contactName" class="input" type="text" maxlength="60" />
+
+          <label class="label" for="contactEmail">Email</label>
+          <input id="contactEmail" class="input" type="email" maxlength="120" />
+
+          <label class="label" for="partnerCity">城市</label>
+          <input id="partnerCity" class="input" type="text" maxlength="60" />
+
+          <label class="label" for="spaceType">空間 / 類型</label>
+          <input id="spaceType" class="input" type="text" maxlength="60" placeholder="茶空間 / 選物店 / 展演場域 / 品牌..." />
+
+          <label class="label" for="partnerDescription">合作說明</label>
+          <textarea id="partnerDescription" class="textarea" maxlength="3000"></textarea>
+
+          <button id="partnerApplyBtn" class="btn btn-primary">送出申請</button>
+          <div id="partnerApplyStatus" class="status"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let session = { user: null, role: "guest" };
+    let locale = "zh";
+
+    const TEXT = {
+      zh: {
+        needLogin: "請先登入後再送出合作申請。",
+        submitting: "送出中...",
+        success: "合作申請已送出。",
+        failed: "申請送出失敗。"
+      },
+      en: {
+        needLogin: "Please sign in before submitting an application.",
+        submitting: "Submitting...",
+        success: "Application submitted.",
+        failed: "Failed to submit application."
+      }
+    };
+
+    async function initPartnerApply() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      session = auth.getSession();
+      locale = AuthUI.getLocale();
+
+      const gate = document.getElementById("applyGate");
+      const status = document.getElementById("partnerApplyStatus");
+
+      if (!session.user) {
+        gate.style.display = "block";
+        gate.textContent = TEXT[locale].needLogin;
+      }
+
+      document.getElementById("partnerApplyBtn").addEventListener("click", async () => {
+        if (!session.user) {
+          status.textContent = TEXT[locale].needLogin;
+          return;
+        }
+
+        status.textContent = TEXT[locale].submitting;
+
+        const payload = {
+          user_id: session.user.id,
+          brand_name: (document.getElementById("brandName").value || "").trim(),
+          contact_name: (document.getElementById("contactName").value || "").trim(),
+          email: (document.getElementById("contactEmail").value || "").trim(),
+          city: (document.getElementById("partnerCity").value || "").trim(),
+          space_type: (document.getElementById("spaceType").value || "").trim(),
+          description: (document.getElementById("partnerDescription").value || "").trim()
+        };
+
+        const { error } = await client.from("partner_applications").insert([payload]);
+
+        if (error) {
+          console.error(error);
+          status.textContent = TEXT[locale].failed;
+          return;
+        }
+
+        status.textContent = TEXT[locale].success;
+
+        ["brandName", "contactName", "contactEmail", "partnerCity", "spaceType", "partnerDescription"].forEach((id) => {
+          document.getElementById(id).value = "";
+        });
+      });
+
+      window.onXSLocaleChange = (nextLocale) => {
+        locale = nextLocale;
+        if (!session.user) gate.textContent = TEXT[locale].needLogin;
+      };
+    }
+
+    initPartnerApply();
+  </script>
+</body>
+</html>
