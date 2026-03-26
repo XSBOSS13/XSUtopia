@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Users — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .user-card{
+      padding:22px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      box-shadow:var(--shadow);
+    }
+    .user-card + .user-card{
+      margin-top:14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
+      </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker">Admin Users</div>
+        <h1
+          data-lang-zh="檢視平台中的用戶資料與基本輪廓。"
+          data-lang-en="Inspect user data and basic profiles across the platform.">
+          檢視平台中的用戶資料與基本輪廓。
+        </h1>
+        <p
+          data-lang-zh="這裡集中查看 user_profiles 內容，幫助你理解平台目前的會員組成。"
+          data-lang-en="This page gathers user_profiles data to help you understand the current member composition of the platform.">
+          這裡集中查看 user_profiles 內容，幫助你理解平台目前的會員組成。
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container reveal">
+        <div id="userGate" class="panel" style="padding:28px; display:none;">
+          <p class="note">你沒有權限查看這個頁面。</p>
+        </div>
+
+        <div id="userList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    let client = null;
+    let session = { user: null, role: "guest" };
+    let locale = "zh";
+
+    const TEXT = {
+      zh: {
+        unauthorized: "你沒有權限查看這個頁面。",
+        empty: "目前沒有用戶資料。"
+      },
+      en: {
+        unauthorized: "You do not have permission to view this page.",
+        empty: "There are no user records."
+      }
+    };
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m]));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+    }
+
+    async function renderUsers() {
+      const list = document.getElementById("userList");
+      const { data, error } = await client
+        .from("user_profiles")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        list.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].empty}</div>`;
+        return;
+      }
+
+      if (!data || !data.length) {
+        list.innerHTML = `<div class="panel" style="padding:24px;">${TEXT[locale].empty}</div>`;
+        return;
+      }
+
+      list.innerHTML = data.map(user => `
+        <div class="user-card">
+          <div class="post-meta">
+            <div class="post-author">${formatDate(user.created_at)}</div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(user.role)}</span>
+            </div>
+          </div>
+          <h3 style="margin:0 0 12px;">${escapeHtml(user.display_name || "-")}</h3>
+          <p style="margin:0 0 8px; color:var(--muted);">${escapeHtml(user.email || "-")}</p>
+          <p style="margin:0; color:var(--muted); line-height:1.9;">${escapeHtml(user.bio || "")}</p>
+        </div>
+      `).join("");
+    }
+
+    async function initAdminUsers() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      client = await AuthUI.getClient();
+      session = auth.getSession();
+      locale = AuthUI.getLocale();
+
+      const gate = document.getElementById("userGate");
+      if (session.role !== "admin") {
+        gate.style.display = "block";
+        gate.querySelector(".note").textContent = TEXT[locale].unauthorized;
+        return;
+      }
+
+      window.onXSLocaleChange = async (nextLocale) => {
+        locale = nextLocale;
+        await renderUsers();
+      };
+
+      await renderUsers();
+    }
+
+    initAdminUsers();
+  </script>
+</body>
+</html>
