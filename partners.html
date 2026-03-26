@@ -1,153 +1,84 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>合作社區 — XS UTOPIA</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>合作社區 — XS UTOPIA</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body { background:#0c0c0c; }
+.hero { background:linear-gradient(to bottom,#0c0c0c,#121212); }
+.card { border:1px solid rgba(255,255,255,0.08); }
+</style>
 </head>
+
 <body>
-  <div id="opening"><span>XS UTOPIA</span></div>
-  <button id="langToggle" class="lang-toggle">EN</button>
 
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html">
-        <div class="brand-mark">XS</div>
-        <div class="brand-name">XS UTOPIA</div>
-      </a>
+<div id="opening"><span>XS UTOPIA</span></div>
+<button id="langToggle" class="lang-toggle">EN</button>
 
-      <nav class="nav-links">
-        <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
-        <a href="partners.html" class="active" data-i18n-key="nav_partners">合作社區</a>
-        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
-        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
-      </nav>
+<header class="nav">
+<div class="container nav-inner">
+<a class="brand" href="index.html">
+<div class="brand-mark">XS</div>
+<div class="brand-name">XS UTOPIA</div>
+</a>
 
-      <div class="auth-right">
-        <div id="authGuest" class="auth-guest">
-          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
-          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
-        </div>
+<nav class="nav-links">
+<a href="index.html">首頁</a>
+<a href="commons.html">公共社群</a>
+<a href="partners.html" class="active">合作社區</a>
+<a href="store.html">商圈文化</a>
+<a href="join.html">加入平台</a>
+</nav>
 
-        <div id="authMember" class="auth-member" style="display:none;">
-          <a href="profile.html" class="auth-member-meta">
-            <strong id="authMemberName">Member</strong>
-            <span id="authMemberRole">Member</span>
-          </a>
-          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
-        </div>
-      </div>
-    </div>
-  </header>
+<div id="authGuest">
+<a href="auth.html" class="btn">登入</a>
+</div>
+</div>
+</header>
 
-  <main>
-    <section class="hero">
-      <div class="container reveal">
-        <div class="kicker" data-lang-zh="Community Partners" data-lang-en="Community Partners">Community Partners</div>
-        <h1
-          data-lang-zh="合作社區不是商家列表，而是節點之間開始互相支撐的地方。"
-          data-lang-en="Community Partners is not a list of shops, but a place where nodes begin to support one another.">
-          合作社區不是商家列表，而是節點之間開始互相支撐的地方。
-        </h1>
-        <p
-          data-lang-zh="當內容與現實空間開始連結，平台就不再只是線上結構。合作社區的角色，是讓理念、日常與商業節點開始形成真正可持續的互動。"
-          data-lang-en="When content begins to connect with physical spaces, the platform stops being only online structure. Community Partners allows ideas, everyday life, and commercial nodes to enter sustainable interaction.">
-          當內容與現實空間開始連結，平台就不再只是線上結構。合作社區的角色，是讓理念、日常與商業節點開始形成真正可持續的互動。
-        </p>
-      </div>
-    </section>
+<main>
 
-    <section>
-      <div class="container reveal">
-        <div class="grid-3">
-          <article class="card">
-            <div class="card-index">01</div>
-            <h3 data-lang-zh="空間" data-lang-en="Space">空間</h3>
-            <p
-              data-lang-zh="實體空間、選物店、茶空間、展演場域，都可以成為平台延伸到現實的節點。"
-              data-lang-en="Physical spaces, select shops, tea spaces, and exhibition venues can all become nodes where the platform extends into reality.">
-              實體空間、選物店、茶空間、展演場域，都可以成為平台延伸到現實的節點。
-            </p>
-          </article>
+<section class="hero">
+<div class="container reveal">
+<h1>節點開始連接，空間開始發生關係。</h1>
+<p>合作社區讓平台從內容延伸到現實，形成可持續的文化節點。</p>
+</div>
+</section>
 
-          <article class="card">
-            <div class="card-index">02</div>
-            <h3 data-lang-zh="合作" data-lang-en="Cooperation">合作</h3>
-            <p
-              data-lang-zh="合作社區不只是曝光，而是讓不同節點在內容、活動、商品與文化上彼此流通。"
-              data-lang-en="Community Partners is not just exposure, but circulation among nodes across content, events, goods, and culture.">
-              合作社區不只是曝光，而是讓不同節點在內容、活動、商品與文化上彼此流通。
-            </p>
-          </article>
+<section>
+<div class="container reveal">
 
-          <article class="card">
-            <div class="card-index">03</div>
-            <h3 data-lang-zh="持續" data-lang-en="Continuity">持續</h3>
-            <p
-              data-lang-zh="真正有力量的合作，不是一次性的活動，而是能被延續、被再生、被放進整個平台脈絡中的關係。"
-              data-lang-en="Meaningful collaboration is not a one-off event, but a relationship that can continue, regenerate, and be embedded into the larger platform context.">
-              真正有力量的合作，不是一次性的活動，而是能被延續、被再生、被放進整個平台脈絡中的關係。
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
+<div class="grid-3">
 
-    <section>
-      <div class="container reveal">
-        <div class="cta">
-          <div class="cta-text">
-            <div class="kicker" data-lang-zh="Connection" data-lang-en="Connection">Connection</div>
-            <h2
-              data-lang-zh="合作社區讓平台從內容延伸到現實，讓節點之間開始真正互通。"
-              data-lang-en="Community Partners extends the platform from content into reality and allows nodes to truly connect.">
-              合作社區讓平台從內容延伸到現實，讓節點之間開始真正互通。
-            </h2>
-            <p
-              data-lang-zh="未來這裡會延伸成合作申請、節點展示與活動串接頁。"
-              data-lang-en="In the future, this area will evolve into partner applications, node showcases, and event connections.">
-              未來這裡會延伸成合作申請、節點展示與活動串接頁。
-            </p>
-          </div>
+<div class="card">
+<h3>茶空間</h3>
+<p>從山到城市，茶讓場域開始產生節奏。</p>
+</div>
 
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn btn-primary" href="join.html" data-lang-zh="申請合作" data-lang-en="Apply to Partner">申請合作</a>
-            <a class="btn" href="store.html" data-lang-zh="前往商圈文化" data-lang-en="Go to Culture District">前往商圈文化</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+<div class="card">
+<h3>選物空間</h3>
+<p>物件不只是商品，而是文化延伸。</p>
+</div>
 
-  <footer class="footer">
-    <div class="container footer-row">
-      <div>
-        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span
-          data-lang-zh="合作社區讓平台與現實場域開始產生結構性的連結。"
-          data-lang-en="Community Partners creates structural connections between the platform and real-world spaces.">
-          合作社區讓平台與現實場域開始產生結構性的連結。
-        </span>
-      </div>
-      <div class="footer-links">
-        <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
-        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
-        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
-        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
-        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
-      </div>
-    </div>
-  </footer>
+<div class="card">
+<h3>展演節點</h3>
+<p>藝術與現場，形成時間性的交流。</p>
+</div>
 
-  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="auth-ui.js"></script>
-  <script>
-    AuthUI.initHeaderAuth();
-    AuthUI.initReveal();
-  </script>
+</div>
+</div>
+</section>
+
+</main>
+
+<script src="auth-ui.js"></script>
+<script>
+AuthUI.initHeaderAuth();
+AuthUI.initReveal();
+</script>
+
 </body>
 </html>
