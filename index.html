@@ -8,7 +8,7 @@
 </head>
 <body>
   <div id="opening"><span>XS UTOPIA</span></div>
-  <button class="lang-toggle">EN</button>
+  <button id="langToggle" class="lang-toggle">EN</button>
 
   <header class="nav">
     <div class="container nav-inner">
@@ -18,18 +18,18 @@
       </a>
 
       <nav class="nav-links">
-        <a href="index.html" class="active">首頁</a>
-        <a href="commons.html">公共社群</a>
-        <a href="explore.html">探索中心</a>
-        <a href="partners.html">合作社區</a>
-        <a href="store.html">商圈文化</a>
-        <a href="join.html">加入平台</a>
+        <a href="index.html" class="active" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </nav>
 
       <div class="auth-right">
         <div id="authGuest" class="auth-guest">
-          <a href="auth.html" class="btn">登入</a>
-          <a href="auth.html" class="btn">註冊</a>
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
         </div>
 
         <div id="authMember" class="auth-member" style="display:none;">
@@ -37,7 +37,7 @@
             <strong id="authMemberName">Member</strong>
             <span id="authMemberRole">Member</span>
           </a>
-          <button id="authSignOutBtn" class="btn">登出</button>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
         </div>
       </div>
     </div>
@@ -46,9 +46,15 @@
   <main>
     <section class="hero">
       <div class="container reveal">
-        <div class="kicker">XS UTOPIA</div>
-        <h1>一個關於思想、社群與文化流動的完整生態系。</h1>
-        <p>
+        <div class="kicker" data-lang-zh="XS UTOPIA" data-lang-en="XS UTOPIA">XS UTOPIA</div>
+        <h1
+          data-lang-zh="一個關於思想、社群與文化流動的完整生態系。"
+          data-lang-en="A complete ecosystem for thought, community, and cultural circulation.">
+          一個關於思想、社群與文化流動的完整生態系。
+        </h1>
+        <p
+          data-lang-zh="這裡不是只為了瀏覽而存在。它是為了累積感知、循環交流，維持一種更有深度意識的生活而存在。"
+          data-lang-en="This is not a place made merely for browsing. It exists to accumulate perception, circulate exchange, and sustain a more conscious way of living.">
           這裡不是只為了瀏覽而存在。它是為了累積感知、循環交流，維持一種更有深度意識的生活而存在。
         </p>
       </div>
@@ -59,20 +65,32 @@
         <div class="grid-3">
           <article class="card">
             <div class="card-index">01</div>
-            <h3>公共社群</h3>
-            <p>讓訪客與會員進入同一個場域。訪客可以閱讀與參與評論，會員能進一步留下自己的存在。</p>
+            <h3 data-lang-zh="公共社群" data-lang-en="Commons">公共社群</h3>
+            <p
+              data-lang-zh="訪客與會員都可以進入閱讀。會員可發文，訪客與會員都可以在文章底下評論。"
+              data-lang-en="Both guests and members can enter to read. Members can publish posts, and both guests and members can comment beneath articles.">
+              訪客與會員都可以進入閱讀。會員可發文，訪客與會員都可以在文章底下評論。
+            </p>
           </article>
 
           <article class="card">
             <div class="card-index">02</div>
-            <h3>探索中心</h3>
-            <p>原本的世界觀頁將升級成更有結構的探索中心，成為整個平台思想與方向的入口。</p>
+            <h3 data-lang-zh="探索中心" data-lang-en="Explore Center">探索中心</h3>
+            <p
+              data-lang-zh="原本的世界觀頁升級為探索中心，成為整個平台思想、概念與方向的入口。"
+              data-lang-en="The former worldview page evolves into an exploration center—an entry point for the platform’s concepts, directions, and philosophy.">
+              原本的世界觀頁升級為探索中心，成為整個平台思想、概念與方向的入口。
+            </p>
           </article>
 
           <article class="card">
             <div class="card-index">03</div>
-            <h3>合作社區</h3>
-            <p>讓節點、商家、空間與人開始真正互相連結，而不是只停留在展示層。</p>
+            <h3 data-lang-zh="合作社區 / 商圈文化" data-lang-en="Community Partners / Culture District">合作社區 / 商圈文化</h3>
+            <p
+              data-lang-zh="合作節點與文化流通將從展示層進入實際互動，形成可持續運作的結構。"
+              data-lang-en="Partner nodes and cultural circulation move beyond display into actual interaction, forming a sustainable structure.">
+              合作節點與文化流通將從展示層進入實際互動，形成可持續運作的結構。
+            </p>
           </article>
         </div>
       </div>
@@ -82,13 +100,22 @@
       <div class="container reveal">
         <div class="cta">
           <div class="cta-text">
-            <div class="kicker">Next Step</div>
-            <h2>當平台有了身份系統，它才真正開始形成路徑。</h2>
-            <p>第一批先建立全站登入與身份切換。第二批再進入 Commons 完整最終版，正式落地權限、留言與動畫體驗。</p>
+            <div class="kicker" data-lang-zh="Next Step" data-lang-en="Next Step">Next Step</div>
+            <h2
+              data-lang-zh="當平台有了身份系統，它才真正開始形成路徑。"
+              data-lang-en="Once a platform has identity, it begins to form real pathways.">
+              當平台有了身份系統，它才真正開始形成路徑。
+            </h2>
+            <p
+              data-lang-zh="現在你已經擁有全站登入與身份切換。接下來，公共社群將正式進入文章、評論與權限並行的完整版本。"
+              data-lang-en="You now have site-wide authentication and identity switching. Next, the commons will move into its full version with posts, comments, and layered permissions.">
+              現在你已經擁有全站登入與身份切換。接下來，公共社群將正式進入文章、評論與權限並行的完整版本。
+            </p>
           </div>
+
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <a class="btn btn-primary" href="auth.html">登入來開始你的旅程</a>
-            <a class="btn" href="commons.html">進入公共社群</a>
+            <a class="btn btn-primary" href="commons.html" data-lang-zh="進入公共社群" data-lang-en="Enter Commons">進入公共社群</a>
+            <a class="btn" href="auth.html" data-lang-zh="建立帳號" data-lang-en="Create Account">建立帳號</a>
           </div>
         </div>
       </div>
@@ -99,15 +126,15 @@
     <div class="container footer-row">
       <div>
         <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span>一個關於思想、社群與文化生態的自由平台。</span>
+        <span data-lang-zh="一個關於思想、社群與文化生態的自由平台。" data-lang-en="A свобод platform for thought, community, and cultural ecology.">一個關於思想、社群與文化生態的自由平台。</span>
       </div>
       <div class="footer-links">
-        <a href="index.html">首頁</a>
-        <a href="commons.html">公共社群</a>
-        <a href="explore.html">探索中心</a>
-        <a href="partners.html">合作社區</a>
-        <a href="store.html">商圈文化</a>
-        <a href="join.html">加入平台</a>
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </div>
     </div>
   </footer>
