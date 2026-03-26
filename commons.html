@@ -4,752 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Commons — XS UTOPIA</title>
-  <meta name="description" content="Commons / Chapter 01 — Deep learning has a rhythm." />
-  <style>
-    :root{
-      --bg:#060606;
-      --panel:rgba(255,255,255,.04);
-      --panel-2:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.10);
-      --text:#f5f1e8;
-      --muted:rgba(245,241,232,.72);
-      --soft:rgba(245,241,232,.46);
-      --accent:#d7c19a;
-      --accent-soft:rgba(215,193,154,.12);
-      --danger:#d89b9b;
-      --shadow:0 24px 80px rgba(0,0,0,.34);
-      --max:1320px;
-
-      --font-en-display:"Cormorant Garamond","Georgia",serif;
-      --font-en-body:"Inter","Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      --font-zh-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
-      --font-zh-body:"PingFang TC","Noto Sans TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,sans-serif;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(215,193,154,.12), transparent 24%),
-        radial-gradient(circle at 100% 12%, rgba(255,255,255,.05), transparent 18%),
-        linear-gradient(180deg,#050505 0%, #090909 42%, #070707 100%);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
-    }
-
-    html[lang="en"] body{
-      font-family:var(--font-en-body);
-      letter-spacing:.002em;
-    }
-    html[lang="zh-Hant"] body{
-      font-family:var(--font-zh-body);
-      letter-spacing:.01em;
-    }
-
-    html[lang="en"] h1,
-    html[lang="en"] h2,
-    html[lang="en"] h3{
-      font-family:var(--font-en-display);
-      font-weight:500;
-      letter-spacing:-.03em;
-    }
-
-    html[lang="zh-Hant"] h1,
-    html[lang="zh-Hant"] h2,
-    html[lang="zh-Hant"] h3{
-      font-family:var(--font-zh-display);
-      font-weight:600;
-      letter-spacing:-.02em;
-    }
-
-    a{color:inherit;text-decoration:none}
-    .container{
-      width:min(calc(100% - 32px), var(--max));
-      margin:0 auto;
-    }
-
-    #opening{
-      position:fixed;
-      inset:0;
-      z-index:9999;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:#000;
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
-      animation:openingExit 2.3s ease forwards;
-    }
-
-    #opening span{
-      color:#fff;
-      font-family:var(--font-en-display);
-      font-size:30px;
-      letter-spacing:.34em;
-      opacity:0;
-      animation:openingFade 1.05s ease forwards;
-    }
-
-    @keyframes openingFade{
-      from{opacity:0}
-      to{opacity:1}
-    }
-
-    @keyframes openingExit{
-      0%{opacity:1;visibility:visible}
-      72%{opacity:1;visibility:visible}
-      100%{opacity:0;visibility:hidden;pointer-events:none}
-    }
-
-    .lang-toggle{
-      position:fixed;
-      right:18px;
-      top:18px;
-      z-index:120;
-      min-height:40px;
-      padding:0 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.44);
-      color:var(--text);
-      cursor:pointer;
-      backdrop-filter:blur(14px);
-      font-size:12px;
-      transition:.28s ease;
-    }
-
-    .lang-toggle:hover{
-      border-color:rgba(215,193,154,.28);
-      background:rgba(215,193,154,.08);
-    }
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:80;
-      border-bottom:1px solid rgba(255,255,255,.05);
-      background:rgba(10,10,10,.56);
-      backdrop-filter:blur(18px);
-    }
-
-    .nav-inner{
-      min-height:72px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .brand-mark{
-      width:34px;height:34px;border-radius:50%;
-      display:grid;place-items:center;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.03);
-      color:var(--accent);
-      font-size:12px;
-      letter-spacing:.08em;
-    }
-
-    .brand-name{
-      font-size:13px;
-      font-weight:600;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:18px;
-      align-items:center;
-      color:var(--muted);
-      font-size:14px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active{
-      color:var(--text);
-    }
-
-    .page-hero{
-      position:relative;
-      overflow:hidden;
-      padding:142px 0 84px;
-    }
-
-    .page-hero::before{
-      content:"";
-      position:absolute;
-      right:4%;
-      bottom:0;
-      width:520px;
-      height:520px;
-      border-radius:50%;
-      background:
-        radial-gradient(circle at center, rgba(215,193,154,.18), rgba(215,193,154,.02) 58%, transparent 74%);
-      filter:blur(24px);
-      animation:floatOrb 11s ease-in-out infinite;
-      pointer-events:none;
-    }
-
-    .page-hero::after{
-      content:"";
-      position:absolute;
-      left:-10%;
-      top:18%;
-      width:62vw;
-      height:1px;
-      background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,.16) 50%, transparent 100%);
-      transform:rotate(-4deg);
-      opacity:.35;
-      pointer-events:none;
-    }
-
-    @keyframes floatOrb{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-20px)}
-    }
-
-    .page-kicker,.kicker{
-      color:var(--accent);
-      font-size:12px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      margin-bottom:12px;
-    }
-
-    .page-hero h1{
-      margin:0 0 18px;
-      font-size:clamp(48px,7vw,104px);
-      line-height:.95;
-      max-width:980px;
-    }
-
-    .page-hero p{
-      max-width:860px;
-      margin:0;
-      color:var(--muted);
-      line-height:1.95;
-      font-size:18px;
-    }
-
-    section{
-      padding:74px 0;
-    }
-
-    .section-head{
-      margin-bottom:28px;
-    }
-
-    h2{
-      margin:0;
-      font-size:clamp(32px,4vw,60px);
-      line-height:1;
-    }
-
-    .desc{
-      max-width:840px;
-      margin-top:14px;
-      color:var(--muted);
-      line-height:1.92;
-      font-size:16px;
-    }
-
-    .panel,
-    .block,
-    .reply-panel,
-    .thread-panel,
-    .auth-panel,
-    .card,
-    .cta{
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow:var(--shadow);
-    }
-
-    .two-col{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-    }
-
-    .block{
-      padding:28px;
-    }
-
-    .block p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.95;
-      font-size:16px;
-    }
-
-    .auth-grid{
-      display:grid;
-      grid-template-columns:.92fr 1.08fr;
-      gap:22px;
-      align-items:start;
-    }
-
-    .auth-panel{
-      padding:28px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .auth-panel::before{
-      content:"";
-      position:absolute;
-      inset:auto -12% -18% auto;
-      width:220px;
-      height:220px;
-      border-radius:50%;
-      background:radial-gradient(circle at center, rgba(215,193,154,.14), transparent 68%);
-      pointer-events:none;
-    }
-
-    .auth-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .auth-title{
-      font-size:28px;
-      line-height:1.06;
-      margin:0;
-    }
-
-    .auth-state{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      color:var(--soft);
-      font-size:12px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .auth-state::before{
-      content:"";
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:rgba(255,255,255,.28);
-    }
-
-    .auth-state.is-on::before{
-      background:var(--accent);
-      box-shadow:0 0 0 5px rgba(215,193,154,.12);
-    }
-
-    .field-label{
-      display:block;
-      margin-bottom:10px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .input,
-    .textarea{
-      width:100%;
-      border:none;
-      outline:none;
-      color:var(--text);
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:16px 18px;
-      font:inherit;
-      margin-bottom:16px;
-      transition:.24s ease;
-    }
-
-    .input:focus,
-    .textarea:focus{
-      border-color:rgba(215,193,154,.28);
-      background:rgba(255,255,255,.055);
-    }
-
-    .textarea{
-      resize:vertical;
-      min-height:190px;
-      line-height:1.8;
-    }
-
-    .button-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:6px;
-    }
-
-    .btn{
-      min-height:48px;
-      padding:0 18px;
-      border-radius:999px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid transparent;
-      font-size:14px;
-      transition:.3s ease;
-      cursor:pointer;
-    }
-
-    .btn:hover{
-      transform:translateY(-2px);
-    }
-
-    .btn-primary{
-      background:var(--text);
-      color:#0a0a0a;
-    }
-
-    .btn-secondary{
-      border-color:rgba(255,255,255,.14);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-    }
-
-    .btn-danger{
-      border-color:rgba(216,155,155,.22);
-      background:rgba(216,155,155,.08);
-      color:#f3d7d7;
-    }
-
-    .btn[disabled]{
-      opacity:.55;
-      cursor:not-allowed;
-      transform:none;
-    }
-
-    .auth-user-card{
-      padding:20px;
-      border-radius:22px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
-      margin-top:12px;
-    }
-
-    .auth-user-card strong{
-      display:block;
-      margin-bottom:8px;
-      font-size:15px;
-    }
-
-    .auth-user-card span{
-      color:var(--muted);
-      line-height:1.8;
-      font-size:14px;
-      word-break:break-all;
-    }
-
-    .submit-status{
-      margin-top:12px;
-      color:var(--soft);
-      font-size:13px;
-      min-height:20px;
-    }
-
-    .commons-layout{
-      display:grid;
-      grid-template-columns:.92fr 1.08fr;
-      gap:22px;
-      align-items:start;
-    }
-
-    .reply-panel-head{
-      min-height:68px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:0 22px;
-      border-bottom:1px solid rgba(255,255,255,.07);
-      color:var(--text);
-      font-size:14px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-
-    .comment-form{
-      padding:22px;
-    }
-
-    .form-meta{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      color:var(--soft);
-      font-size:13px;
-    }
-
-    .thread-count{
-      min-width:28px;
-      height:28px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--text);
-      font-size:12px;
-    }
-
-    .empty-state{
-      padding:24px 22px 0;
-    }
-
-    .empty-state p{
-      margin:0;
-      color:var(--soft);
-      line-height:1.8;
-    }
-
-    .featured-wrap{
-      display:none;
-      padding:18px 22px 0;
-    }
-
-    .featured-title{
-      color:var(--accent);
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      margin-bottom:12px;
-    }
-
-    .comment-list,
-    .featured-list{
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-
-    .comment-list{
-      padding:16px 22px 22px;
-    }
-
-    .featured-list{
-      padding:0 0 14px;
-    }
-
-    .comment-item{
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:22px;
-      background:rgba(255,255,255,.03);
-      padding:18px;
-      transition:.24s ease;
-    }
-
-    .comment-item.is-featured{
-      border-color:rgba(215,193,154,.22);
-      background:
-        linear-gradient(180deg, rgba(215,193,154,.08), rgba(255,255,255,.02));
-    }
-
-    .comment-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:12px;
-    }
-
-    .comment-name{
-      font-size:15px;
-      color:var(--text);
-      font-weight:600;
-    }
-
-    .comment-time{
-      margin-top:4px;
-      font-size:12px;
-      color:var(--soft);
-    }
-
-    .comment-body{
-      color:var(--muted);
-      line-height:1.9;
-      font-size:15px;
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
-
-    .comment-actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .mini-btn{
-      min-height:34px;
-      padding:0 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      font-size:12px;
-      cursor:pointer;
-      transition:.22s ease;
-    }
-
-    .mini-btn:hover{
-      border-color:rgba(215,193,154,.26);
-      background:rgba(215,193,154,.08);
-    }
-
-    .mini-btn.danger{
-      border-color:rgba(216,155,155,.22);
-      background:rgba(216,155,155,.08);
-      color:#f3d7d7;
-    }
-
-    .featured-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      margin-left:8px;
-      padding:4px 8px;
-      border-radius:999px;
-      font-size:11px;
-      color:var(--accent);
-      border:1px solid rgba(215,193,154,.24);
-      background:rgba(215,193,154,.08);
-      vertical-align:middle;
-    }
-
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-    }
-
-    .card{
-      min-height:230px;
-      padding:24px;
-      transition:.32s ease;
-    }
-
-    .card:hover{
-      transform:translateY(-6px);
-      border-color:rgba(215,193,154,.24);
-      background:rgba(255,255,255,.055);
-    }
-
-    .card-index{
-      color:var(--soft);
-      font-size:12px;
-      margin-bottom:10px;
-    }
-
-    .card h3{
-      margin:0 0 12px;
-      font-size:28px;
-    }
-
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.85;
-      font-size:14px;
-    }
-
-    .cta{
-      padding:34px;
-    }
-
-    .cta-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:20px;
-      align-items:center;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-    }
-
-    .footer{
-      padding:54px 0 36px;
-      border-top:1px solid rgba(255,255,255,.06);
-      color:var(--muted);
-    }
-
-    .footer-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:20px;
-      align-items:center;
-    }
-
-    .footer-links{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(32px);
-      transition:opacity .85s ease, transform .85s ease;
-    }
-
-    .reveal.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    @media (max-width:1080px){
-      .two-col,.cta-row,.commons-layout,.auth-grid{grid-template-columns:1fr}
-      .cards{grid-template-columns:repeat(2,1fr)}
-    }
-
-    @media (max-width:760px){
-      .nav-links{display:none}
-      .cards{grid-template-columns:1fr}
-      .footer-row{grid-template-columns:1fr}
-      .page-hero{padding-top:112px}
-      .page-hero h1{font-size:clamp(42px,12vw,72px)}
-      .form-meta{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .reply-panel-head{
-        padding:0 18px;
-      }
-      .comment-form,
-      .comment-list,
-      .featured-wrap{
-        padding-left:18px;
-        padding-right:18px;
-      }
-      section{padding:64px 0}
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <div id="opening"><span>XS UTOPIA</span></div>
-  <button class="lang-toggle" id="langToggle">EN</button>
+  <button id="langToggle" class="lang-toggle">EN</button>
 
   <header class="nav">
     <div class="container nav-inner">
@@ -760,247 +19,98 @@
 
       <nav class="nav-links">
         <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="world.html" data-i18n-key="nav_world">世界觀</a>
-        <a href="commons.html" class="active">公共社群</a>
-        <a href="partners.html" data-i18n-key="nav_partners">合作商店</a>
-        <a href="store.html" data-i18n-key="nav_store">生態商店</a>
+        <a href="commons.html" class="active" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
         <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main>
-    <section class="page-hero">
+    <section class="hero">
       <div class="container reveal">
-        <div class="page-kicker"
-          data-lang-en="Commons / Chapter 01"
-          data-lang-zh="公共社群 / 第一章">公共社群 / 第一章</div>
-
+        <div class="kicker" data-lang-zh="Public Commons" data-lang-en="Public Commons">Public Commons</div>
         <h1
-          data-lang-en="Deep learning is not fast.<br>It has a rhythm."
-          data-lang-zh="深度學習不是速度。<br>它有自己的節奏。">
-          深度學習不是速度。<br>它有自己的節奏。
+          data-lang-zh="讓思想被看見，也讓回應開始流動。"
+          data-lang-en="A place where thought becomes visible and response begins to circulate.">
+          讓思想被看見，也讓回應開始流動。
         </h1>
-
         <p
-          data-lang-en="Most people think learning means taking in more. But real learning happens when something slowly enters you. If the rhythm is wrong, even good content will not stay."
-          data-lang-zh="大部分人以為學習是吸收更多。但真正的學習，是讓一件事慢慢進入你。節奏錯了，再多內容都留不下來。">
-          大部分人以為學習是吸收更多。但真正的學習，是讓一件事慢慢進入你。節奏錯了，再多內容都留不下來。
+          data-lang-zh="訪客與會員都可以進入這裡閱讀與評論。只有登入後的會員與管理員可以發文，讓平台維持清晰的內容節奏。"
+          data-lang-en="Both guests and members can enter to read and comment. Only signed-in members and admins can publish posts, allowing the platform to maintain a clearer rhythm of content.">
+          訪客與會員都可以進入這裡閱讀與評論。只有登入後的會員與管理員可以發文，讓平台維持清晰的內容節奏。
         </p>
       </div>
     </section>
 
     <section>
-      <div class="container auth-grid reveal">
-        <div class="auth-panel">
-          <div class="auth-head">
-            <h2 class="auth-title"
-              data-lang-en="Member Access"
-              data-lang-zh="會員登入">會員登入</h2>
-            <div class="auth-state" id="authStateBadge">Offline</div>
-          </div>
-
-          <label class="field-label" for="authEmail"
-            data-lang-en="Email"
-            data-lang-zh="Email">Email</label>
-          <input id="authEmail" class="input" type="email" placeholder="you@example.com" />
-
-          <label class="field-label" for="authPassword"
-            data-lang-en="Password"
-            data-lang-zh="密碼">密碼</label>
-          <input id="authPassword" class="input" type="password" placeholder="••••••••" />
-
-          <div class="button-row">
-            <button id="signUpBtn" class="btn btn-secondary">建立帳號</button>
-            <button id="signInBtn" class="btn btn-primary">登入</button>
-            <button id="signOutBtn" class="btn btn-secondary" style="display:none;">登出</button>
-          </div>
-
-          <div id="authStatus" class="submit-status"></div>
-
-          <div id="authUserCard" class="auth-user-card" style="display:none;">
-            <strong id="authUserTitle">目前登入帳號</strong>
-            <span id="authUserEmail"></span>
-          </div>
-        </div>
-
-        <div class="block">
-          <p
-            data-lang-en="This week’s prompt is simple: what is your learning rhythm? When do you really begin to understand something — quickly, slowly, repeatedly, or only after a pause?"
-            data-lang-zh="這一週的問題很簡單：你的學習節奏是什麼？你通常在什麼時候才真的開始理解一件事？是很快、很慢、重複很多次，還是總要停一下之後才進得去？">
-            這一週的問題很簡單：你的學習節奏是什麼？你通常在什麼時候才真的開始理解一件事？是很快、很慢、重複很多次，還是總要停一下之後才進得去？
-          </p>
-          <br />
-          <p
-            data-lang-en="You can respond with a recent subject you’re learning, a moment you suddenly understood something, or what “slow” means to you now."
-            data-lang-zh="你可以分享：最近你在學什麼、你在哪個時刻突然理解了某件事，或者現在的你，如何理解「慢」這件事。">
-            你可以分享：最近你在學什麼、你在哪個時刻突然理解了某件事，或者現在的你，如何理解「慢」這件事。
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container reveal">
-        <div class="section-head">
-          <div class="kicker"
-            data-lang-en="Weekly Prompt"
-            data-lang-zh="本週主題">本週主題</div>
-          <h2
-            data-lang-en="What is your learning rhythm?"
-            data-lang-zh="你的學習節奏是什麼？">
-            你的學習節奏是什麼？
+      <div class="container feed-layout reveal">
+        <aside class="panel sidebar-panel">
+          <div class="kicker" data-lang-zh="Posting Access" data-lang-en="Posting Access">Posting Access</div>
+          <h2 style="margin:0 0 14px;"
+              data-lang-zh="內容入口"
+              data-lang-en="Entry Point">
+            內容入口
           </h2>
-          <div class="desc"
-            data-lang-en="Leave a short note. Not a perfect answer — just a real one."
-            data-lang-zh="留下一段短短的回應就好。不需要完美，只要真實。">
-            留下一段短短的回應就好。不需要完美，只要真實。
-          </div>
-        </div>
+          <p class="note"
+             data-lang-zh="訪客可閱讀與評論；會員與管理員登入後可發文。"
+             data-lang-en="Guests can read and comment; members and admins can publish after signing in.">
+            訪客可閱讀與評論；會員與管理員登入後可發文。
+          </p>
 
-        <div class="commons-layout">
-          <div class="reply-panel">
-            <div class="reply-panel-head">
-              <span
-                data-lang-en="Write a response"
-                data-lang-zh="寫下你的回應">寫下你的回應</span>
-            </div>
-
-            <form id="commentForm" class="comment-form">
-              <label class="field-label" for="commentName"
-                data-lang-en="Display name"
-                data-lang-zh="顯示名稱">顯示名稱</label>
-              <input
-                id="commentName"
-                class="input"
-                type="text"
-                maxlength="24"
-                placeholder="你的名稱"
-              />
-
-              <label class="field-label" for="commentText"
-                data-lang-en="Response"
-                data-lang-zh="回應內容">回應內容</label>
-              <textarea
-                id="commentText"
-                class="textarea"
-                rows="7"
-                maxlength="600"
-                placeholder="分享你如何理解自己的學習節奏..."
-              ></textarea>
-
-              <div class="form-meta">
-                <span id="charCount">0 / 600</span>
-                <button id="submitBtn" type="submit" class="btn btn-primary">送出回應</button>
-              </div>
-
-              <div id="submitStatus" class="submit-status"></div>
-            </form>
+          <div id="postComposerGuest" style="margin-top:18px;">
+            <a href="auth.html" class="btn btn-primary" style="width:100%; justify-content:center;"
+               data-lang-zh="登入後發文"
+               data-lang-en="Sign in to publish">
+              登入後發文
+            </a>
           </div>
 
-          <div class="thread-panel">
-            <div class="reply-panel-head">
-              <span
-                data-lang-en="Community responses"
-                data-lang-zh="社群回應">社群回應</span>
-              <span id="commentTotal" class="thread-count">0</span>
-            </div>
+          <div id="postComposerMember" style="display:none; margin-top:18px;">
+            <label class="label" for="postType" data-lang-zh="文章類型" data-lang-en="Post type">文章類型</label>
+            <select id="postType" class="select">
+              <option value="thought">Thought</option>
+              <option value="tea">Tea</option>
+              <option value="art">Art</option>
+              <option value="ecosystem">Ecosystem</option>
+              <option value="partner">Partner</option>
+            </select>
 
-            <div id="featuredWrap" class="featured-wrap">
-              <div class="featured-title" id="featuredTitle">精選留言</div>
-              <div id="featuredList" class="featured-list"></div>
-            </div>
+            <label class="label" for="postTitle" data-lang-zh="標題" data-lang-en="Title">標題</label>
+            <input id="postTitle" class="input" type="text" maxlength="120" />
 
-            <div id="emptyState" class="empty-state">
-              <p
-                data-lang-en="No responses yet. Be the first presence in this week’s commons."
-                data-lang-zh="目前還沒有回應。成為這一週第一個進入公共場域的人。">
-                目前還沒有回應。成為這一週第一個進入公共場域的人。
-              </p>
-            </div>
+            <label class="label" for="postContent" data-lang-zh="內容" data-lang-en="Content">內容</label>
+            <textarea id="postContent" class="textarea" maxlength="3000"></textarea>
 
-            <div id="commentList" class="comment-list"></div>
+            <button id="postSubmitBtn" class="btn btn-primary" style="width:100%; justify-content:center;"
+                    data-lang-zh="發表文章"
+                    data-lang-en="Publish Post">
+              發表文章
+            </button>
+            <div id="postStatus" class="status"></div>
           </div>
-        </div>
-      </div>
-    </section>
+        </aside>
 
-    <section>
-      <div class="container reveal">
-        <div class="cards">
-          <div class="card">
-            <div class="card-index">01</div>
-            <h3 data-lang-en="Prompt" data-lang-zh="提示">提示</h3>
-            <p
-              data-lang-en="You don’t need to explain everything. One clear sentence is enough."
-              data-lang-zh="你不需要把一切都說完整。一句清楚的話就夠了。">
-              你不需要把一切都說完整。一句清楚的話就夠了。
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-index">02</div>
-            <h3 data-lang-en="Rhythm" data-lang-zh="節奏">節奏</h3>
-            <p
-              data-lang-en="Sometimes learning is not blocked by difficulty, but by timing."
-              data-lang-zh="有時候阻礙學習的不是難度，而是節奏。">
-              有時候阻礙學習的不是難度，而是節奏。
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-index">03</div>
-            <h3 data-lang-en="Depth" data-lang-zh="深度">深度</h3>
-            <p
-              data-lang-en="Depth often arrives later than effort."
-              data-lang-zh="深度，往往比努力更晚出現。">
-              深度，往往比努力更晚出現。
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="card-index">04</div>
-            <h3 data-lang-en="Commons" data-lang-zh="公共場域">公共場域</h3>
-            <p
-              data-lang-en="What matters here is not volume, but presence."
-              data-lang-zh="在這裡重要的不是聲量，而是在場。">
-              在這裡重要的不是聲量，而是在場。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container reveal">
-        <div class="cta">
-          <div class="cta-row">
-            <div>
-              <div class="kicker"
-                data-lang-en="Next Movement"
-                data-lang-zh="下一步">下一步</div>
-              <h2
-                data-lang-en="From prompt to rhythm, from rhythm to presence."
-                data-lang-zh="從提問，到節奏；從節奏，到在場。">
-                從提問，到節奏；從節奏，到在場。
-              </h2>
-              <div class="desc"
-                data-lang-en="This is where XS UTOPIA stops being a concept and begins to move through people."
-                data-lang-zh="這是 XS UTOPIA 不再停留於概念，而開始在人與人之間流動的地方。">
-                這是 XS UTOPIA 不再停留於概念，而開始在人與人之間流動的地方。
-              </div>
-            </div>
-
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="store.html"
-                data-lang-en="See the Tea Chapter"
-                data-lang-zh="查看茶商品頁">查看茶商品頁</a>
-              <a class="btn btn-secondary" href="join.html"
-                data-lang-en="Join the Platform"
-                data-lang-zh="加入平台">加入平台</a>
-            </div>
-          </div>
-        </div>
+        <section>
+          <div id="postList" class="post-list"></div>
+        </section>
       </div>
     </section>
   </main>
@@ -1009,135 +119,82 @@
     <div class="container footer-row">
       <div>
         <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span id="footerText">一個關於思想、社群與文化生態的自由平台。</span>
+        <span data-lang-zh="公共社群是平台流動真正開始的地方。" data-lang-en="The public commons is where movement in the platform truly begins.">
+          公共社群是平台流動真正開始的地方。
+        </span>
       </div>
       <div class="footer-links">
         <a href="index.html" data-i18n-key="nav_home">首頁</a>
-        <a href="world.html" data-i18n-key="nav_world">世界觀</a>
-        <a href="partners.html" data-i18n-key="nav_partners">合作商店</a>
-        <a href="store.html" data-i18n-key="nav_store">生態商店</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
         <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </div>
     </div>
   </footer>
 
   <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
   <script>
-    window.SUPABASE_URL = "https://ghqbtbkzosqhmvsnejoj.supabase.co";
-    window.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_tO6-VKSzsALVV4eKA0RSjg_34Tfl8Ld";
-    window.ADMIN_EMAIL = "你的管理員信箱@example.com";
-  </script>
+    let client = null;
+    let currentSession = { user: null, profile: null, role: "guest" };
+    let currentLocale = "zh";
 
-  <script>
-    const I18N = {
-      en: {
-        nav_home: "Home",
-        nav_world: "World",
-        nav_partners: "Partners",
-        nav_store: "Store",
-        nav_join: "Join",
-        footerText: "A free aesthetic platform for thought, community, and cultural ecology.",
-        featuredTitle: "Featured Responses",
-        submitIdle: "Sign in to post a response.",
-        submitPosting: "Posting...",
-        submitSuccess: "Posted successfully.",
-        submitError: "Failed to post. Please try again.",
-        submitDefault: "Post Response",
-        authIdle: "Use email and password to enter the commons.",
-        authSigningIn: "Signing in...",
-        authSigningUp: "Creating account...",
-        authSignedIn: "Signed in.",
-        authSignedOut: "Signed out.",
-        authError: "Authentication failed.",
-        authUserTitle: "Signed in account",
-        placeholderName: "Display name",
-        placeholderText: "Share what ‘rhythm’ means in your learning...",
-        loadError: "Failed to load comments.",
-        loginRequired: "You need to sign in before posting.",
-        deleteLabel: "Delete",
-        featureLabel: "Feature",
-        unfeatureLabel: "Unfeature",
-        featuredBadge: "Featured",
-        createAccount: "Create Account",
-        signIn: "Sign In",
-        signOut: "Sign Out",
-        authOnline: "Online",
-        authOffline: "Offline"
-      },
+    const postListEl = document.getElementById("postList");
+    const postComposerGuest = document.getElementById("postComposerGuest");
+    const postComposerMember = document.getElementById("postComposerMember");
+    const postSubmitBtn = document.getElementById("postSubmitBtn");
+    const postStatus = document.getElementById("postStatus");
+
+    const COMMONS_TEXT = {
       zh: {
-        nav_home: "首頁",
-        nav_world: "世界觀",
-        nav_partners: "合作商店",
-        nav_store: "生態商店",
-        nav_join: "加入平台",
-        footerText: "一個關於思想、社群與文化生態的自由平台。",
-        featuredTitle: "精選留言",
-        submitIdle: "請先登入，再送出回應。",
-        submitPosting: "送出中...",
-        submitSuccess: "已成功送出。",
-        submitError: "送出失敗，請稍後再試。",
-        submitDefault: "送出回應",
-        authIdle: "使用 Email 與密碼進入 Commons。",
-        authSigningIn: "登入中...",
-        authSigningUp: "建立帳號中...",
-        authSignedIn: "登入成功。",
-        authSignedOut: "已登出。",
-        authError: "登入或註冊失敗。",
-        authUserTitle: "目前登入帳號",
-        placeholderName: "顯示名稱",
-        placeholderText: "分享你如何理解自己的學習節奏...",
-        loadError: "留言讀取失敗，請稍後再試。",
-        loginRequired: "請先登入後再留言。",
-        deleteLabel: "刪除",
-        featureLabel: "精選",
-        unfeatureLabel: "取消精選",
-        featuredBadge: "精選",
-        createAccount: "建立帳號",
-        signIn: "登入",
-        signOut: "登出",
-        authOnline: "已登入",
-        authOffline: "未登入"
+        noPosts: "目前還沒有文章。登入後成為第一位發文者。",
+        commentPlaceholderGuest: "以訪客身份留下評論...",
+        commentPlaceholderMember: "留下你的評論...",
+        guestName: "你的名稱",
+        submitComment: "送出評論",
+        submitPosting: "發表中...",
+        submitPost: "發表文章",
+        postSuccess: "文章已發表。",
+        postError: "發表失敗，請稍後再試。",
+        commentSuccess: "評論已送出。",
+        commentError: "評論送出失敗。",
+        deleteComment: "刪除",
+        featured: "精選",
+        commentAsGuest: "訪客評論",
+        commentAsMember: "會員評論",
+        comments: "則評論",
+        deleteConfirm: "要刪除這則評論嗎？"
+      },
+      en: {
+        noPosts: "No posts yet. Sign in to become the first author.",
+        commentPlaceholderGuest: "Leave a comment as guest...",
+        commentPlaceholderMember: "Leave your comment...",
+        guestName: "Your name",
+        submitComment: "Comment",
+        submitPosting: "Publishing...",
+        submitPost: "Publish Post",
+        postSuccess: "Post published.",
+        postError: "Failed to publish.",
+        commentSuccess: "Comment posted.",
+        commentError: "Failed to post comment.",
+        deleteComment: "Delete",
+        featured: "Featured",
+        commentAsGuest: "Guest Comment",
+        commentAsMember: "Member Comment",
+        comments: "comments",
+        deleteConfirm: "Delete this comment?"
       }
-    };
-
-    let currentLang = localStorage.getItem("xs_lang") || "zh";
-    let supabaseClient = null;
-    let currentUser = null;
-    const CHAPTER_KEY = "chapter-01-deep-learning-rhythm";
-
-    const els = {
-      langToggle: document.getElementById("langToggle"),
-      footerText: document.getElementById("footerText"),
-      featuredTitle: document.getElementById("featuredTitle"),
-
-      authStateBadge: document.getElementById("authStateBadge"),
-      authStatus: document.getElementById("authStatus"),
-      authEmail: document.getElementById("authEmail"),
-      authPassword: document.getElementById("authPassword"),
-      signUpBtn: document.getElementById("signUpBtn"),
-      signInBtn: document.getElementById("signInBtn"),
-      signOutBtn: document.getElementById("signOutBtn"),
-      authUserCard: document.getElementById("authUserCard"),
-      authUserTitle: document.getElementById("authUserTitle"),
-      authUserEmail: document.getElementById("authUserEmail"),
-
-      form: document.getElementById("commentForm"),
-      nameInput: document.getElementById("commentName"),
-      textInput: document.getElementById("commentText"),
-      charCount: document.getElementById("charCount"),
-      submitBtn: document.getElementById("submitBtn"),
-      submitStatus: document.getElementById("submitStatus"),
-
-      emptyState: document.getElementById("emptyState"),
-      commentList: document.getElementById("commentList"),
-      featuredWrap: document.getElementById("featuredWrap"),
-      featuredList: document.getElementById("featuredList"),
-      commentTotal: document.getElementById("commentTotal")
     };
 
     function escapeHtml(str) {
       return String(str).replace(/[&<>"']/g, (m) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
       }[m]));
     }
 
@@ -1146,382 +203,270 @@
       return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
     }
 
-    function isAdmin(user) {
-      return !!user?.email && user.email === window.ADMIN_EMAIL;
+    function canDeleteComment(comment) {
+      if (!currentSession.user) return false;
+      if (currentSession.role === "admin") return true;
+      return comment.user_id && comment.user_id === currentSession.user.id;
     }
 
-    function applyLang(lang) {
-      currentLang = lang;
-      localStorage.setItem("xs_lang", lang);
-      document.documentElement.lang = lang === "en" ? "en" : "zh-Hant";
-
-      document.querySelectorAll("[data-lang-en][data-lang-zh]").forEach((el) => {
-        el.innerHTML = lang === "en" ? el.dataset.langEn : el.dataset.langZh;
-      });
-
-      document.querySelectorAll("[data-i18n-key]").forEach((el) => {
-        const key = el.dataset.i18nKey;
-        if (I18N[lang][key]) el.textContent = I18N[lang][key];
-      });
-
-      els.footerText.textContent = I18N[lang].footerText;
-      els.featuredTitle.textContent = I18N[lang].featuredTitle;
-      els.langToggle.textContent = lang === "en" ? "中文" : "EN";
-
-      els.signUpBtn.textContent = I18N[lang].createAccount;
-      els.signInBtn.textContent = I18N[lang].signIn;
-      els.signOutBtn.textContent = I18N[lang].signOut;
-      els.submitBtn.textContent = I18N[lang].submitDefault;
-      els.authUserTitle.textContent = I18N[lang].authUserTitle;
-
-      els.authEmail.placeholder = "you@example.com";
-      els.authPassword.placeholder = "••••••••";
-      els.nameInput.placeholder = I18N[lang].placeholderName;
-      els.textInput.placeholder = I18N[lang].placeholderText;
-
-      if (!currentUser) {
-        els.authStatus.textContent = I18N[lang].authIdle;
-        els.submitStatus.textContent = I18N[lang].submitIdle;
+    function updateComposerAccess() {
+      if (!currentSession.user) {
+        postComposerGuest.style.display = "block";
+        postComposerMember.style.display = "none";
       } else {
-        els.authStatus.textContent = I18N[lang].authSignedIn;
+        postComposerGuest.style.display = "none";
+        postComposerMember.style.display = "block";
       }
     }
 
-    function updateCharCount() {
-      els.charCount.textContent = `${els.textInput.value.length} / 600`;
-    }
-
-    function setAuthUI(user) {
-      currentUser = user || null;
-
-      if (currentUser) {
-        els.authStateBadge.classList.add("is-on");
-        els.authStateBadge.textContent = I18N[currentLang].authOnline;
-        els.signOutBtn.style.display = "inline-flex";
-        els.authUserCard.style.display = "block";
-        els.authUserEmail.textContent = currentUser.email || "";
-        els.authStatus.textContent = I18N[currentLang].authSignedIn;
-        els.submitStatus.textContent = "";
-        if (!els.nameInput.value && currentUser.email) {
-          els.nameInput.value = currentUser.email.split("@")[0].slice(0, 24);
-        }
-      } else {
-        els.authStateBadge.classList.remove("is-on");
-        els.authStateBadge.textContent = I18N[currentLang].authOffline;
-        els.signOutBtn.style.display = "none";
-        els.authUserCard.style.display = "none";
-        els.authStatus.textContent = I18N[currentLang].authIdle;
-        els.submitStatus.textContent = I18N[currentLang].submitIdle;
-      }
-    }
-
-    async function waitForSupabase(maxTries = 40, interval = 250) {
-      return new Promise((resolve, reject) => {
-        let tries = 0;
-        const timer = setInterval(() => {
-          tries += 1;
-          if (window.supabase && typeof window.supabase.createClient === "function") {
-            clearInterval(timer);
-            resolve();
-          } else if (tries >= maxTries) {
-            clearInterval(timer);
-            reject(new Error("Supabase script load timeout"));
-          }
-        }, interval);
-      });
-    }
-
-    async function initSupabase() {
-      await waitForSupabase();
-      supabaseClient = window.supabase.createClient(
-        window.SUPABASE_URL,
-        window.SUPABASE_PUBLISHABLE_KEY
-      );
-
-      supabaseClient.auth.onAuthStateChange(async () => {
-        await refreshUser();
-        await fetchComments();
-      });
-
-      await refreshUser();
-      await fetchComments();
-    }
-
-    async function refreshUser() {
-      if (!supabaseClient) return;
-      const { data, error } = await supabaseClient.auth.getUser();
-      if (error) {
-        console.error("getUser error:", error);
-        setAuthUI(null);
-        return;
-      }
-      setAuthUI(data?.user || null);
-    }
-
-    async function signUp() {
-      if (!supabaseClient) return;
-      const email = els.authEmail.value.trim();
-      const password = els.authPassword.value;
-      if (!email || !password) return;
-
-      els.authStatus.textContent = I18N[currentLang].authSigningUp;
-
-      const { error } = await supabaseClient.auth.signUp({ email, password });
-      if (error) {
-        console.error(error);
-        els.authStatus.textContent = error.message || I18N[currentLang].authError;
-        return;
-      }
-
-      els.authStatus.textContent = currentLang === "en"
-        ? "Account created. Check your email if confirmation is enabled."
-        : "帳號已建立。如果你有開啟 Email 驗證，請先去信箱確認。";
-    }
-
-    async function signIn() {
-      if (!supabaseClient) return;
-      const email = els.authEmail.value.trim();
-      const password = els.authPassword.value;
-      if (!email || !password) return;
-
-      els.authStatus.textContent = I18N[currentLang].authSigningIn;
-
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error) {
-        console.error(error);
-        els.authStatus.textContent = error.message || I18N[currentLang].authError;
-        return;
-      }
-
-      await refreshUser();
-      await fetchComments();
-    }
-
-    async function signOut() {
-      if (!supabaseClient) return;
-      const { error } = await supabaseClient.auth.signOut();
-      if (error) {
-        console.error(error);
-        els.authStatus.textContent = error.message || I18N[currentLang].authError;
-        return;
-      }
-
-      setAuthUI(null);
-      els.authStatus.textContent = I18N[currentLang].authSignedOut;
-      await fetchComments();
-    }
-
-    function createCommentItem(comment) {
-      const item = document.createElement("article");
-      item.className = `comment-item ${comment.is_featured ? "is-featured" : ""}`;
-
-      const actions = [];
-      if (isAdmin(currentUser)) {
-        actions.push(`
-          <button class="mini-btn" data-action="toggle-feature" data-id="${comment.id}" data-featured="${comment.is_featured ? "1" : "0"}">
-            ${comment.is_featured ? I18N[currentLang].unfeatureLabel : I18N[currentLang].featureLabel}
-          </button>
-        `);
-        actions.push(`
-          <button class="mini-btn danger" data-action="delete" data-id="${comment.id}">
-            ${I18N[currentLang].deleteLabel}
-          </button>
-        `);
-      }
-
-      item.innerHTML = `
-        <div class="comment-top">
-          <div>
-            <div class="comment-name">
-              ${escapeHtml(comment.name || "Anonymous")}
-              ${comment.is_featured ? `<span class="featured-badge">${I18N[currentLang].featuredBadge}</span>` : ""}
-            </div>
-            <div class="comment-time">${formatDate(comment.created_at)}</div>
-          </div>
-          ${actions.length ? `<div class="comment-actions">${actions.join("")}</div>` : ""}
-        </div>
-        <div class="comment-body">${escapeHtml(comment.content || "")}</div>
-      `;
-
-      return item;
-    }
-
-    function renderComments(comments) {
-      els.commentList.innerHTML = "";
-      els.featuredList.innerHTML = "";
-      els.commentTotal.textContent = comments.length;
-
-      if (!comments.length) {
-        els.emptyState.style.display = "block";
-        els.featuredWrap.style.display = "none";
-        return;
-      }
-
-      els.emptyState.style.display = "none";
-
-      const featured = comments.filter(c => c.is_featured);
-      const normal = comments.filter(c => !c.is_featured);
-
-      els.featuredWrap.style.display = featured.length ? "block" : "none";
-
-      featured.forEach(comment => els.featuredList.appendChild(createCommentItem(comment)));
-      normal.forEach(comment => els.commentList.appendChild(createCommentItem(comment)));
-
-      bindAdminActions();
-    }
-
-    async function fetchComments() {
-      if (!supabaseClient) return;
-
-      const { data, error } = await supabaseClient
-        .from("commons_comments")
-        .select("id, user_id, name, content, is_featured, created_at")
-        .eq("chapter_key", CHAPTER_KEY)
+    async function fetchPosts() {
+      const { data: posts, error } = await client
+        .from("posts")
+        .select("*")
+        .eq("status", "published")
         .order("is_featured", { ascending: false })
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Fetch error:", error);
-        els.emptyState.style.display = "none";
-        els.commentList.innerHTML = `
-          <article class="comment-item">
-            <div class="comment-body">${I18N[currentLang].loadError}</div>
-          </article>
-        `;
-        els.commentTotal.textContent = "0";
+        console.error(error);
+        postListEl.innerHTML = `<div class="panel" style="padding:24px;">${currentLocale === "en" ? "Failed to load posts." : "文章載入失敗。"}</div>`;
         return;
       }
 
-      renderComments(data || []);
+      if (!posts || !posts.length) {
+        postListEl.innerHTML = `<div class="panel" style="padding:24px;">${COMMONS_TEXT[currentLocale].noPosts}</div>`;
+        return;
+      }
+
+      const commentsByPost = await fetchCommentsForPosts(posts.map(p => p.id));
+      renderPosts(posts, commentsByPost);
     }
 
-    async function submitComment(e) {
-      e.preventDefault();
+    async function fetchCommentsForPosts(postIds) {
+      if (!postIds.length) return {};
 
-      if (!supabaseClient || !currentUser) {
-        els.submitStatus.textContent = I18N[currentLang].loginRequired;
+      const { data: comments, error } = await client
+        .from("post_comments")
+        .select("*")
+        .in("post_id", postIds)
+        .order("created_at", { ascending: true });
+
+      if (error) {
+        console.error(error);
+        return {};
+      }
+
+      return (comments || []).reduce((acc, comment) => {
+        if (!acc[comment.post_id]) acc[comment.post_id] = [];
+        acc[comment.post_id].push(comment);
+        return acc;
+      }, {});
+    }
+
+    function renderPosts(posts, commentsByPost) {
+      postListEl.innerHTML = "";
+
+      posts.forEach((post) => {
+        const comments = commentsByPost[post.id] || [];
+        const postEl = document.createElement("article");
+        postEl.className = "post-card";
+
+        const roleLabel = post.user_id ? "Member" : "Admin";
+
+        postEl.innerHTML = `
+          <div class="post-meta">
+            <div>
+              <div class="post-author">${escapeHtml(post.title)}</div>
+              <div class="note">${formatDate(post.created_at)}</div>
+            </div>
+            <div class="post-tags">
+              <span class="tag">${escapeHtml(post.post_type)}</span>
+              ${post.is_featured ? `<span class="tag featured">${COMMONS_TEXT[currentLocale].featured}</span>` : ""}
+            </div>
+          </div>
+
+          <h3>${escapeHtml(post.title)}</h3>
+          <p>${escapeHtml(post.content).replace(/\n/g, "<br>")}</p>
+
+          <div class="comment-section">
+            <div class="note">${comments.length} ${COMMONS_TEXT[currentLocale].comments}</div>
+
+            <div class="comment-form-row" style="margin-top:14px;">
+              <div>
+                ${!currentSession.user ? `
+                  <input id="guestName-${post.id}" class="input" maxlength="24" placeholder="${COMMONS_TEXT[currentLocale].guestName}">
+                ` : ""}
+                <textarea id="commentInput-${post.id}" class="textarea" maxlength="600" placeholder="${currentSession.user ? COMMONS_TEXT[currentLocale].commentPlaceholderMember : COMMONS_TEXT[currentLocale].commentPlaceholderGuest}"></textarea>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <button class="btn btn-primary" data-comment-submit="${post.id}">${COMMONS_TEXT[currentLocale].submitComment}</button>
+              </div>
+            </div>
+
+            <div class="comment-list">
+              ${comments.map(comment => `
+                <div class="comment-card">
+                  <div class="comment-top">
+                    <div>
+                      <div class="comment-name">${escapeHtml(comment.user_id ? (currentLocale === "en" ? COMMONS_TEXT.en.commentAsMember : COMMONS_TEXT.zh.commentAsMember) : comment.guest_name || (currentLocale === "en" ? "Guest" : "訪客"))}</div>
+                      <div class="comment-time">${formatDate(comment.created_at)}</div>
+                    </div>
+                    <div class="comment-actions">
+                      ${canDeleteComment(comment) ? `<button class="mini-btn danger" data-comment-delete="${comment.id}">${COMMONS_TEXT[currentLocale].deleteComment}</button>` : ""}
+                    </div>
+                  </div>
+                  <div class="comment-content">${escapeHtml(comment.content)}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+
+        postListEl.appendChild(postEl);
+      });
+
+      bindCommentActions();
+    }
+
+    function bindCommentActions() {
+      document.querySelectorAll("[data-comment-submit]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const postId = btn.dataset.commentSubmit;
+          const input = document.getElementById(`commentInput-${postId}`);
+          const guestNameInput = document.getElementById(`guestName-${postId}`);
+          const content = (input.value || "").trim();
+
+          if (!content) return;
+
+          const payload = {
+            post_id: postId,
+            content
+          };
+
+          if (currentSession.user) {
+            payload.user_id = currentSession.user.id;
+          } else {
+            const guestName = (guestNameInput?.value || "").trim();
+            if (!guestName) {
+              alert(currentLocale === "en" ? "Please enter your name." : "請先輸入你的名稱。");
+              return;
+            }
+            payload.guest_name = guestName;
+            payload.user_id = null;
+          }
+
+          const { error } = await client.from("post_comments").insert([payload]);
+
+          if (error) {
+            console.error(error);
+            alert(COMMONS_TEXT[currentLocale].commentError);
+            return;
+          }
+
+          await fetchPosts();
+        });
+      });
+
+      document.querySelectorAll("[data-comment-delete]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const id = btn.dataset.commentDelete;
+          const ok = confirm(COMMONS_TEXT[currentLocale].deleteConfirm);
+          if (!ok) return;
+
+          const { error } = await client
+            .from("post_comments")
+            .delete()
+            .eq("id", id);
+
+          if (error) {
+            console.error(error);
+            alert(COMMONS_TEXT[currentLocale].commentError);
+            return;
+          }
+
+          await fetchPosts();
+        });
+      });
+    }
+
+    async function submitPost() {
+      if (!currentSession.user) {
+        window.location.href = "auth.html";
         return;
       }
 
-      const name = (els.nameInput.value || "").trim() || (currentUser.email ? currentUser.email.split("@")[0] : "Anonymous");
-      const content = (els.textInput.value || "").trim();
-      if (!content) return;
+      const titleEl = document.getElementById("postTitle");
+      const contentEl = document.getElementById("postContent");
+      const typeEl = document.getElementById("postType");
 
-      els.submitBtn.disabled = true;
-      els.submitBtn.textContent = I18N[currentLang].submitPosting;
-      els.submitStatus.textContent = I18N[currentLang].submitPosting;
+      const title = (titleEl.value || "").trim();
+      const content = (contentEl.value || "").trim();
+      const postType = typeEl.value;
 
-      const { error } = await supabaseClient
-        .from("commons_comments")
+      if (!title || !content) return;
+
+      postSubmitBtn.disabled = true;
+      postSubmitBtn.textContent = COMMONS_TEXT[currentLocale].submitPosting;
+      postStatus.textContent = COMMONS_TEXT[currentLocale].submitPosting;
+
+      const { error } = await client
+        .from("posts")
         .insert([{
-          chapter_key: CHAPTER_KEY,
-          user_id: currentUser.id,
-          name,
-          content
+          user_id: currentSession.user.id,
+          title,
+          content,
+          post_type: postType,
+          status: "published"
         }]);
 
-      els.submitBtn.disabled = false;
-      els.submitBtn.textContent = I18N[currentLang].submitDefault;
-
-      if (error) {
-        console.error("Insert error:", error);
-        els.submitStatus.textContent = error.message || I18N[currentLang].submitError;
-        return;
-      }
-
-      els.form.reset();
-      updateCharCount();
-      els.submitStatus.textContent = I18N[currentLang].submitSuccess;
-      if (currentUser?.email) {
-        els.nameInput.value = currentUser.email.split("@")[0].slice(0, 24);
-      }
-
-      await fetchComments();
-    }
-
-    async function deleteComment(id) {
-      if (!supabaseClient || !isAdmin(currentUser)) return;
-
-      const ok = confirm(currentLang === "en" ? "Delete this comment?" : "要刪除這則留言嗎？");
-      if (!ok) return;
-
-      const { error } = await supabaseClient
-        .from("commons_comments")
-        .delete()
-        .eq("id", id);
+      postSubmitBtn.disabled = false;
+      postSubmitBtn.textContent = COMMONS_TEXT[currentLocale].submitPost;
 
       if (error) {
         console.error(error);
-        alert(error.message || I18N[currentLang].submitError);
+        postStatus.textContent = COMMONS_TEXT[currentLocale].postError;
         return;
       }
 
-      await fetchComments();
+      titleEl.value = "";
+      contentEl.value = "";
+      postStatus.textContent = COMMONS_TEXT[currentLocale].postSuccess;
+      await fetchPosts();
     }
 
-    async function toggleFeatured(id, currentFeatured) {
-      if (!supabaseClient || !isAdmin(currentUser)) return;
+    async function initCommons() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
 
-      const { error } = await supabaseClient
-        .from("commons_comments")
-        .update({ is_featured: !currentFeatured })
-        .eq("id", id);
+      client = await AuthUI.getClient();
+      currentSession = auth.getSession();
+      currentLocale = AuthUI.getLocale();
 
-      if (error) {
-        console.error(error);
-        alert(error.message || I18N[currentLang].submitError);
-        return;
-      }
+      updateComposerAccess();
 
-      await fetchComments();
+      postSubmitBtn.addEventListener("click", submitPost);
+
+      window.onXSLocaleChange = async (locale) => {
+        currentLocale = locale;
+        await fetchPosts();
+      };
+
+      await fetchPosts();
+
+      const realtimeChannel = client
+        .channel("xs-utopia-posts")
+        .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, async () => {
+          await fetchPosts();
+        })
+        .on("postgres_changes", { event: "*", schema: "public", table: "post_comments" }, async () => {
+          await fetchPosts();
+        })
+        .subscribe();
+
+      return realtimeChannel;
     }
 
-    function bindAdminActions() {
-      document.querySelectorAll("[data-action='delete']").forEach((btn) => {
-        btn.addEventListener("click", () => deleteComment(btn.dataset.id));
-      });
-
-      document.querySelectorAll("[data-action='toggle-feature']").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          toggleFeatured(btn.dataset.id, btn.dataset.featured === "1");
-        });
-      });
-    }
-
-    function initReveal() {
-      const targets = document.querySelectorAll(".reveal");
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.14 });
-
-      targets.forEach((el) => io.observe(el));
-    }
-
-    els.langToggle.addEventListener("click", () => {
-      applyLang(currentLang === "en" ? "zh" : "en");
-      fetchComments();
-    });
-
-    els.textInput.addEventListener("input", updateCharCount);
-    els.form.addEventListener("submit", submitComment);
-    els.signUpBtn.addEventListener("click", signUp);
-    els.signInBtn.addEventListener("click", signIn);
-    els.signOutBtn.addEventListener("click", signOut);
-
-    applyLang(currentLang);
-    updateCharCount();
-    initReveal();
-
-    initSupabase().catch((err) => {
-      console.error("Supabase init error:", err);
-      els.authStatus.textContent = I18N[currentLang].authError;
-      els.submitStatus.textContent = I18N[currentLang].loadError;
-    });
+    initCommons();
   </script>
 </body>
 </html>
