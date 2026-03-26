@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Join — XS UTOPIA</title>
-  <meta name="description" content="You don’t join a platform. You step into a world." />
+  <title>加入平台 — XS UTOPIA</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-page="join">
-
+<body>
   <div id="opening"><span>XS UTOPIA</span></div>
-  <button class="lang-toggle" id="langToggle">EN</button>
+  <button id="langToggle" class="lang-toggle">EN</button>
 
   <header class="nav">
     <div class="container nav-inner">
@@ -18,169 +16,106 @@
         <div class="brand-mark">XS</div>
         <div class="brand-name">XS UTOPIA</div>
       </a>
+
       <nav class="nav-links">
-        <a href="index.html" data-page="home" data-i18n="nav_home">首頁</a>
-        <a href="world.html" data-page="world" data-i18n="nav_world">世界觀</a>
-        <a href="commons.html" data-page="commons" data-i18n="nav_commons">公共社群</a>
-        <a href="partners.html" data-page="partners" data-i18n="nav_partners">合作商店</a>
-        <a href="store.html" data-page="store" data-i18n="nav_store">生態商店</a>
-        <a href="join.html" data-page="join" data-i18n="nav_join">加入平台</a>
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" class="active" data-i18n-key="nav_join">加入平台</a>
       </nav>
+
+      <div class="auth-right">
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
+        </div>
+
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main>
-    <section class="page-hero">
-      <div class="container">
-        <div class="page-kicker"
-          data-lang-en="Join"
-          data-lang-zh="加入平台">加入平台</div>
+    <section class="hero">
+      <div class="container reveal">
+        <div class="kicker" data-lang-zh="Join the Platform" data-lang-en="Join the Platform">Join the Platform</div>
         <h1
-          data-lang-en="A world only exists when someone chooses to enter it."
-          data-lang-zh="一個世界，只有在有人選擇進入時，才真正存在。">
-          一個世界，只有在有人選擇進入時，才真正存在。
+          data-lang-zh="平台不是只靠瀏覽者形成，而是靠參與者逐步推動。"
+          data-lang-en="A platform is not formed by viewers alone, but by participants who gradually move it forward.">
+          平台不是只靠瀏覽者形成，而是靠參與者逐步推動。
         </h1>
         <p
-          data-lang-en="XS UTOPIA does not need a crowd. It needs people willing to perceive, remain, and participate. To join is not only to register, but to step into a different mode of being."
-          data-lang-zh="XS UTOPIA 並不是一個需要大量人的平台。它需要的是願意感知、願意停留、願意參與的人。加入，並不是註冊一個帳號，而是進入一種不同的存在方式。">
-          XS UTOPIA 並不是一個需要大量人的平台。它需要的是願意感知、願意停留、願意參與的人。加入，並不是註冊一個帳號，而是進入一種不同的存在方式。
+          data-lang-zh="加入平台不代表只是註冊一個帳號，而是開始在公共社群、合作社區、商圈文化與探索中心之間建立你的存在路徑。"
+          data-lang-en="Joining the platform does not simply mean creating an account. It means beginning to form your presence across the commons, community partners, culture district, and exploration center.">
+          加入平台不代表只是註冊一個帳號，而是開始在公共社群、合作社區、商圈文化與探索中心之間建立你的存在路徑。
         </p>
       </div>
     </section>
 
     <section>
-      <div class="container">
-        <div class="two-col">
-          <div class="block">
-            <p
-              data-lang-en="You do not need to fit a standard. But you may find yourself at home here if you remain sensitive to the world, dissatisfied with speed and surface, and willing to build with care."
-              data-lang-zh="你不需要符合某種標準。但如果你對世界有自己的感受、對日常保持某種敏感、不滿足於快速與表面，並願意花時間理解與建立，那麼你可能會在這裡感到適合。">
-              你不需要符合某種標準。但如果你對世界有自己的感受、對日常保持某種敏感、不滿足於快速與表面，並願意花時間理解與建立，那麼你可能會在這裡感到適合。
-            </p>
-          </div>
-
-          <div class="block">
-            <p
-              data-lang-en="This is not a gatekeeping condition. It is a tendency of resonance."
-              data-lang-zh="這不是條件，而是一種傾向，一種共振。">
-              這不是條件，而是一種傾向，一種共振。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <div class="section-head">
-          <div class="kicker"
-            data-lang-en="Ways to Enter"
-            data-lang-zh="參與方式">參與方式</div>
-          <h2
-            data-lang-en="Not one path, but several ways of entering the world."
-            data-lang-zh="不是單一路徑，而是多種進入這個世界的方式。">
-            不是單一路徑，而是多種進入這個世界的方式。
-          </h2>
-        </div>
-
-        <div class="cards">
-          <div class="card">
+      <div class="container reveal">
+        <div class="grid-3">
+          <article class="card">
             <div class="card-index">01</div>
-            <h3
-              data-lang-en="Join the Commons"
-              data-lang-zh="加入社群">加入社群</h3>
+            <h3 data-lang-zh="成為會員" data-lang-en="Become a Member">成為會員</h3>
             <p
-              data-lang-en="Enter the public field, follow the weekly prompts, observe, read, and participate without pressure to speak immediately."
-              data-lang-zh="進入公共場域，開始參與對話。你不需要立刻發聲，先在場就足夠。">
-              進入公共場域，開始參與對話。你不需要立刻發聲，先在場就足夠。
+              data-lang-zh="會員可以發文、留言、建立個人頁，並逐步形成自己的內容與參與路徑。"
+              data-lang-en="Members can publish, comment, build a profile, and gradually form their own content path and mode of participation.">
+              會員可以發文、留言、建立個人頁，並逐步形成自己的內容與參與路徑。
             </p>
-          </div>
+          </article>
 
-          <div class="card">
+          <article class="card">
             <div class="card-index">02</div>
-            <h3
-              data-lang-en="Submit Work"
-              data-lang-zh="投稿">投稿</h3>
+            <h3 data-lang-zh="成為節點" data-lang-en="Become a Node">成為節點</h3>
             <p
-              data-lang-en="Let your text, images, notes, fragments, or unfinished thoughts become visible within the platform."
-              data-lang-zh="讓你的文字、圖像、紀錄或尚未完成的片段被看見。我們不追求完美，而是重視真實。">
-              讓你的文字、圖像、紀錄或尚未完成的片段被看見。我們不追求完美，而是重視真實。
+              data-lang-zh="若你是品牌、空間或合作方，你可以成為合作社區的一部分，讓平台開始延伸到現實。"
+              data-lang-en="If you are a brand, space, or collaborator, you can become part of the Community Partners network and extend the platform into real life.">
+              若你是品牌、空間或合作方，你可以成為合作社區的一部分，讓平台開始延伸到現實。
             </p>
-          </div>
+          </article>
 
-          <div class="card">
+          <article class="card">
             <div class="card-index">03</div>
-            <h3
-              data-lang-en="Become a Partner"
-              data-lang-zh="合作商店">合作商店</h3>
+            <h3 data-lang-zh="成為內容來源" data-lang-en="Become a Source of Content">成為內容來源</h3>
             <p
-              data-lang-en="If you run a tea space, bookshop, selected store, or cultural venue, let your space become part of the ecosystem."
-              data-lang-zh="如果你經營茶空間、書店、選物店或文化場域，讓你的空間成為這個生態的一部分。">
-              如果你經營茶空間、書店、選物店或文化場域，讓你的空間成為這個生態的一部分。
+              data-lang-zh="當內容不只被閱讀，而開始被持續輸出、交換與回應，平台才真正形成生態。"
+              data-lang-en="When content is not only read, but continually produced, exchanged, and responded to, the platform becomes a real ecosystem.">
+              當內容不只被閱讀，而開始被持續輸出、交換與回應，平台才真正形成生態。
             </p>
-          </div>
-
-          <div class="card">
-            <div class="card-index">04</div>
-            <h3
-              data-lang-en="Stay Connected"
-              data-lang-zh="保持連結">保持連結</h3>
-            <p
-              data-lang-en="You do not have to enter immediately. Some people arrive slowly. Staying connected is also a beginning."
-              data-lang-zh="不一定要立即參與，但可以先保持連結。有些人，是慢慢進來的。">
-              不一定要立即參與，但可以先保持連結。有些人，是慢慢進來的。
-            </p>
-          </div>
+          </article>
         </div>
       </div>
     </section>
 
     <section>
-      <div class="container">
-        <div class="two-col">
-          <div class="block">
-            <p
-              data-lang-en="Joining is not just an action. It is a change of position: from watching to presence, from browsing to participation, from individuality to relationship."
-              data-lang-zh="加入並不是一個動作，而是一個位置的改變。從觀看到在場，從瀏覽到參與，從個體到關係。">
-              加入並不是一個動作，而是一個位置的改變。從觀看到在場，從瀏覽到參與，從個體到關係。
-            </p>
-          </div>
-
-          <div class="block">
-            <p
-              data-lang-en="XS UTOPIA does not own its community. It only provides a structure, a field, and a place where things may begin to happen. The world exists through the people within it."
-              data-lang-zh="XS UTOPIA 並不擁有這個社群。這個平台只是提供一個結構、一個場域、一個讓事情發生的地方。真正讓它存在的，是在裡面的人。">
-              XS UTOPIA 並不擁有這個社群。這個平台只是提供一個結構、一個場域、一個讓事情發生的地方。真正讓它存在的，是在裡面的人。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
+      <div class="container reveal">
         <div class="cta">
-          <div class="cta-row">
-            <div>
-              <div class="kicker"
-                data-lang-en="Entry"
-                data-lang-zh="進入">進入</div>
-              <h2
-                data-lang-en="You don’t join a platform. You step into a world."
-                data-lang-zh="你不是加入一個平台，而是走進一個世界。">
-                你不是加入一個平台，而是走進一個世界。
-              </h2>
-              <div class="desc"
-                data-lang-en="Some worlds are not built from above. They are entered gradually, through attention, participation, and continuity."
-                data-lang-zh="有些世界不是被建立的，而是被慢慢走進來的。">
-                有些世界不是被建立的，而是被慢慢走進來的。
-              </div>
-            </div>
+          <div class="cta-text">
+            <div class="kicker" data-lang-zh="Access" data-lang-en="Access">Access</div>
+            <h2
+              data-lang-zh="先成為會員，再讓你的存在在平台中延伸。"
+              data-lang-en="Become a member first, then let your presence extend through the platform.">
+              先成為會員，再讓你的存在在平台中延伸。
+            </h2>
+            <p
+              data-lang-zh="你可以先從公共社群開始，再逐步進入內容流、合作節點與商圈文化。"
+              data-lang-en="You can begin with the Commons, then gradually move into the content flow, partner nodes, and culture district.">
+              你可以先從公共社群開始，再逐步進入內容流、合作節點與商圈文化。
+            </p>
+          </div>
 
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="mailto:tyascg@gmail.com" data-i18n="cta_join">加入 / 聯繫</a>
-              <a class="btn btn-secondary" href="https://www.instagram.com/xstea_xiangsheng?igsh=MWV3ajR0cG4yZDVqeQ%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" data-i18n="cta_ig">Instagram</a>
-            </div>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="auth.html" data-lang-zh="建立帳號" data-lang-en="Create Account">建立帳號</a>
+            <a class="btn" href="commons.html" data-lang-zh="進入公共社群" data-lang-en="Enter Commons">進入公共社群</a>
           </div>
         </div>
       </div>
@@ -191,18 +126,28 @@
     <div class="container footer-row">
       <div>
         <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
-        <span data-i18n="footer_text">一個關於思想、社群、合作空間與文化生態的自由美學平台。</span>
+        <span
+          data-lang-zh="加入平台，就是開始在這個生態中留下自己的節點。"
+          data-lang-en="Joining the platform means beginning to leave your own node inside this ecosystem.">
+          加入平台，就是開始在這個生態中留下自己的節點。
+        </span>
       </div>
       <div class="footer-links">
-        <a href="index.html" data-i18n="nav_home">首頁</a>
-        <a href="world.html" data-i18n="nav_world">世界觀</a>
-        <a href="commons.html" data-i18n="nav_commons">公共社群</a>
-        <a href="partners.html" data-i18n="nav_partners">合作商店</a>
-        <a href="store.html" data-i18n="nav_store">生態商店</a>
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </div>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-ui.js"></script>
+  <script>
+    AuthUI.initHeaderAuth();
+    AuthUI.initReveal();
+  </script>
 </body>
 </html>
