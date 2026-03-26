@@ -1,41 +1,238 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>XS UTOPIA</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XS UTOPIA</title>
+  <meta name="description" content="A complete ecosystem of thought, community, and cultural living." />
+  <link rel="stylesheet" href="style.css" />
 </head>
+<body data-page="home">
 
-<body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button class="lang-toggle" id="langToggle">EN</button>
 
-<div id="opening"><h1>XS UTOPIA</h1></div>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">XS</div>
+        <div class="brand-name">XS UTOPIA</div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" data-page="home" data-i18n="nav_home">首頁</a>
+        <a href="world.html" data-page="world" data-i18n="nav_world">世界觀</a>
+        <a href="commons.html" data-page="commons" data-i18n="nav_commons">公共社群</a>
+        <a href="partners.html" data-page="partners" data-i18n="nav_partners">合作商店</a>
+        <a href="store.html" data-page="store" data-i18n="nav_store">生態商店</a>
+        <a href="join.html" data-page="join" data-i18n="nav_join">加入平台</a>
+      </nav>
+    </div>
+  </header>
 
-<nav>
-  <div>XS UTOPIA</div>
-  <div>
-    <a href="world.html">World</a>
-    <a href="commons.html">Commons</a>
-    <a href="partners.html">Partners</a>
-    <a href="store.html">Store</a>
-    <a href="join.html">Join</a>
-    <a onclick="toggleLang()">EN/中</a>
-  </div>
-</nav>
+  <main>
+    <section class="hero">
+      <div class="container hero-wrap">
+        <div>
+          <div class="eyebrow"
+            data-lang-en="A complete ecosystem of thought, community, and cultural living"
+            data-lang-zh="一個關於思想、社群與文化生活的完整生態系">
+            一個關於思想、社群與文化生活的完整生態系
+          </div>
 
-<section class="hero">
-  <h1 
-    data-en="Build a world, not just a page."
-    data-zh="建立一個世界，而不只是做一個頁面">
-  </h1>
-</section>
+          <h1
+            data-lang-en="A complete ecosystem of thought,<br>community, and cultural living."
+            data-lang-zh="一個關於思想、社群、<br>文化生活的完整生態系。">
+            一個關於思想、社群、<br>文化生活的完整生態系。
+          </h1>
 
-<section class="container">
-  <p
-    data-en="A complete ecosystem of thought, community, and cultural living."
-    data-zh="一個關於思想、社群與文化生活的完整生態系">
-  </p>
-</section>
+          <p class="hero-sub"
+            data-lang-en="This is not a place built only for browsing. It exists to accumulate perception, sustain living exchange, and cultivate a more conscious way of being."
+            data-lang-zh="這裡不是只為了瀏覽而存在。它是為了累積感知、循環交流，並維持一種更有深度意識的生活而存在。">
+            這裡不是只為了瀏覽而存在。它是為了累積感知、循環交流，並維持一種更有深度意識的生活而存在。
+          </p>
 
-<script src="app.js"></script>
+          <div class="hero-actions">
+            <a class="btn btn-primary"
+              href="world.html"
+              data-lang-en="Enter the World"
+              data-lang-zh="進入世界觀">
+              進入世界觀
+            </a>
+            <a class="btn btn-secondary"
+              href="commons.html"
+              data-lang-en="Enter the Commons"
+              data-lang-zh="進入公共社群">
+              進入公共社群
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="panel-inner">
+            <div class="panel-quote"
+              data-lang-en="From the point of origin, a world begins to take form."
+              data-lang-zh="從原點開始，逐一完善，讓 UTOPIA 真正成形。">
+              從原點開始，逐一完善，讓 UTOPIA 真正成形。
+            </div>
+
+            <div class="panel-grid">
+              <div class="mini">
+                <small
+                  data-lang-en="WORLD"
+                  data-lang-zh="世界觀">世界觀</small>
+                <strong
+                  data-lang-en="A philosophy before traffic."
+                  data-lang-zh="在流量之前，先有哲學。">在流量之前，先有哲學。</strong>
+              </div>
+
+              <div class="mini">
+                <small
+                  data-lang-en="COMMONS"
+                  data-lang-zh="公共社群">公共社群</small>
+                <strong
+                  data-lang-en="A public room for meaningful presence."
+                  data-lang-zh="一個承載共同感知與交流的公共空間。">一個承載共同感知與交流的公共空間。</strong>
+              </div>
+
+              <div class="mini">
+                <small
+                  data-lang-en="PARTNERS"
+                  data-lang-zh="合作商店">合作商店</small>
+                <strong
+                  data-lang-en="Places that let the ecosystem become real."
+                  data-lang-zh="讓整體生態在現實中落地的節點。">讓整體生態在現實中落地的節點。</strong>
+              </div>
+
+              <div class="mini">
+                <small
+                  data-lang-en="STORE"
+                  data-lang-zh="生態商店">生態商店</small>
+                <strong
+                  data-lang-en="Projects and editions that keep culture in motion."
+                  data-lang-zh="多類型企劃維持整體文化生態的流動。">多類型企劃維持整體文化生態的流動。</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker"
+            data-lang-en="Platform Structure"
+            data-lang-zh="平台結構">平台結構</div>
+          <h2
+            data-lang-en="A platform is not defined by features alone."
+            data-lang-zh="平台不只由功能定義。">
+            平台不只由功能定義。
+          </h2>
+          <div class="desc"
+            data-lang-en="It is defined by the kind of life, exchange, and cultural rhythm it makes possible."
+            data-lang-zh="它更由它讓什麼樣的生活、交流與文化節奏成為可能來決定。">
+            它更由它讓什麼樣的生活、交流與文化節奏成為可能來決定。
+          </div>
+        </div>
+
+        <div class="cards">
+          <a class="card" href="world.html">
+            <div class="card-index">01</div>
+            <h3
+              data-lang-en="World"
+              data-lang-zh="世界觀">世界觀</h3>
+            <p
+              data-lang-en="The philosophical structure that gives the platform its way of seeing."
+              data-lang-zh="構成平台觀看方式的哲學結構。">
+              構成平台觀看方式的哲學結構。
+            </p>
+          </a>
+
+          <a class="card" href="commons.html">
+            <div class="card-index">02</div>
+            <h3
+              data-lang-en="Commons"
+              data-lang-zh="公共社群">公共社群</h3>
+            <p
+              data-lang-en="A public field for conversation, presence, and shared sensibility."
+              data-lang-zh="承載對話、在場感與共同感知的公共場域。">
+              承載對話、在場感與共同感知的公共場域。
+            </p>
+          </a>
+
+          <a class="card" href="partners.html">
+            <div class="card-index">03</div>
+            <h3
+              data-lang-en="Partners"
+              data-lang-zh="合作商店">合作商店</h3>
+            <p
+              data-lang-en="Independent spaces and stores that allow the ecology to root in reality."
+              data-lang-zh="讓整體生態在現實中扎根的獨立空間與店。">
+              讓整體生態在現實中扎根的獨立空間與店。
+            </p>
+          </a>
+
+          <a class="card" href="store.html">
+            <div class="card-index">04</div>
+            <h3
+              data-lang-en="Store"
+              data-lang-zh="生態商店">生態商店</h3>
+            <p
+              data-lang-en="Projects, objects, tea, and editions that keep the cultural ecosystem alive."
+              data-lang-zh="以企劃、物件、茶與合作版本維持整體文化生態。">
+              以企劃、物件、茶與合作版本維持整體文化生態。
+            </p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta">
+          <div class="cta-row">
+            <div>
+              <div class="kicker"
+                data-lang-en="Point of Origin"
+                data-lang-zh="原點">原點</div>
+              <h2
+                data-lang-en="Start from the origin. Build the world carefully."
+                data-lang-zh="從原點開始，逐一完善，讓 UTOPIA 真正成形。">
+                從原點開始，逐一完善，讓 UTOPIA 真正成形。
+              </h2>
+              <div class="desc"
+                data-lang-en="What begins here is not only a site, but an ecosystem of thought, community, and cultural continuity."
+                data-lang-zh="這裡開始形成的，不只是網站，而是一個由思想、社群與文化延續所構成的生態系。">
+                這裡開始形成的，不只是網站，而是一個由思想、社群與文化延續所構成的生態系。
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="join.html" data-i18n="cta_join">加入 / 聯繫</a>
+              <a class="btn btn-secondary" href="https://www.instagram.com/xstea_xiangsheng?igsh=MWV3ajR0cG4yZDVqeQ%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" data-i18n="cta_ig">Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>
+        <strong style="display:block; margin-bottom:8px; color:var(--text)">XS UTOPIA</strong>
+        <span data-i18n="footer_text">一個關於思想、社群、合作空間與文化生態的自由美學平台。</span>
+      </div>
+      <div class="footer-links">
+        <a href="world.html" data-i18n="nav_world">世界觀</a>
+        <a href="commons.html" data-i18n="nav_commons">公共社群</a>
+        <a href="partners.html" data-i18n="nav_partners">合作商店</a>
+        <a href="store.html" data-i18n="nav_store">生態商店</a>
+        <a href="join.html" data-i18n="nav_join">加入平台</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
