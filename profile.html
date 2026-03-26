@@ -4,135 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile — XS UTOPIA</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    :root{
-      --bg:#060606;
-      --panel:rgba(255,255,255,.04);
-      --line:rgba(255,255,255,.10);
-      --text:#f5f1e8;
-      --muted:rgba(245,241,232,.72);
-      --soft:rgba(245,241,232,.46);
-      --accent:#d7c19a;
-      --shadow:0 24px 80px rgba(0,0,0,.34);
-      --max:1280px;
-    }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(215,193,154,.12), transparent 24%),
-        linear-gradient(180deg,#050505 0%, #090909 42%, #070707 100%);
-      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;
-    }
-
-    a{color:inherit;text-decoration:none}
-
-    .container{
-      width:min(calc(100% - 32px), var(--max));
-      margin:0 auto;
-    }
-
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:80;
-      border-bottom:1px solid rgba(255,255,255,.05);
-      background:rgba(10,10,10,.56);
-      backdrop-filter:blur(18px);
-    }
-
-    .nav-inner{
-      min-height:72px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .brand-mark{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.03);
-      color:var(--accent);
-      font-size:12px;
-    }
-
-    .brand-name{
-      font-size:13px;
-      font-weight:600;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:18px;
-      align-items:center;
-      color:var(--muted);
-      font-size:14px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active{
-      color:var(--text);
-    }
-
-    .auth-right{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-left:auto;
-    }
-
-    .btn{
-      min-height:42px;
-      padding:0 16px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      cursor:pointer;
-      font-size:14px;
-    }
-
-    .btn-primary{
-      background:var(--text);
-      color:#0a0a0a;
-      border-color:transparent;
-    }
-
     .profile-hero{
       padding:110px 0 40px;
     }
-
     .profile-grid{
       display:grid;
       grid-template-columns:.88fr 1.12fr;
       gap:22px;
       align-items:start;
     }
-
-    .panel{
-      border:1px solid var(--line);
-      border-radius:28px;
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow:var(--shadow);
+    .profile-panel{
       padding:28px;
     }
-
     .avatar{
       width:108px;
       height:108px;
@@ -146,13 +31,11 @@
       color:var(--accent);
       margin-bottom:18px;
     }
-
     .profile-name{
       font-size:36px;
       line-height:1.05;
       margin:0 0 10px;
     }
-
     .role-badge{
       display:inline-flex;
       align-items:center;
@@ -164,98 +47,57 @@
       color:var(--soft);
       margin-bottom:16px;
     }
-
     .profile-email{
       color:var(--muted);
       line-height:1.8;
       margin-bottom:18px;
       word-break:break-all;
     }
-
     .stats{
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:12px;
       margin-top:20px;
     }
-
     .stat{
       padding:18px;
       border-radius:20px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.03);
     }
-
     .stat strong{
       display:block;
       font-size:28px;
       margin-bottom:6px;
       color:var(--text);
     }
-
     .stat span{
       color:var(--soft);
       font-size:13px;
     }
-
-    .label{
-      display:block;
-      margin-bottom:10px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .input,
-    .textarea{
-      width:100%;
-      border:none;
-      outline:none;
-      color:var(--text);
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:18px;
-      padding:16px 18px;
-      font:inherit;
-      margin-bottom:16px;
-    }
-
-    .textarea{
-      min-height:160px;
-      resize:vertical;
-      line-height:1.8;
-    }
-
-    .status{
-      margin-top:12px;
-      color:var(--muted);
-      font-size:13px;
-      min-height:20px;
-    }
-
     .subgrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:22px;
       margin-top:22px;
     }
-
     .mini-list{
       color:var(--muted);
       line-height:1.9;
       font-size:15px;
     }
-
     @media (max-width:980px){
       .profile-grid,.subgrid{grid-template-columns:1fr}
     }
-
     @media (max-width:760px){
-      .nav-links{display:none}
       .stats{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
+  <div id="opening"><span>XS UTOPIA</span></div>
+  <button id="langToggle" class="lang-toggle">EN</button>
+
   <header class="nav">
     <div class="container nav-inner">
       <a class="brand" href="index.html">
@@ -264,25 +106,26 @@
       </a>
 
       <nav class="nav-links">
-        <a href="index.html">首頁</a>
-        <a href="world.html">世界觀</a>
-        <a href="commons.html">Commons</a>
-        <a href="feed.html">內容流</a>
-        <a href="join.html">加入平台</a>
+        <a href="index.html" data-i18n-key="nav_home">首頁</a>
+        <a href="commons.html" data-i18n-key="nav_commons">公共社群</a>
+        <a href="explore.html" data-i18n-key="nav_explore">探索中心</a>
+        <a href="partners.html" data-i18n-key="nav_partners">合作社區</a>
+        <a href="store.html" data-i18n-key="nav_store">商圈文化</a>
+        <a href="join.html" data-i18n-key="nav_join">加入平台</a>
       </nav>
 
       <div class="auth-right">
-        <div id="authGuest" style="display:flex; gap:10px;">
-          <a href="auth.html" class="btn">登入</a>
-          <a href="auth.html" class="btn">註冊</a>
+        <div id="authGuest" class="auth-guest">
+          <a href="auth.html" class="btn" data-i18n-key="login">登入</a>
+          <a href="auth.html" class="btn" data-i18n-key="register">註冊</a>
         </div>
 
-        <div id="authMember" style="display:none; align-items:center; gap:10px;">
-          <div style="display:flex; flex-direction:column; align-items:flex-end; line-height:1.2;">
-            <strong id="authMemberName" style="font-size:13px; color:var(--text);">Member</strong>
-            <span id="authMemberRole" style="font-size:11px; color:var(--soft);">Member</span>
-          </div>
-          <button id="authSignOutBtn" class="btn">登出</button>
+        <div id="authMember" class="auth-member" style="display:none;">
+          <a href="profile.html" class="auth-member-meta">
+            <strong id="authMemberName">Member</strong>
+            <span id="authMemberRole">Member</span>
+          </a>
+          <button id="authSignOutBtn" class="btn" data-i18n-key="logout">登出</button>
         </div>
       </div>
     </div>
@@ -290,8 +133,8 @@
 
   <main class="profile-hero">
     <div class="container">
-      <div class="profile-grid">
-        <section class="panel">
+      <div class="profile-grid reveal">
+        <section class="panel profile-panel">
           <div id="profileAvatarPreview" class="avatar">M</div>
           <h1 id="profileName" class="profile-name">Member</h1>
           <div id="profileRole" class="role-badge">Member</div>
@@ -300,46 +143,66 @@
           <div class="stats">
             <div class="stat">
               <strong id="profileCommentCount">0</strong>
-              <span>我的留言</span>
+              <span data-lang-zh="我的留言" data-lang-en="My Comments">我的留言</span>
             </div>
             <div class="stat">
               <strong id="profilePostCount">0</strong>
-              <span>我的內容</span>
+              <span data-lang-zh="我的文章" data-lang-en="My Posts">我的文章</span>
             </div>
             <div class="stat">
               <strong id="profileApplicationCount">0</strong>
-              <span>合作申請</span>
+              <span data-lang-zh="合作申請" data-lang-en="Applications">合作申請</span>
             </div>
           </div>
         </section>
 
-        <section class="panel">
-          <h2 style="margin-top:0; margin-bottom:18px;">個人設定</h2>
+        <section class="panel profile-panel">
+          <h2 style="margin-top:0; margin-bottom:18px;"
+              data-lang-zh="個人設定"
+              data-lang-en="Profile Settings">
+            個人設定
+          </h2>
 
-          <label class="label" for="profileDisplayName">顯示名稱</label>
+          <label class="label" for="profileDisplayName" data-lang-zh="顯示名稱" data-lang-en="Display Name">顯示名稱</label>
           <input id="profileDisplayName" class="input" type="text" maxlength="24" placeholder="你的名稱" />
 
-          <label class="label" for="profileBio">Bio</label>
+          <label class="label" for="profileBio" data-lang-zh="Bio" data-lang-en="Bio">Bio</label>
           <textarea id="profileBio" class="textarea" placeholder="寫下一段關於你的文字。"></textarea>
 
-          <button id="profileSaveBtn" class="btn btn-primary">儲存變更</button>
+          <button id="profileSaveBtn" class="btn btn-primary"
+                  data-lang-zh="儲存變更"
+                  data-lang-en="Save Changes">
+            儲存變更
+          </button>
           <div id="profileStatus" class="status"></div>
         </section>
       </div>
 
-      <div class="subgrid">
-        <section class="panel">
-          <h2 style="margin-top:0; margin-bottom:18px;">我的內容路徑</h2>
-          <div class="mini-list">
+      <div class="subgrid reveal">
+        <section class="panel profile-panel">
+          <h2 style="margin-top:0; margin-bottom:18px;"
+              data-lang-zh="我的內容路徑"
+              data-lang-en="My Content Path">
+            我的內容路徑
+          </h2>
+          <div class="mini-list"
+               data-lang-zh="• 你未來可以在這裡看到自己的內容流與發表紀錄。<br>• 也可以延伸為思想、藝術、茶文化、生態等分類內容。<br>• 這一頁會成為會員真正「存在」的平台節點。"
+               data-lang-en="• Here you will later see your content flow and publication history.<br>• It can extend into thought, art, tea culture, and ecosystem categories.<br>• This page becomes the member’s true node of presence within the platform.">
             • 你未來可以在這裡看到自己的內容流與發表紀錄。<br>
             • 也可以延伸為思想、藝術、茶文化、生態等分類內容。<br>
             • 這一頁會成為會員真正「存在」的平台節點。
           </div>
         </section>
 
-        <section class="panel">
-          <h2 style="margin-top:0; margin-bottom:18px;">我的申請與參與</h2>
-          <div class="mini-list">
+        <section class="panel profile-panel">
+          <h2 style="margin-top:0; margin-bottom:18px;"
+              data-lang-zh="我的申請與參與"
+              data-lang-en="My Applications & Participation">
+            我的申請與參與
+          </h2>
+          <div class="mini-list"
+               data-lang-zh="• 商家合作申請狀態<br>• 生態系內容發表狀態<br>• 會員參與足跡與平台連結"
+               data-lang-en="• Community partner application status<br>• Ecosystem submission status<br>• Participation traces and platform connections">
             • 商家合作申請狀態<br>
             • 生態系內容發表狀態<br>
             • 會員參與足跡與平台連結
@@ -352,8 +215,69 @@
   <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="auth-ui.js"></script>
   <script>
-    AuthUI.initHeaderAuth();
-    AuthUI.initProfilePage();
+    async function initProfilePage() {
+      const auth = await AuthUI.initHeaderAuth();
+      AuthUI.initReveal();
+
+      const client = await AuthUI.getClient();
+      const { user } = auth.getSession();
+
+      if (!user) {
+        window.location.href = "auth.html";
+        return;
+      }
+
+      const { data: profile } = await client
+        .from("user_profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const displayName =
+        profile?.display_name ||
+        (user.email ? user.email.split("@")[0] : "member");
+
+      document.getElementById("profileName").textContent = displayName;
+      document.getElementById("profileRole").textContent = profile?.role === "admin" ? "Admin" : "Member";
+      document.getElementById("profileEmail").textContent = user.email || "";
+      document.getElementById("profileDisplayName").value = displayName;
+      document.getElementById("profileBio").value = profile?.bio || "";
+
+      const avatar = document.getElementById("profileAvatarPreview");
+      avatar.textContent = displayName.slice(0, 1).toUpperCase();
+
+      const [{ count: commentCount }, { count: postCount }] = await Promise.all([
+        client.from("post_comments").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+        client.from("posts").select("*", { count: "exact", head: true }).eq("user_id", user.id)
+      ]);
+
+      document.getElementById("profileCommentCount").textContent = commentCount ?? 0;
+      document.getElementById("profilePostCount").textContent = postCount ?? 0;
+      document.getElementById("profileApplicationCount").textContent = 0;
+
+      document.getElementById("profileSaveBtn").addEventListener("click", async () => {
+        const btn = document.getElementById("profileSaveBtn");
+        const status = document.getElementById("profileStatus");
+        btn.disabled = true;
+        status.textContent = AuthUI.getLocale() === "en" ? "Saving..." : "儲存中...";
+
+        const { error } = await client
+          .from("user_profiles")
+          .update({
+            display_name: document.getElementById("profileDisplayName").value.trim().slice(0, 24),
+            bio: document.getElementById("profileBio").value.trim(),
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", user.id);
+
+        btn.disabled = false;
+        status.textContent = error
+          ? (AuthUI.getLocale() === "en" ? "Failed to update." : "更新失敗。")
+          : (AuthUI.getLocale() === "en" ? "Profile updated." : "個人資料已更新。");
+      });
+    }
+
+    initProfilePage();
   </script>
 </body>
 </html>
