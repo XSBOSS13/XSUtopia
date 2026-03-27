@@ -1,19 +1,38 @@
-// 1. 抓取：從 GitHub 與 HN 獲取原始數據
-const rawData = await fetchTrendingTech(); 
+// 部署於 Supabase Edge Functions
+import { createClient } from 'https://esm.sh/@supabase/supabase-client'
 
-// 2. 過濾：丟給 AI (GPT-4o 或 DeepSeek-V3) 進行「ROI 判斷」
-const systemPrompt = `
-你是我公司的數位執行官。請對以下技術進行冷酷的商業評估：
-- 它能解決「重複性勞動」嗎？
-- 它能降低「API 成本」或「人力成本」嗎？
-- 如果 ROI > 500% (極高回報)，請標註為 [RED_ZONE]。
-`;
+const TG_BOT_TOKEN = Deno.env.get('TELEGRAM_TOKEN');
+const ADMIN_ID = Deno.env.get('MY_CHAT_ID');
 
-const analysis = await aiAnalyze(rawData, systemPrompt);
+Deno.serve(async (req) => {
+  // 1. 執行抓取 (以 GitHub 為例)
+  const trending = await fetch('https://api.github.com/search/repositories?q=topic:automation&sort=stars');
+  const items = await trending.json();
 
-// 3. 儲存與推送：
-if (analysis.status === 'RED_ZONE') {
-    // 立即存入 Supabase 並觸發 Telegram 報警
-    await supabase.from('executive_insights').insert(analysis);
-    await sendTelegramAlert(`🚨 老闆，發現核彈級自動化工具：${analysis.title}`);
-}
+  // 2. AI 篩選 (調用 OpenAI 進行商業價值評估)
+  for (const item of items.items.slice(0, 5)) {
+    const aiAnalysis = await analyzeWithAI(item.description); 
+    
+    if (aiAnalysis.roi > 5.0) { // ROI 高於 500%
+      // 3. 存入 Supabase 向量資料庫
+      await supabase.from('insights').insert({ ...item, vector: aiAnalysis.embedding });
+
+      // 4. Telegram 轟炸
+      await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: ADMIN_ID,
+          text: `🚨 【高價值發現】\n技術：${item.name}\n分析：${aiAnalysis.summary}\nROI：${aiAnalysis.roi}x`,
+          reply_markup: {
+            inline_keyboard: [[
+              { text: "🚀 部署測試", callback_data: `deploy_${item.id}` },
+              { text: "📁 存檔", callback_data: `archive_${item.id}` }
+            ]]
+          }
+        })
+      });
+    }
+  }
+  return new Response("Scan Completed");
+})
