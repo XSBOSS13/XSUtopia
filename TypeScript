@@ -1,0 +1,19 @@
+// 1. 抓取：從 GitHub 與 HN 獲取原始數據
+const rawData = await fetchTrendingTech(); 
+
+// 2. 過濾：丟給 AI (GPT-4o 或 DeepSeek-V3) 進行「ROI 判斷」
+const systemPrompt = `
+你是我公司的數位執行官。請對以下技術進行冷酷的商業評估：
+- 它能解決「重複性勞動」嗎？
+- 它能降低「API 成本」或「人力成本」嗎？
+- 如果 ROI > 500% (極高回報)，請標註為 [RED_ZONE]。
+`;
+
+const analysis = await aiAnalyze(rawData, systemPrompt);
+
+// 3. 儲存與推送：
+if (analysis.status === 'RED_ZONE') {
+    // 立即存入 Supabase 並觸發 Telegram 報警
+    await supabase.from('executive_insights').insert(analysis);
+    await sendTelegramAlert(`🚨 老闆，發現核彈級自動化工具：${analysis.title}`);
+}
