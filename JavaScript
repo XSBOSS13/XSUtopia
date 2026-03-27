@@ -1,0 +1,46 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-client'
+
+// 1. 初始化 Supabase
+const supabase = createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
+
+// 2. 監聽數據變動 (Realtime)
+const channel = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'insights' },
+    (payload) => {
+      renderToConsole(payload.new);
+      triggerNeonFlash(); // 讓 Three.js 背景閃爍紅光提醒
+    }
+  )
+  .subscribe();
+
+// 3. 模擬駭客風格的 CLI 輸出
+function renderToConsole(data) {
+  const consoleDiv = document.getElementById('ui-overlay'); // 之前建立的文字層
+  const timestamp = new Date().toLocaleTimeString();
+  
+  const html = `
+    <div style="color: #ff00ff; border-left: 2px solid #ff00ff; padding-left: 10px; margin-bottom: 15px;">
+      [${timestamp}] 🚨 DECODING HIGH-VALUE TECH...<br>
+      >> TARGET: ${data.tech_name}<br>
+      >> ROI: ${data.roi_score}x<br>
+      >> STRATEGY: ${data.automation_value}<br>
+      >> COMMAND: <code>${data.action_script}</code><br>
+      [SYSTEM]: WAITING FOR TELEGRAM CONFIRMATION...
+    </div>
+  `;
+  
+  consoleDiv.insertAdjacentHTML('afterbegin', html);
+}
+
+// 4. 三維視覺聯動：當新數據進入時，數位雨變色
+function triggerNeonFlash() {
+    // 這裡調用你 Three.js 內部的 material.uniforms
+    // 讓背景暫時變為警示紅，3 秒後回復藍粉色
+    material.uniforms.uColorBlue.value.set(0xff0000); 
+    setTimeout(() => {
+        material.uniforms.uColorBlue.value.set(0x00ffff);
+    }, 3000);
+}
